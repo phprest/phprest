@@ -1,0 +1,22 @@
+{
+    "name": "adammbalogh/phrest",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adam Balogh",
+            "email": "baloghbh@gmail.com"
+        }
+    ],
+    "require": {
+        "alexbilbie/proton": "~1.0.5",
+        "stack/builder": "~1.0.2",
+        "stack/run": "~1.0.1",
+        "willdurand/stack-negotiation": "~0.1.0",
+        "willdurand/hateoas": "~2.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phrest\\": "src"
+        }
+    }
+}
