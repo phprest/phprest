@@ -6,9 +6,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Negotiation\FormatNegotiator;
 use Hateoas\HateoasBuilder;
+use Phrest\Service;
 
 class Application extends \Proton\Application
 {
+    use Service\Hateoas,
+        Service\Serializer;
+
     public function __construct()
     {
         $this->setErrorHandler(function($errNo, $errStr, $errFile, $errLine) {
