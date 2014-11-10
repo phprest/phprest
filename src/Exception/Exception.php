@@ -3,14 +3,14 @@
 class Exception extends \Exception
 {
     /**
-     * @var int
+     * @var integer
      */
     private $statusCode;
 
     /**
      * @param string $message
-     * @param int $code
-     * @param int $statusCode
+     * @param integer $code
+     * @param integer $statusCode
      * @param \Exception $previous
      */
     public function __construct($message = '', $code = 0, $statusCode = 500, \Exception $previous = null)
@@ -21,7 +21,7 @@ class Exception extends \Exception
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getStatusCode()
     {

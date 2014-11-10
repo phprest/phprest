@@ -7,6 +7,8 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Negotiation\FormatNegotiator;
 use Hateoas\HateoasBuilder;
 use Phrest\Service;
+use Phrest\Entity\DebugError;
+use Phrest\Entity\Error;
 
 class Application extends \Proton\Application
 {
@@ -16,6 +18,7 @@ class Application extends \Proton\Application
     public function __construct()
     {
         parent::__construct();
+
         $this->setErrorHandlers();
         $this->registerServices();
     }
@@ -50,6 +53,30 @@ class Application extends \Proton\Application
         $this->container->add('Serializer', function($value, Request $request, Response $response) {
             return $this->getHateoasdSerializedResponse($value, $request, $response);
         });
+    }
+
+    /**
+     * @param mixed $value
+     * @param Request $request
+     * @param Response $response
+     *
+     * @return Response
+     */
+    public function getHateoasdSerializedResponse($value, Request $request, Response $response)
+    {
+        $response->setContent(
+            $this['Hateoas']->serialize(
+                $value,
+                $request->attributes->get('_format', 'json')
+            )
+        );
+
+        $response->headers->set(
+            'Content-Type',
+            $request->attributes->get('_mime_type', 'application/hal+json')
+        );
+
+        return $response;
     }
 
     /**
@@ -103,30 +130,6 @@ class Application extends \Proton\Application
     }
 
     /**
-     * @param mixed $value
-     * @param Request $request
-     * @param Response $response
-     *
-     * @return Response
-     */
-    public function getHateoasdSerializedResponse($value, Request $request, Response $response)
-    {
-        $response->setContent(
-            $this['Hateoas']->serialize(
-                $value,
-                $request->attributes->get('_format', 'json')
-            )
-        );
-
-        $response->headers->set(
-            'Content-Type',
-            $request->attributes->get('_mime_type', 'application/hal+json')
-        );
-
-        return $response;
-    }
-
-    /**
      * @param callable $func
      *
      * @return void
@@ -145,7 +148,7 @@ class Application extends \Proton\Application
     }
 
     /**
-     * Returns a xml/json response with message and code properties.
+     * Returns with a xml/json response.
      * Default: json.
      *
      * @param \Exception $exception
@@ -154,69 +157,30 @@ class Application extends \Proton\Application
      */
     protected function getExceptionResponse(\Exception $exception)
     {
+        $request = Request::createFromGlobals();
         $response = new Response();
+        $negotiator = new FormatNegotiator();
 
-        $negotiator   = new FormatNegotiator();
-        $acceptHeader = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'application/json';
+        $request->attributes->set(
+            '_format',
+            $negotiator->getBestFormat($request->headers->get('accept')) === 'xml' ? 'xml' : 'json'
+        );
+        $request->attributes->set(
+            '_mime_type',
+            'application/json'
+        );
 
-        $format = $negotiator->getBestFormat($acceptHeader);
-        $formatMime = $negotiator->getBest($acceptHeader)->getValue();
-
-        if ($format === 'xml') {
-            $response->setContent($this->getErrorXml($exception)->asXML());
-        } else {
-            $formatMime = 'application/json';
-
-            $response->setContent($this->getErrorJson($exception));
+        if ($request->attributes->get('_format') === 'xml') {
+            $request->attributes->set('_mime_type', 'application/xml');
         }
 
+        $response = $this->serviceSerializer(
+            $this['debug'] === false ? new Error($exception) : new DebugError($exception),
+            $request,
+            $response
+        );
         $response->setStatusCode(method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);
-        $response->headers->add(['Content-Type' => $formatMime]);
 
         return $response;
-    }
-
-    /**
-     * @param \Exception $exception
-     *
-     * @return \SimpleXMLElement
-     */
-    protected function getErrorXml(\Exception $exception)
-    {
-        $xml = new \SimpleXMLElement('<result/>');
-
-        $xml->addChild('message', '<![CDATA[' . $exception->getMessage() . ']]>');
-        $xml->addChild('code', $exception->getCode());
-
-        if ($this['debug'] === true) {
-            $debug = $xml->addChild('debug');
-
-            $debug->addChild('file', $exception->getFile());
-            $debug->addChild('line', $exception->getLine());
-            $debug->addChild('trace', '<![CDATA[' . $exception->getTraceAsString() . ']]>');
-        }
-
-        return $xml;
-    }
-
-    /**
-     * @param \Exception $exception
-     *
-     * @return string
-     */
-    protected function getErrorJson(\Exception $exception)
-    {
-        $return = [
-            'message' => $exception->getMessage(),
-            'code' => $exception->getCode()
-        ];
-
-        if ($this['debug'] === true) {
-            $return['debug']['file'] = $exception->getFile();
-            $return['debug']['line'] = $exception->getLine();
-            $return['debug']['trace'] = explode(PHP_EOL, $exception->getTraceAsString());
-        }
-
-        return json_encode($return);
     }
 }
