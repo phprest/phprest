@@ -1,6 +1,6 @@
 {
     "name": "adammbalogh/phrest",
-    "description": "Micro Php Rest Framework. Simple, Easy, Extensible.",
+    "description": "Php Rest Micro Framework. Simple, Easy, Extensible.",
     "keywords": ["micro", "framework", "rest", "api"],
     "license": "MIT",
     "type": "library",

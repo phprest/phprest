@@ -15,6 +15,11 @@ class Application extends \Proton\Application
     use Service\Hateoas,
         Service\Serializer;
 
+    /**
+     * @var callable
+     */
+    protected $exceptionHandler;
+
     public function __construct()
     {
         parent::__construct();
@@ -32,12 +37,21 @@ class Application extends \Proton\Application
             throw $e;
         });
 
-        $this->setErrorHandler(function($errNo, $errStr, $errFile, $errLine) {
+        set_error_handler(function($errNo, $errStr, $errFile, $errLine) {
             throw new \ErrorException($errStr, 0, $errNo, $errFile, $errLine);
         });
 
         $this->setDefaultExceptionHandler(function(\Exception $exception) {
             $this->getExceptionResponse($exception)->send();
+        });
+
+        register_shutdown_function(function() {
+            if ($error = error_get_last()) {
+                call_user_func(
+                    $this->exceptionHandler,
+                    new \ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])
+                );
+            }
         });
     }
 
@@ -134,17 +148,10 @@ class Application extends \Proton\Application
      *
      * @return void
      */
-    public function setErrorHandler(callable $func) {
-        set_error_handler($func);
-    }
-
-    /**
-     * @param callable $func
-     *
-     * @return void
-     */
     public function setDefaultExceptionHandler(callable $func) {
         set_exception_handler($func);
+
+        $this->exceptionHandler = $func;
     }
 
     /**
