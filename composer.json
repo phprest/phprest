@@ -1,13 +1,19 @@
 {
     "name": "adammbalogh/phrest",
+    "description": "Micro Php Rest Framework. Simple, Easy, Extensible.",
+    "keywords": ["micro", "framework", "rest", "api"],
     "license": "MIT",
+    "type": "library",
     "authors": [
         {
             "name": "Adam Balogh",
-            "email": "baloghbh@gmail.com"
+            "email": "baloghbh@gmail.com",
+            "homepage": "http://code-chronicle.blogspot.com",
+            "role": "Developer"
         }
     ],
     "require": {
+        "php": ">=5.4.0",
         "alexbilbie/proton": "~1.0.5",
         "stack/builder": "~1.0.2",
         "stack/run": "~1.0.1",
@@ -18,5 +24,8 @@
         "psr-4": {
             "Phrest\\": "src"
         }
+    },
+    "suggest": {
+        "zircote/swagger-php": "For creating your Api documentation."
     }
 }

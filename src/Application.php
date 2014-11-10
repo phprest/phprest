@@ -20,6 +20,9 @@ class Application extends \Proton\Application
         $this->registerServices();
     }
 
+    /**
+     * @return void
+     */
     protected function setErrorHandlers()
     {
         $this->setExceptionDecorator(function (\Exception $e) {
@@ -35,6 +38,9 @@ class Application extends \Proton\Application
         });
     }
 
+    /**
+     * @return void
+     */
     protected function registerServices()
     {
         AnnotationRegistry::registerLoader('class_exists');
