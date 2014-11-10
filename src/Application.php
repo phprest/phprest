@@ -15,6 +15,17 @@ class Application extends \Proton\Application
 
     public function __construct()
     {
+        parent::__construct();
+        $this->setErrorHandlers();
+        $this->registerServices();
+    }
+
+    protected function setErrorHandlers()
+    {
+        $this->setExceptionDecorator(function (\Exception $e) {
+            throw $e;
+        });
+
         $this->setErrorHandler(function($errNo, $errStr, $errFile, $errLine) {
             throw new \ErrorException($errStr, 0, $errNo, $errFile, $errLine);
         });
@@ -22,13 +33,10 @@ class Application extends \Proton\Application
         $this->setDefaultExceptionHandler(function(\Exception $exception) {
             $this->getExceptionResponse($exception)->send();
         });
+    }
 
-        parent::__construct();
-
-        $this->setExceptionDecorator(function (\Exception $e) {
-            throw $e;
-        });
-
+    protected function registerServices()
+    {
         AnnotationRegistry::registerLoader('class_exists');
 
         $this->container->add('Hateoas', HateoasBuilder::create()->build());

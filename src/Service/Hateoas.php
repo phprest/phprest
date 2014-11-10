@@ -5,7 +5,7 @@ trait Hateoas
     /**
      * @return \Hateoas\Hateoas
      */
-    public function srvHateoas()
+    public function serviceHateoas()
     {
         return $this->getContainer()->get('Hateoas');
     }

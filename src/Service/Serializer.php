@@ -12,7 +12,7 @@ trait Serializer
      *
      * @return Response
      */
-    public function srvSerializer($value, Request $request, Response $response)
+    public function serviceSerializer($value, Request $request, Response $response)
     {
         return $this->getContainer()->get('Serializer', [$value, $request, $response]);
     }
