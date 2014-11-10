@@ -5,7 +5,7 @@
 
 # Description
 
-Micro Php Rest Framework.
+Php Rest Micro Framework.
 
 It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](http://stackphp.com/) compatible Framework.
 
@@ -19,15 +19,93 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 
 # Installation
 
+Install it through composer.
+
+```json
+{
+    "require": {
+        "adammbalogh/phrest": "@stable"
+    }
+}
+```
+
+**tip:** you should browse the [`adammbalogh/phrest`](https://packagist.org/packages/adammbalogh/phrest)
+page to choose a stable version to use, avoid the `@stable` meta constraint.
+
 # Usage
+
+## Set up
+
+```php
+<?php
+require __DIR__ . '/../vendor/autoload.php';
+
+use Phrest\Application;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+$app = new Application();
+$app['debug'] = true; # it is false by default
+
+$app->get('/', function (Request $request, Response $response) {
+    return $response->setContent('Hello World!');
+});
+
+$app->run();
+```
 
 ## Routing
 
-### Simple
+### Simple routing with arguments
 
-### Controller
+```php
+<?php
+# ...
+$app->get('/hello/{name:word}', function (Request $request, Response $response, array $args) {
+    return $response->setContent('Hello ' . $args['name']);
+});
+# ...
+```
 
-### Controller as a Service
+### Routing through a controller
+
+```php
+<?php
+# index.php
+
+# ...
+$app->get('/', '\Foo\Bar\HomeController::index'); # calls index method on HomeController class
+# ...
+```
+
+```php
+<?php namespace Foo\Bar;
+# HomeController.php
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class HomeController
+{
+    public function index(Request $request, Response $response, array $args)
+    {
+        return $response->setContent('Hello World!');
+    }
+}
+```
+
+### Routing through a service controller
+
+```php
+<?php
+# ...
+$app['HomeController'] = function () {
+    return new \Foo\Bar\HomeController();
+};
+
+$app->get('/', 'HomeController::index');
+# ...
+```
 
 ## Hateoas, Serialization
 
