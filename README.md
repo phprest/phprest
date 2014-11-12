@@ -14,7 +14,7 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 * [Orno\Route](https://github.com/orno/route)
 * [Orno\Di](https://github.com/orno/di)
 * [League\Event](https://github.com/thephpleague/event)
-* [Willdurand/StackNegotiation](https://github.com/willdurand/StackNegotiation)
+* [Willdurand/Negotiation](https://github.com/willdurand/Negotiation)
 * [Willdurand/Hateoas](https://github.com/willdurand/Hateoas)
 
 # Installation
@@ -107,6 +107,8 @@ $app->get('/', 'HomeController::index');
 # ...
 ```
 
+For more information please visit [Orno/Route](https://github.com/orno/route).
+
 ## Hateoas, Serialization
 
 Let's see a Humidity entity:
@@ -164,7 +166,7 @@ Json response (default):
 
 ```json
 {
-    value: 78
+    "value": 78
 }
 ```
 
@@ -193,9 +195,18 @@ The response is content negotiationed (xml/json), the status code is 503.
 
 ```json
 {
-    code: 9,
-    message: "Code Red!"
+    "code": 9,
+    "message": "Code Red!"
 }
+```
+
+```xml
+<result>
+    <code>9</code>
+    <message>
+        <![CDATA[Code Red!]]>
+    </message>
+</result>
 ```
 
 ### Fatal error handler
@@ -212,6 +223,6 @@ error_reporting(-1);
 
 ## Dependency Injection Container
 
-See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container)
+See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [Orno/Route](https://github.com/orno/route).
 
 ## Api documentation
