@@ -225,12 +225,12 @@ The response is content negotiationed (xml/json), the status code is 503.
 ```
 
 ```xml
-<result>
+<error>
     <code>9</code>
     <message>
         <![CDATA[Code Red!]]>
     </message>
-</result>
+</error>
 ```
 
 ### Fatal error handler
