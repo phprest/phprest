@@ -109,8 +109,109 @@ $app->get('/', 'HomeController::index');
 
 ## Hateoas, Serialization
 
-## Exceptions
+Let's see a Humidity entity:
 
-## Di
+```php
+<?php namespace Rest\Entity;
 
+use JMS\Serializer\Annotation as Serializer;
+use Hateoas\Configuration\Annotation as Hateoas;
 
+/**
+ * @Serializer\XmlRoot("humidity")
+ */
+class Humidity
+{
+    /**
+     * @var integer
+     * @Serializer\Type("integer")
+     */
+    private $value;
+
+    /**
+     * @param integer $value
+     */
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+}
+```
+
+The router:
+
+```php
+<?php
+# ...
+$app->get('/', function () use ($app) {
+    $response = new \Orno\Http\Response('', 200);
+    $humidity = new \Rest\Entity\Humidity(78);
+    
+    return $app->serviceSerializer($humidity, Request::createFromGlobals(), $response);
+});
+# ...
+```
+
+Json response (default):
+
+```json
+{
+    value: 78
+}
+```
+
+Xml response (Accept: application/xml):
+
+```xml
+<humidity>
+    <value>78</value>
+</humidity>
+```
+
+## Default exception handler
+
+### On a single exception
+
+```php
+<?php
+# ...
+$app->get('/', function (Request $request, Response $response) {
+    throw new \Phrest\Exception\Exception('Code Red!', 9, 503);
+});
+# ...
+```
+
+The response is content negotiationed (xml/json), the status code is 503.
+
+```json
+{
+    code: 9,
+    message: "Code Red!"
+}
+```
+
+### Fatal error handler
+
+Phrest can also handle all the non recoverable errors like E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR.
+
+For a clear error message you should do something like this:
+
+```php
+<?php
+ini_set('display_errors', 'Off');
+error_reporting(-1);
+```
+
+## Dependency Injection Container
+
+See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container)
+
+## Api documentation
