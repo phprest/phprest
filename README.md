@@ -121,6 +121,8 @@ use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @Serializer\XmlRoot("humidity")
+ *
+ * @Hateoas\Relation("self", href = "expr('/sensors/humidity/' ~ object.getId())")
  */
 class Humidity
 {
@@ -128,14 +130,30 @@ class Humidity
      * @var integer
      * @Serializer\Type("integer")
      */
+    private $id;
+
+    /**
+     * @var integer
+     * @Serializer\Type("integer")
+     */
     private $value;
 
     /**
+     * @param integer $id
      * @param integer $value
      */
-    public function __construct($value)
+    public function __construct($id, $value)
     {
+        $this->id = $id;
         $this->value = $value;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -155,7 +173,7 @@ The router:
 # ...
 $app->get('/', function () use ($app) {
     $response = new \Orno\Http\Response('', 200);
-    $humidity = new \Rest\Entity\Humidity(78);
+    $humidity = new \Rest\Entity\Humidity(1, 78);
     
     return $app->serviceSerializer($humidity, Request::createFromGlobals(), $response);
 });
@@ -166,7 +184,12 @@ Json response (default):
 
 ```json
 {
-    "value": 78
+    "value": 78,
+    "_links": {
+        "self": {
+            "href": "\/sensors\/humidity\/1"
+        }
+    }
 }
 ```
 
@@ -175,6 +198,7 @@ Xml response (Accept: application/xml):
 ```xml
 <humidity>
     <value>78</value>
+    <link rel="self" href="/sensors/humidity/1"/>
 </humidity>
 ```
 
