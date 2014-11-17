@@ -1,31 +1,35 @@
 <?php namespace Phrest;
 
-use Stack\Builder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Negotiation\FormatNegotiator;
-use Hateoas\HateoasBuilder;
-use Phrest\Service;
-use Phrest\Entity\DebugError;
-use Phrest\Entity\Error;
+use Phrest\Negotiate;
+use Hateoas\Hateoas;
+use JMS\Serializer\Serializer;
+use Phrest\Router\Strategy;
+use Phrest\Entity;
 
 class Application extends \Proton\Application
 {
-    use Service\Hateoas,
-        Service\Serializer;
+    use Negotiate\Serializer;
 
     /**
      * @var callable
      */
     protected $exceptionHandler;
 
-    public function __construct()
+    /**
+     * @param Serializer $serializer
+     * @param Hateoas $hateoas
+     * @param Strategy $strategy
+     */
+    public function __construct(Serializer $serializer = null, Hateoas $hateoas = null, Strategy $strategy = null)
     {
         parent::__construct();
 
         $this->setErrorHandlers();
-        $this->registerServices();
+        $this->registerServices($serializer, $hateoas);
+        $this->setStrategy($strategy);
     }
 
     /**
@@ -58,63 +62,46 @@ class Application extends \Proton\Application
     /**
      * @return void
      */
-    protected function registerServices()
+    protected function registerServices(Serializer $serializer = null, Hateoas $hateoas = null)
     {
         AnnotationRegistry::registerLoader('class_exists');
 
-        $this->container->add('Hateoas', HateoasBuilder::create()->build());
-
-        $this->container->add('Serializer', function($value, Request $request, Response $response) {
-            return $this->getHateoasdSerializedResponse($value, $request, $response);
-        });
-    }
-
-    /**
-     * @param mixed $value
-     * @param Request $request
-     * @param Response $response
-     *
-     * @return Response
-     */
-    public function getHateoasdSerializedResponse($value, Request $request, Response $response)
-    {
-        $response->setContent(
-            $this['Hateoas']->serialize(
-                $value,
-                $request->attributes->get('_format', 'json')
-            )
-        );
-
-        $response->headers->set(
-            'Content-Type',
-            $request->attributes->get('_mime_type', 'application/hal+json')
-        );
-
-        return $response;
-    }
-
-    /**
-     * Run the application
-     *
-     * @param  Request $request
-     *
-     * @return void
-     */
-    public function run(Request $request = null)
-    {
-        $stack = (new Builder())
-            ->push('Negotiation\Stack\Negotiation');
-
-        $app = $stack->resolve($this);
-
-        if (null === $request) {
-            $request = Request::createFromGlobals();
+        if (is_null($serializer)) {
+            $serializer = \JMS\Serializer\SerializerBuilder::create()->setDebug($this['debug'])->build();
         }
+        $this->container->add('Serializer', $serializer);
 
-        $response = $app->handle($request);
-        $response->send();
+        if (is_null($hateoas)) {
+            $hateoas = \Hateoas\HateoasBuilder::create()->setDebug($this['debug'])->build();
+        }
+        $this->container->add('Hateoas', $hateoas);
+    }
 
-        $app->terminate($request, $response);
+    /**
+     * @param Strategy $strategy
+     */
+    protected function setStrategy(Strategy $strategy = null)
+    {
+        if (is_null($strategy)) {
+            $strategy = new Strategy($this->container);
+        }
+        $this->router->setStrategy($strategy);
+    }
+
+    /**
+     * @return Hateoas
+     */
+    public function serviceHateoas()
+    {
+        return $this->container->get('Hateoas');
+    }
+
+    /**
+     * @return Serializer
+     */
+    public function serviceSerializer()
+    {
+        return $this->container->get('Serializer');
     }
 
     /**
@@ -164,28 +151,24 @@ class Application extends \Proton\Application
      */
     protected function getExceptionResponse(\Exception $exception)
     {
-        $request = Request::createFromGlobals();
         $response = new Response();
-        $negotiator = new FormatNegotiator();
 
-        $request->attributes->set(
-            '_format',
-            $negotiator->getBestFormat($request->headers->get('accept')) === 'xml' ? 'xml' : 'json'
-        );
-        $request->attributes->set(
-            '_mime_type',
-            'application/json'
-        );
-
-        if ($request->attributes->get('_format') === 'xml') {
-            $request->attributes->set('_mime_type', 'application/xml');
+        try {
+            $response = $this->serialize(
+                $this['debug'] === false ? new Entity\Error($exception) : new Entity\DebugError($exception),
+                Request::createFromGlobals(),
+                $response
+            );
+        } catch (\Exception $e) {
+            $response->setContent(
+                $this->serviceSerializer()->serialize(
+                    $this['debug'] === false ? new Entity\Error($exception) : new Entity\DebugError($exception),
+                    'json'
+                )
+            );
+            $response->headers->set('Content-Type', Negotiate\Mime::JSON);
         }
 
-        $response = $this->serviceSerializer(
-            $this['debug'] === false ? new Error($exception) : new DebugError($exception),
-            $request,
-            $response
-        );
         $response->setStatusCode(method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);
 
         return $response;

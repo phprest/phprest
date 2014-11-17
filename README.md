@@ -11,8 +11,8 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 
 # Components
 
-* [Orno\Route](https://github.com/orno/route)
 * [Orno\Di](https://github.com/orno/di)
+* [Orno\Route](https://github.com/orno/route)
 * [League\Event](https://github.com/thephpleague/event)
 * [Willdurand/Negotiation](https://github.com/willdurand/Negotiation)
 * [Willdurand/Hateoas](https://github.com/willdurand/Hateoas)
@@ -42,27 +42,47 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Phrest\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Phrest\HttpFoundation\Response;
 
 $app = new Application();
 $app['debug'] = true; # it is false by default
 
-$app->get('/', function (Request $request, Response $response) {
-    return $response->setContent('Hello World!');
+$app->get('/', function (Request $request) {
+    return new Response('Hello World!', 200);
 });
 
 $app->run();
 ```
 
+## Content Negotiation
+
+Phrest supports 4 content types:
+
+* application/json
+* application/xml
+* application/hal+json
+* application/hal+xml
+
 ## Routing
 
-### Simple routing with arguments
+### Simple routing
 
 ```php
 <?php
 # ...
-$app->get('/hello/{name:word}', function (Request $request, Response $response, array $args) {
-    return $response->setContent('Hello ' . $args['name']);
+$app->get('/hello', function (Request $request) { # You can leave the $request variable
+    return new Response('Hello World!'); # Default status code is 200
+});
+# ...
+```
+
+### Routing with arguments
+
+```php
+<?php
+# ...
+$app->get('/hello/{name:word}', function (Request $request, array $args) {
+    return new Response('Hello ' . $args['name']);
 });
 # ...
 ```
@@ -83,13 +103,13 @@ $app->get('/', '\Foo\Bar\HomeController::index'); # calls index method on HomeCo
 # HomeController.php
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Phrest\HttpFoundation\Response;
 
 class HomeController
 {
-    public function index(Request $request, Response $response, array $args)
+    public function index(Request $request)
     {
-        return $response->setContent('Hello World!');
+        return new Response('Hello World!');
     }
 }
 ```
@@ -109,18 +129,18 @@ $app->get('/', 'HomeController::index');
 
 For more information please visit [Orno/Route](https://github.com/orno/route).
 
-## Hateoas, Serialization
+## Serialization, Hateoas (Content Negotiation)
 
 Let's see a Humidity entity:
 
 ```php
-<?php namespace Rest\Entity;
+<?php namespace Foo\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
- * @Serializer\XmlRoot("humidity")
+ * @Serializer\XmlRoot("result")
  *
  * @Hateoas\Relation("self", href = "expr('/sensors/humidity/' ~ object.getId())")
  */
@@ -171,19 +191,37 @@ The router:
 ```php
 <?php
 # ...
-$app->get('/', function () use ($app) {
-    $response = new \Orno\Http\Response('', 200);
-    $humidity = new \Rest\Entity\Humidity(1, 78);
+$app->post('/', function () use ($app) {
+    $humidity = new \Foo\Entity\Humidity(1, 78);
     
-    return $app->serviceSerializer($humidity, Request::createFromGlobals(), $response);
+    return new Response($humidity, 201);
 });
 # ...
 ```
 
-Json response (default):
+Json response [default] (Accept: application/json):
 
 ```json
 {
+    "id": 1,
+    "value": 78
+}
+```
+
+Xml response (Accept: application/xml):
+
+```xml
+<result>
+  <id>1</id>
+  <value>78</value>
+</result>
+```
+
+Hal+Json response [default] (Accept: application/hal+json):
+
+```json
+{
+    "id": 1,
     "value": 78,
     "_links": {
         "self": {
@@ -193,13 +231,14 @@ Json response (default):
 }
 ```
 
-Xml response (Accept: application/xml):
+Hal+Xml response (Accept: application/hal+xml):
 
 ```xml
-<humidity>
-    <value>78</value>
-    <link rel="self" href="/sensors/humidity/1"/>
-</humidity>
+<result>
+  <id>1</id>
+  <value>78</value>
+  <link rel="self" href="/sensors/humidity/1"/>
+</result>
 ```
 
 ## Default exception handler
@@ -209,7 +248,7 @@ Xml response (Accept: application/xml):
 ```php
 <?php
 # ...
-$app->get('/', function (Request $request, Response $response) {
+$app->get('/', function (Request $request) {
     throw new \Phrest\Exception\Exception('Code Red!', 9, 503);
 });
 # ...
@@ -247,6 +286,6 @@ error_reporting(-1);
 
 ## Dependency Injection Container
 
-See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [Orno/Route](https://github.com/orno/route).
+See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [Orno/Di](https://github.com/orno/di).
 
 ## Api documentation
