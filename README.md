@@ -287,5 +287,3 @@ error_reporting(-1);
 ## Dependency Injection Container
 
 See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [Orno/Di](https://github.com/orno/di).
-
-## Api documentation
