@@ -199,7 +199,7 @@ $app->post('/', function () use ($app) {
 # ...
 ```
 
-Json response [default] (Accept: application/json):
+Json response, default (Accept: application/json):
 
 ```json
 {
@@ -217,7 +217,7 @@ Xml response (Accept: application/xml):
 </result>
 ```
 
-Hal+Json response [default] (Accept: application/hal+json):
+Hal+Json response (Accept: application/hal+json):
 
 ```json
 {
@@ -264,12 +264,12 @@ The response is content negotiationed (xml/json), the status code is 503.
 ```
 
 ```xml
-<error>
+<result>
     <code>9</code>
     <message>
         <![CDATA[Code Red!]]>
     </message>
-</error>
+</result>
 ```
 
 ### Fatal error handler
