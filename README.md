@@ -81,8 +81,8 @@ $app->get('/hello', function (Request $request) { # You can leave the $request v
 ```php
 <?php
 # ...
-$app->get('/hello/{name:word}', function (Request $request, array $args) {
-    return new Response('Hello ' . $args['name']);
+$app->get('/hello/{name:word}', function (Request $request, $name) {
+    return new Response('Hello ' . $name);
 });
 # ...
 ```

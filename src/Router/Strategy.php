@@ -1,6 +1,7 @@
 <?php namespace Phrest\Router;
 
 use Orno\Route\CustomStrategyInterface;
+use Phrest\HttpFoundation\Response;
 use Orno\Di\Container;
 use Phrest\Negotiate;
 
@@ -56,13 +57,17 @@ class Strategy implements CustomStrategyInterface
 
         $request = $this->container->get('Orno\Http\Request');
 
-        $response = $this->invokeController($controller, [$request, $vars]);
+        $response = $this->invokeController($controller, array_merge([$request], $vars));
 
-        return $this->serialize(
-            $response->getContent(),
-            $request,
-            $response
-        );
+        if ($response instanceof Response && $response->getContent() !== '') {
+            return $this->serialize(
+                $response->getContent(),
+                $request,
+                $response
+            );
+        }
+
+        return $response;
     }
 
     /**

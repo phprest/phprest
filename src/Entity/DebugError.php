@@ -18,8 +18,8 @@ class DebugError extends Error
     private $line;
 
     /**
-     * @var array
-     * @Serializer\Type("array")
+     * @var string
+     * @Serializer\Type("string")
      */
     private $trace;
 
@@ -32,7 +32,7 @@ class DebugError extends Error
 
         $this->fileName = $exception->getFile();
         $this->line = $exception->getLine();
-        $this->trace = $exception->getTrace();
+        $this->trace = $exception->getTraceAsString();
     }
 
     /**
