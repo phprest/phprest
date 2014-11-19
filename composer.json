@@ -25,6 +25,8 @@
     },
     "suggest": {
         "rhumsaa/uuid": "For generating UUIDs.",
-        "zircote/swagger-php": "For creating your Api documentation."
+        "zircote/swagger-php": "For creating your Api documentation.",
+        "netresearch/jsonmapper": "For mapping Json to Class.",
+        "symfony/validator": "For validating Entities."
     }
 }
