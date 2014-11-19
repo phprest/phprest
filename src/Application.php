@@ -21,15 +21,17 @@ class Application extends \Proton\Application
     /**
      * @param Serializer $serializer
      * @param Hateoas $hateoas
-     * @param Strategy $strategy
+     * @param Strategy $routerStrategy
      */
-    public function __construct(Serializer $serializer = null, Hateoas $hateoas = null, Strategy $strategy = null)
+    public function __construct(Serializer $serializer = null,
+                                Hateoas $hateoas = null,
+                                Strategy $routerStrategy = null)
     {
         parent::__construct();
 
         $this->setErrorHandlers();
         $this->registerServices($serializer, $hateoas);
-        $this->setStrategy($strategy);
+        $this->setRouterStrategy($routerStrategy);
     }
 
     /**
@@ -78,14 +80,14 @@ class Application extends \Proton\Application
     }
 
     /**
-     * @param Strategy $strategy
+     * @param Strategy $routerStrategy
      */
-    protected function setStrategy(Strategy $strategy = null)
+    protected function setRouterStrategy(Strategy $routerStrategy = null)
     {
-        if (is_null($strategy)) {
-            $strategy = new Strategy($this->container);
+        if (is_null($routerStrategy)) {
+            $routerStrategy = new Strategy($this->container);
         }
-        $this->router->setStrategy($strategy);
+        $this->router->setStrategy($routerStrategy);
     }
 
     /**
