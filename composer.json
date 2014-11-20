@@ -1,5 +1,5 @@
 {
-    "name": "adammbalogh/phrest",
+    "name": "phprest/phrest",
     "description": "Php Rest Micro Framework. Simple, Easy, Extensible.",
     "keywords": ["micro", "framework", "rest", "restful", "api"],
     "license": "MIT",
