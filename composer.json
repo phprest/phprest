@@ -1,7 +1,7 @@
 {
     "name": "adammbalogh/phrest",
     "description": "Php Rest Micro Framework. Simple, Easy, Extensible.",
-    "keywords": ["micro", "framework", "rest", "api"],
+    "keywords": ["micro", "framework", "rest", "restful", "api"],
     "license": "MIT",
     "type": "library",
     "authors": [

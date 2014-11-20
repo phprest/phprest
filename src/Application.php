@@ -3,14 +3,16 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Phrest\Negotiate;
-use Hateoas\Hateoas;
-use JMS\Serializer\Serializer;
+use Phrest\Service\BuiltIn\Serializer\Config as SerializerConfig;
+use Phrest\Service\BuiltIn\Hateoas\Config as HateoasConfig;
+use Phrest\Service;
 use Phrest\Router\Strategy;
 use Phrest\Entity;
+use Phrest\Negotiate;
 
 class Application extends \Proton\Application
 {
+    use Service\Getters;
     use Negotiate\Serializer;
 
     /**
@@ -19,18 +21,23 @@ class Application extends \Proton\Application
     protected $exceptionHandler;
 
     /**
-     * @param Serializer $serializer
-     * @param Hateoas $hateoas
+     * @var array
+     */
+    protected $registeredServiceNames = [];
+
+    /**
+     * @param SerializerConfig $serializerConfig
+     * @param HateoasConfig $hateoasConfig
      * @param Strategy $routerStrategy
      */
-    public function __construct(Serializer $serializer = null,
-                                Hateoas $hateoas = null,
+    public function __construct(SerializerConfig $serializerConfig = null,
+                                HateoasConfig $hateoasConfig = null,
                                 Strategy $routerStrategy = null)
     {
         parent::__construct();
 
         $this->setErrorHandlers();
-        $this->registerServices($serializer, $hateoas);
+        $this->registerBuiltInServices($serializerConfig, $hateoasConfig);
         $this->setRouterStrategy($routerStrategy);
     }
 
@@ -62,25 +69,31 @@ class Application extends \Proton\Application
     }
 
     /**
+     * @param SerializerConfig $serializerConfig
+     * @param HateoasConfig $hateoasConfig
+     *
      * @return void
      */
-    protected function registerServices(Serializer $serializer = null, Hateoas $hateoas = null)
+    protected function registerBuiltInServices(SerializerConfig $serializerConfig = null,
+                                               HateoasConfig $hateoasConfig = null)
     {
         AnnotationRegistry::registerLoader('class_exists');
 
-        if (is_null($serializer)) {
-            $serializer = \JMS\Serializer\SerializerBuilder::create()->setDebug($this['debug'])->build();
+        if (is_null($serializerConfig)) {
+            $serializerConfig = new SerializerConfig($this['debug']);
         }
-        $this->container->add('Serializer', $serializer);
+        $this->registerService(new Service\BuiltIn\Serializer\Service(), $serializerConfig);
 
-        if (is_null($hateoas)) {
-            $hateoas = \Hateoas\HateoasBuilder::create()->setDebug($this['debug'])->build();
+        if (is_null($hateoasConfig)) {
+            $hateoasConfig = new HateoasConfig($this['debug']);
         }
-        $this->container->add('Hateoas', $hateoas);
+        $this->registerService(new Service\BuiltIn\Hateoas\Service(), $hateoasConfig);
     }
 
     /**
      * @param Strategy $routerStrategy
+     *
+     * @return void
      */
     protected function setRouterStrategy(Strategy $routerStrategy = null)
     {
@@ -91,19 +104,22 @@ class Application extends \Proton\Application
     }
 
     /**
-     * @return Hateoas
+     * @param Service\Contract\Serviceable $service
+     * @param Service\Contract\Configurable $config
+     *
+     * @return void
+     *
+     * @throws \Exception
      */
-    public function serviceHateoas()
+    public function registerService(Service\Contract\Serviceable $service, Service\Contract\Configurable $config)
     {
-        return $this->container->get('Hateoas');
-    }
+        if (in_array($config->getServiceName(), $this->registeredServiceNames)) {
+            throw new \Exception('Service <' . $config->getServiceName() . '> has been already registered!');
+        }
 
-    /**
-     * @return Serializer
-     */
-    public function serviceSerializer()
-    {
-        return $this->container->get('Serializer');
+        $service->register($this->container, $config);
+
+        $this->registeredServiceNames[] = $config->getServiceName();
     }
 
     /**
