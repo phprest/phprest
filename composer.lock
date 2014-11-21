@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fb80f35f2cf27376fd3d28a8c1cc743f",
+    "hash": "b131f5a5a3302c222cbc620abba942ca",
     "packages": [
         {
             "name": "alexbilbie/proton",
