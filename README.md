@@ -42,13 +42,13 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Phrest\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Phrest\HttpFoundation\Response;
+use Phrest\Response;
 
 $app = new Application();
 $app['debug'] = true; # it is false by default
 
 $app->get('/', function (Request $request) {
-    return new Response('Hello World!', 200);
+    return new Response\Ok('Hello World!');
 });
 
 $app->run();
@@ -56,7 +56,7 @@ $app->run();
 
 ## Content Negotiation
 
-Phrest supports 4 content types:
+Phrest can Accept:
 
 * application/json
 * application/xml
@@ -71,7 +71,7 @@ Phrest supports 4 content types:
 <?php
 # ...
 $app->get('/hello', function (Request $request) { # You can leave the $request variable
-    return new Response('Hello World!'); # Default status code is 200
+    return new Response\Ok('Hello World!');
 });
 # ...
 ```
@@ -82,7 +82,7 @@ $app->get('/hello', function (Request $request) { # You can leave the $request v
 <?php
 # ...
 $app->get('/hello/{name:word}', function (Request $request, $name) {
-    return new Response('Hello ' . $name);
+    return new Response\Ok('Hello ' . $name);
 });
 # ...
 ```
@@ -131,7 +131,7 @@ For more information please visit [Orno/Route](https://github.com/orno/route).
 
 ## Serialization, Hateoas (Content Negotiation)
 
-Let's see a Humidity entity:
+Let's see a Temperature entity:
 
 ```php
 <?php namespace Foo\Entity;
@@ -142,46 +142,39 @@ use Hateoas\Configuration\Annotation as Hateoas;
 /**
  * @Serializer\XmlRoot("result")
  *
- * @Hateoas\Relation("self", href = "expr('/sensors/humidity/' ~ object.getId())")
+ * @Hateoas\Relation("self", href = "expr('/temperatures/' ~ object.id)")
  */
-class Humidity
+class Temperature
 {
     /**
      * @var integer
      * @Serializer\Type("integer")
      */
-    private $id;
+    public $id;
 
     /**
      * @var integer
      * @Serializer\Type("integer")
      */
-    private $value;
+    public $value;
+
+    /**
+     * @var \DateTime
+     * @Serializer\Exclude
+     * @Serializer\Type("DateTime<'Y-m-d\TH:i:sO'>")
+     */
+    public $created;
 
     /**
      * @param integer $id
      * @param integer $value
+     * @param \DateTime $created
      */
-    public function __construct($id, $value)
+    public function __construct($id = null, $value = null, \DateTime $created = null)
     {
         $this->id = $id;
         $this->value = $value;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getValue()
-    {
-        return $this->value;
+        $this->created = $created;
     }
 }
 ```
@@ -191,10 +184,10 @@ The router:
 ```php
 <?php
 # ...
-$app->post('/', function () use ($app) {
-    $humidity = new \Foo\Entity\Humidity(1, 78);
+$app->post('/temperatures', function () use ($app) {
+    $temperature = new \Foo\Entity\Temperature(1, 32, new \DateTime());
     
-    return new Response($humidity, 201);
+    return new Response\Created('/temperatures/1', $temperature);
 });
 # ...
 ```
@@ -204,7 +197,7 @@ Json response, default (Accept: application/json):
 ```json
 {
     "id": 1,
-    "value": 78
+    "value": 32
 }
 ```
 
@@ -213,7 +206,7 @@ Xml response (Accept: application/xml):
 ```xml
 <result>
   <id>1</id>
-  <value>78</value>
+  <value>32</value>
 </result>
 ```
 
@@ -222,10 +215,10 @@ Hal+Json response (Accept: application/hal+json):
 ```json
 {
     "id": 1,
-    "value": 78,
+    "value": 32,
     "_links": {
         "self": {
-            "href": "\/sensors\/humidity\/1"
+            "href": "\/temperatures\/1"
         }
     }
 }
@@ -236,8 +229,8 @@ Hal+Xml response (Accept: application/hal+xml):
 ```xml
 <result>
   <id>1</id>
-  <value>78</value>
-  <link rel="self" href="/sensors/humidity/1"/>
+  <value>32</value>
+  <link rel="self" href="/temperatures/1"/>
 </result>
 ```
 

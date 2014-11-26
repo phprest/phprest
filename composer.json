@@ -26,6 +26,7 @@
     "suggest": {
         "phprest/phrest-service-jsonmapper": "For mapping Json Object to Class.",
         "phprest/phrest-service-validator": "For validating Entities.",
+        "phprest/phrest-service-rdbms": "For managins Relational Databases.",
         "zircote/swagger-php": "For creating your Api documentation."
     }
 }
