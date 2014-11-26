@@ -10,21 +10,21 @@ class Config implements Configurable
     public $debug = false;
 
     /**
-     * @var string|null
+     * @var string
      */
-    public $cacheDir = null;
+    public $cacheDir = '/tmp/serializer';
 
     /**
-     * @var string|null
+     * @var string
      */
-    public $metadataDir = null;
+    public $metadataDir = '/tmp/serializer';
 
     /**
      * @param boolean $debug
-     * @param string|null $cacheDir
-     * @param string|null $metadataDir
+     * @param string $cacheDir
+     * @param string $metadataDir
      */
-    public function __construct($debug, $cacheDir = null, $metadataDir = null)
+    public function __construct($debug = false, $cacheDir = '/tmp/serializer', $metadataDir = '/tmp/serializer')
     {
         $this->debug = $debug;
         $this->cacheDir = $cacheDir;
@@ -36,6 +36,6 @@ class Config implements Configurable
      */
     static public function getServiceName()
     {
-        return 'Serializer';
+        return 'serializer';
     }
 }

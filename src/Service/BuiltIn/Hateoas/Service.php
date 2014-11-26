@@ -20,14 +20,8 @@ class Service implements Serviceable
         /** @var Config $config */
 
         $hateoas->setDebug($config->debug);
-
-        if ( ! is_null($config->cacheDir)) {
-            $hateoas->setCacheDir($config->cacheDir);
-        }
-
-        if ( ! is_null($config->metadataDir)) {
-            $hateoas->addMetadataDir($config->metadataDir);
-        }
+        $hateoas->setCacheDir($config->cacheDir);
+        $hateoas->addMetadataDir($config->metadataDir);
 
         $container->add($config->getServiceName(), $hateoas->build());
     }

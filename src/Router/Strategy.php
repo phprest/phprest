@@ -4,6 +4,7 @@ use Orno\Route\CustomStrategyInterface;
 use Phrest\HttpFoundation\Response;
 use Orno\Di\Container;
 use Phrest\Negotiate;
+use Phrest\Service;
 
 class Strategy implements CustomStrategyInterface
 {
@@ -94,7 +95,7 @@ class Strategy implements CustomStrategyInterface
      */
     public function serviceHateoas()
     {
-        return $this->container->get('Hateoas');
+        return $this->container->get(Service\BuiltIn\Hateoas\Config::getServiceName());
     }
 
     /**
@@ -102,6 +103,6 @@ class Strategy implements CustomStrategyInterface
      */
     public function serviceSerializer()
     {
-        return $this->container->get('Serializer');
+        return $this->container->get(Service\BuiltIn\Serializer\Config::getServiceName());
     }
 }

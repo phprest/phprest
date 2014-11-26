@@ -20,14 +20,8 @@ class Service implements Serviceable
         /** @var Config $config */
 
         $serializer->setDebug($config->debug);
-
-        if ( ! is_null($config->cacheDir)) {
-            $serializer->setCacheDir($config->cacheDir);
-        }
-
-        if ( ! is_null($config->metadataDir)) {
-            $serializer->addMetadataDir($config->metadataDir);
-        }
+        $serializer->setCacheDir($config->cacheDir);
+        $serializer->addMetadataDir($config->metadataDir);
 
         $container->add($config->getServiceName(), $serializer->build());
     }

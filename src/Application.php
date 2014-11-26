@@ -12,7 +12,7 @@ use Phrest\Negotiate;
 
 class Application extends \Proton\Application
 {
-    use Service\Getters;
+    use Service\BuiltIn\Serializer\Getter, Service\BuiltIn\Hateoas\Getter;
     use Negotiate\Serializer;
 
     /**
