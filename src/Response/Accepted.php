@@ -2,7 +2,7 @@
 
 use Phrest\HttpFoundation\Response;
 
-class Unauthorized extends Response
+class Accepted extends Response
 {
     /**
      * @param mixed $content The response content, see setContent()
@@ -14,6 +14,6 @@ class Unauthorized extends Response
      */
     public function __construct($content = '', $headers = array())
     {
-        parent::__construct($content, Response::HTTP_UNAUTHORIZED, $headers);
+        parent::__construct($content, Response::HTTP_ACCEPTED, $headers);
     }
 }

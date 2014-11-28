@@ -2,6 +2,7 @@
 
 use JMS\Serializer\Annotation as Serializer;
 use Hateoas\Configuration\Annotation as Hateoas;
+use Phrest\Exception\Exception;
 
 /**
  * @Serializer\XmlRoot("result")
@@ -21,12 +22,24 @@ class Error
     private $message;
 
     /**
+     * For detailed error message
+     *
+     * @var array
+     * @Serializer\Type("array")
+     */
+    private $errors = [];
+
+    /**
      * @param \Exception $exception
      */
     public function __construct(\Exception $exception)
     {
         $this->code = $exception->getCode();
         $this->message = $exception->getMessage();
+
+        if ($exception instanceof Exception) {
+            $this->errors = $exception->getErrors();
+        }
     }
 
     /**
@@ -43,5 +56,13 @@ class Error
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }
