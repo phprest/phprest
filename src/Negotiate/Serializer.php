@@ -58,13 +58,6 @@ trait Serializer
         $negotiator->registerFormat('json', [Mime::HAL_JSON, Mime::JSON], true);
         $negotiator->registerFormat('xml', [Mime::HAL_XML, Mime::XML], true);
 
-        if ( ! in_array(
-            $negotiator->getBest($clonedRequest->headers->get('accept'))->getValue(),
-            [Mime::HAL_JSON, Mime::HAL_XML, Mime::JSON, Mime::XML, '*/*'])
-        ) {
-            throw new Exception('Not supported format', 0, 412);
-        }
-
         $clonedRequest->attributes->set(
             '_format',
             $negotiator->getBestFormat(
