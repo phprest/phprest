@@ -54,15 +54,6 @@ $app->get('/', function (Request $request) {
 $app->run();
 ```
 
-## Content Negotiation
-
-Phrest can Accept:
-
-* application/json
-* application/xml
-* application/hal+json
-* application/hal+xml
-
 ## Routing
 
 ### Simple routing
@@ -129,7 +120,19 @@ $app->get('/', 'HomeController::index');
 
 For more information please visit [Orno/Route](https://github.com/orno/route).
 
-## Serialization, Hateoas (Content Negotiation)
+## Serialization, Hateoas
+
+### Content Negotiation
+
+Phrest will serialize your response by default if:
+
+* it gets one of these as the best media type in the Accept header:
+ * application/json
+ * application/xml
+ * application/hal+json
+ * application/hal+xml
+
+### Example
 
 Let's see a Temperature entity:
 
@@ -161,7 +164,7 @@ class Temperature
     /**
      * @var \DateTime
      * @Serializer\Exclude
-     * @Serializer\Type("DateTime<'Y-m-d\TH:i:sO'>")
+     * @Serializer\Type("DateTime")
      */
     public $created;
 
