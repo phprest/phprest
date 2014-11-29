@@ -131,6 +131,8 @@ Phrest will serialize your response by default if:
  * application/xml
  * application/hal+json
  * application/hal+xml
+ * \*/\* (it will be application/hal+json)
+ * does not exist (it will be application/hal+json)
 
 ### Example
 
@@ -195,7 +197,7 @@ $app->post('/temperatures', function () use ($app) {
 # ...
 ```
 
-Json response, default (Accept: application/json):
+Json response (Accept: application/json):
 
 ```json
 {
