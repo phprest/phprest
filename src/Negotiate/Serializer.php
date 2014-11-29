@@ -60,17 +60,11 @@ trait Serializer
 
         $clonedRequest->attributes->set(
             '_format',
-            $negotiator->getBestFormat(
-                $clonedRequest->headers->get('accept'),
-                ['json', 'xml']
-            )
+            $negotiator->getBestFormat($clonedRequest->headers->get('accept'))
         );
         $clonedRequest->attributes->set(
             '_mime_type',
-            $negotiator->getBest(
-                $clonedRequest->headers->get('accept'),
-                [Mime::JSON, Mime::XML, Mime::HAL_JSON, Mime::HAL_XML]
-            )->getValue()
+            $negotiator->getBest($clonedRequest->headers->get('accept'))->getValue()
         );
 
         return $clonedRequest;
