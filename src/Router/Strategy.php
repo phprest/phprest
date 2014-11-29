@@ -4,7 +4,6 @@ use Orno\Route\CustomStrategyInterface;
 use Phrest\HttpFoundation\Response;
 use Orno\Di\Container;
 use Phrest\Negotiate;
-use Phrest\Negotiate\Mime;
 use Phrest\Service;
 
 class Strategy implements CustomStrategyInterface
@@ -61,14 +60,15 @@ class Strategy implements CustomStrategyInterface
 
         $response = $this->invokeController($controller, array_merge([$request], $vars));
 
-        if ($response instanceof Response &&
-            in_array($response->headers->get('Content-Type'), [Mime::JSON, Mime::XML, Mime::HAL_JSON, Mime::HAL_XML])
-        ) {
-            return $this->serialize(
-                $response->getContent(),
-                $request,
-                $response
-            );
+        if ($response instanceof Response) {
+            try {
+                return $this->serialize(
+                    $response->getContent(),
+                    $request,
+                    $response
+                );
+            } catch (Negotiate\CannotSerializeException $e) {
+            }
         }
 
         return $response;

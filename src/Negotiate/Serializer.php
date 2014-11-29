@@ -13,10 +13,17 @@ trait Serializer
      * @param Response $response
      *
      * @return Response
+     *
+     * @throws CannotSerializeException
      */
     public function serialize($value, Request $request, Response $response)
     {
         $request = $this->getNegotiatedRequest($request);
+
+        if ($request->attributes->get('_mime_type') === Mime::ANY) {
+            $request->attributes->set('_mime_type', Mime::HAL_JSON);
+            $request->attributes->set('_format', 'json');
+        }
 
         if (in_array($request->attributes->get('_mime_type'), [Mime::JSON, Mime::XML])) {
             $response->setContent(
@@ -25,21 +32,25 @@ trait Serializer
                     $request->attributes->get('_format')
                 )
             );
-        } else {
+
+            $response->headers->set('Content-Type', $request->attributes->get('_mime_type'));
+
+            return $response;
+
+        } elseif (in_array($request->attributes->get('_mime_type'), [Mime::HAL_JSON, Mime::HAL_XML])) {
             $response->setContent(
                 $this->serviceHateoas()->serialize(
                     $value,
                     $request->attributes->get('_format')
                 )
             );
+
+            $response->headers->set('Content-Type', $request->attributes->get('_mime_type'));
+
+            return $response;
         }
 
-        $response->headers->set(
-            'Content-Type',
-            $request->attributes->get('_mime_type')
-        );
-
-        return $response;
+        throw new CannotSerializeException();
     }
 
     /**
