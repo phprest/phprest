@@ -22,12 +22,10 @@ class Error
     private $message;
 
     /**
-     * For detailed error message
-     *
      * @var array
      * @Serializer\Type("array")
      */
-    private $errors = [];
+    private $details = [];
 
     /**
      * @param \Exception $exception
@@ -38,7 +36,7 @@ class Error
         $this->message = $exception->getMessage();
 
         if ($exception instanceof Exception) {
-            $this->errors = $exception->getErrors();
+            $this->details = $exception->getDetails();
         }
     }
 
@@ -61,8 +59,8 @@ class Error
     /**
      * @return array
      */
-    public function getErrors()
+    public function getDetails()
     {
-        return $this->errors;
+        return $this->details;
     }
 }

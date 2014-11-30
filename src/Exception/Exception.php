@@ -10,25 +10,25 @@ class Exception extends \Exception
     /**
      * @var array
      */
-    private $errors;
+    private $details;
 
     /**
      * @param string $message
      * @param integer $code
      * @param integer $statusCode
-     * @param array $errors
+     * @param array $details
      * @param \Exception $previous
      */
     public function __construct($message = '',
                                 $code = 0,
                                 $statusCode = 500,
-                                array $errors = [],
+                                array $details = [],
                                 \Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
 
         $this->statusCode = $statusCode;
-        $this->errors = $errors;
+        $this->details = $details;
     }
 
     /**
@@ -42,8 +42,8 @@ class Exception extends \Exception
     /**
      * @return array
      */
-    public function getErrors()
+    public function getDetails()
     {
-        return $this->errors;
+        return $this->details;
     }
 }

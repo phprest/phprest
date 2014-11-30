@@ -6,15 +6,15 @@ class InternalServerError extends Exception
 {
     /**
      * @param integer $code
-     * @param array $errors
+     * @param array $details
      * @param string $message
      * @param \Exception $previous
      */
     public function __construct($code = 0,
-                                array $errors = [],
+                                array $details = [],
                                 $message = 'Internal Server Error',
                                 \Exception $previous = null)
     {
-        parent::__construct($message, $code, Response::HTTP_INTERNAL_SERVER_ERROR, $errors, $previous);
+        parent::__construct($message, $code, Response::HTTP_INTERNAL_SERVER_ERROR, $details, $previous);
     }
 }

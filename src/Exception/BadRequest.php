@@ -6,15 +6,15 @@ class BadRequest extends Exception
 {
     /**
      * @param integer $code
-     * @param array $errors
+     * @param array $details
      * @param string $message
      * @param \Exception $previous
      */
     public function __construct($code = 0,
-                                array $errors = [],
+                                array $details = [],
                                 $message = 'Bad Request',
                                 \Exception $previous = null)
     {
-        parent::__construct($message, $code, Response::HTTP_BAD_REQUEST, $errors, $previous);
+        parent::__construct($message, $code, Response::HTTP_BAD_REQUEST, $details, $previous);
     }
 }
