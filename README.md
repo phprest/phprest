@@ -334,7 +334,7 @@ $app->get('/', function (Request $request) {
 
 #### Types
 
-|Expcetions|
+|Exceptions|
 |----------|
 |BadRequest|
 |Conflict|
