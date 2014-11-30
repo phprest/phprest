@@ -133,6 +133,7 @@ Phrest will serialize your response by default if:
  * application/hal+xml
  * \*/\* (it will be application/hal+json)
  * does not exist (it will be application/hal+json)
+* [and] the content of the response is not an empty string
 
 ### Example
 
@@ -257,7 +258,8 @@ The response is content negotiationed (xml/json), the status code is 503.
 ```json
 {
     "code": 9,
-    "message": "Code Red!"
+    "message": "Code Red!",
+    "details": []
 }
 ```
 
@@ -281,6 +283,70 @@ For a clear error message you should do something like this:
 ini_set('display_errors', 'Off');
 error_reporting(-1);
 ```
+
+## Responses
+
+There are several responses you can use by default, one of them is the Ok response.
+
+### 1xx, 2xx, 3xx status codes
+
+These are simple Response objects.
+
+#### Example
+
+```php
+<?php
+# ...
+$app->get('/', function (Request $request) {
+    return new Response\Ok('Hello World!');
+});
+# ...
+```
+
+#### Types
+
+|Responses|
+|-------------|
+|Accepted|
+|Created|
+|NoContent|
+|NotModified|
+|Ok|
+
+### 4xx, 5xx
+
+These are Exceptions.
+
+#### Example
+
+```php
+<?php
+# ...
+$app->get('/', function (Request $request) {
+    # ...
+    
+    throw new \Phrest\Exception\BadRequest();
+    
+    # ...
+});
+# ...
+```
+
+#### Types
+
+|Expcetions|
+|----------|
+|BadRequest|
+|Conflict|
+|Forbidden|
+|Gone|
+|InternalServerError|
+|MethodNotAllowed|
+|NotFound|
+|TooManyRequests|
+|Unauthorized|
+|UnprocessableEntity|
+|UnsupportedMediaType|
 
 ## Dependency Injection Container
 
