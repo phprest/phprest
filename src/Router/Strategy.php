@@ -60,7 +60,7 @@ class Strategy implements CustomStrategyInterface
 
         $response = $this->invokeController($controller, array_merge([$request], $vars));
 
-        if ($response instanceof Response) {
+        if ($response instanceof Response and $response->getContent() !== '') {
             try {
                 return $this->serialize(
                     $response->getContent(),
