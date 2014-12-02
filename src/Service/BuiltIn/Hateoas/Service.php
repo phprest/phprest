@@ -23,6 +23,6 @@ class Service implements Serviceable
         $hateoas->setCacheDir($config->cacheDir);
         $hateoas->addMetadataDir($config->metadataDir);
 
-        $container->add($config->getServiceName(), $hateoas->build());
+        $container->singleton($config->getServiceName(), $hateoas->build());
     }
 }

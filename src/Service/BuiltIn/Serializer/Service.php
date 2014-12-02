@@ -23,6 +23,6 @@ class Service implements Serviceable
         $serializer->setCacheDir($config->cacheDir);
         $serializer->addMetadataDir($config->metadataDir);
 
-        $container->add($config->getServiceName(), $serializer->build());
+        $container->singleton($config->getServiceName(), $serializer->build());
     }
 }
