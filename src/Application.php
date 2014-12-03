@@ -51,7 +51,7 @@ class Application extends \Proton\Application
         });
 
         set_error_handler(function($errNo, $errStr, $errFile, $errLine) {
-            throw new \ErrorException($errStr, 0, $errNo, $errFile, $errLine);
+            throw new \ErrorException($errStr, PHP_INT_MAX - 1, $errNo, $errFile, $errLine);
         });
 
         $this->setDefaultExceptionHandler(function(\Exception $exception) {
@@ -62,7 +62,7 @@ class Application extends \Proton\Application
             if ($error = error_get_last()) {
                 call_user_func(
                     $this->exceptionHandler,
-                    new \ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])
+                    new \ErrorException($error['message'], PHP_INT_MAX, $error['type'], $error['file'], $error['line'])
                 );
             }
         });
