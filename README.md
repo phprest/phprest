@@ -43,9 +43,27 @@ require __DIR__ . '/../vendor/autoload.php';
 use Phrest\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Phrest\Response;
+use Phrest\Exception;
 
-$app = new Application();
+$app = new Application(
+    'vendor',
+    3, # api version
+    function ($apiVersion) { # api version handler
+        if ( ! in_array($apiVersion, [1, 2, 3])) {
+            throw new Exception\PreconditionFailed(
+                PHP_INT_MAX - 4,
+                ['Not supported Api Version']
+            );
+        }
+    }
+);
+
 $app['debug'] = true; # it is false by default
+
+if ( ! $app['debug']) {
+    # for fatal error handling (of course display_errors is Off on a prod machine...)
+    ini_set('display_errors', 'Off');
+}
 
 $app->get('/', function (Request $request) {
     return new Response\Ok('Hello World!');
@@ -120,20 +138,23 @@ $app->get('/', 'HomeController::index');
 
 For more information please visit [Orno/Route](https://github.com/orno/route).
 
+## Api Versioning
+
+### Supported formats
+
+* In the Accept/Content-Type Header
+ * application/vnd.vendor-v1+json
+ * application/vnd.vendor+json; version=1
+ * application/vnd.vendor-v1+xml
+ * application/vnd.vendor+xml; version=1
+
 ## Serialization, Hateoas
 
-### Content Negotiation
+Phrest will automatically serialize* your response based on the Accept header.
 
-Phrest will serialize your response by default if:
-
-* it gets one of these as the best media type in the Accept header:
- * application/json
- * application/xml
- * application/hal+json
- * application/hal+xml
- * \*/\* (it will be application/hal+json)
- * does not exist (it will be application/hal+json)
-* [and] the content of the response is not an empty string
+Except*:
+* If your response is not a Response instance (e.g. it a simple string)
+* If your response is empty
 
 ### Example
 
@@ -198,25 +219,7 @@ $app->post('/temperatures', function () use ($app) {
 # ...
 ```
 
-Json response (Accept: application/json):
-
-```json
-{
-    "id": 1,
-    "value": 32
-}
-```
-
-Xml response (Accept: application/xml):
-
-```xml
-<result>
-  <id>1</id>
-  <value>32</value>
-</result>
-```
-
-Hal+Json response (Accept: application/hal+json):
+Json response (Accept: application/vnd.vendor+json; version=1):
 
 ```json
 {
@@ -230,7 +233,7 @@ Hal+Json response (Accept: application/hal+json):
 }
 ```
 
-Hal+Xml response (Accept: application/hal+xml):
+Xml response (Accept: application/vnd.vendor+xml; version=1):
 
 ```xml
 <result>
@@ -281,7 +284,6 @@ For a clear error message you should do something like this:
 ```php
 <?php
 ini_set('display_errors', 'Off');
-error_reporting(-1);
 ```
 
 ## Responses
