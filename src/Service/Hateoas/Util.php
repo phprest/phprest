@@ -1,27 +1,54 @@
 <?php namespace Phrest\Service\Hateoas;
 
+use Phrest\Application;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\DeserializationContext;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Negotiation\FormatNegotiator;
+use Phrest\Service\Hateoas\DataStructure\MimeProcessResult;
+use Phrest\Exception;
 
 trait Util
 {
     /**
+     * @param mixed $value
      * @param Request $request
+     * @param Response $response
      *
-     * @return string json or xml
+     * @return Response
+     *
+     * @throws Exception\PreconditionFailed
      */
-    protected function getContentFormat(Request $request)
+    protected function serialize($value, Request $request, Response $response)
     {
-        $format = 'json';
-        $contentType = $request->headers->get('Content-Type', 'application/json');
-        $contentType = explode(';', $contentType)[0];
+        $mimeProcResult = $this->processMime(
+            (new FormatNegotiator())->getBest($request->headers->get('Accept'))->getValue()
+        );
 
-        if ($contentType === 'application/json') {
-            $format = 'json';
-        } elseif ($contentType === 'application/xml') {
-            $format = 'xml';
+        $this->apiVersionHandler($mimeProcResult);
+
+        if ($mimeProcResult->mime === '*/*') {
+            $mimeProcResult->mime = 'application/vnd.' . $mimeProcResult->vendor .
+                '+json; version=' . $mimeProcResult->apiVersion;
+            $mimeProcResult->format = 'json';
         }
 
-        return $format;
+        if (in_array($mimeProcResult->format, ['json', 'xml'])) {
+            $response->setContent(
+                $this->serviceHateoas()->serialize(
+                    $value,
+                    $mimeProcResult->format,
+                    SerializationContext::create()->setVersion($mimeProcResult->apiVersion)
+                )
+            );
+
+            $response->headers->set('Content-Type', $mimeProcResult->mime);
+
+            return $response;
+        }
+
+        throw new Exception\PreconditionFailed(PHP_INT_MAX - 2, [$mimeProcResult->mime . ' does not supported']);
     }
 
     /**
@@ -29,45 +56,71 @@ trait Util
      * @param Request $request
      *
      * @return mixed
+     *
+     * @throws Exception\UnsupportedMediaType
      */
     protected function deserialize($type, Request $request)
     {
+        $mimeProcResult = $this->processMime($request->headers->get('Content-Type'));
+
+        if (is_null($mimeProcResult->format)) {
+            throw new Exception\UnsupportedMediaType(PHP_INT_MAX - 3);
+        }
+
+        $this->apiVersionHandler($mimeProcResult);
+
         return $this->serviceHateoas()->getSerializer()->deserialize(
             $request->getContent(),
             $type,
-            $this->getContentFormat($request)
+            $mimeProcResult->format,
+            DeserializationContext::create()->setVersion($mimeProcResult->apiVersion)
         );
     }
 
     /**
-     * @param string $type
-     * @param Request $request
+     * @param string $mime
      *
-     * @return mixed
+     * @return MimeProcessResult
      */
-    protected function deserializeJson($type, Request $request)
+    protected function processMime($mime)
     {
-        return $this->serviceHateoas()->getSerializer()->deserialize(
-            $request->getContent(),
-            $type,
-            'json'
-        );
+        $vendor = $this->getContainer()->get(Application::CONFIG_VENDOR);
+        $apiVersion = $this->getContainer()->get(Application::CONFIG_API_VERSION);
+        $format = null;
+
+        if (preg_match('#application/vnd\.' . $vendor . '-v([0-9\.]+)\+(xml|json)#', $mime, $matches)) {
+            list($mime, $apiVersion, $format) = $matches;
+        } elseif (preg_match('#application/vnd\.' . $vendor . '\+(xml|json).*?version=([0-9\.]+)#', $mime, $matches)) {
+            list($mime, $format, $apiVersion) = $matches;
+        }
+
+        return new MimeProcessResult($mime, $vendor, $apiVersion, $format);
     }
 
     /**
-     * @param string $type
-     * @param Request $request
+     * @param MimeProcessResult $mimeProcResult
      *
-     * @return mixed
+     * @return void
      */
-    protected function deserializeXml($type, Request $request)
+    protected function apiVersionHandler(MimeProcessResult $mimeProcResult)
     {
-        return $this->serviceHateoas()->getSerializer()->deserialize(
-            $request->getContent(),
-            $type,
-            'xml'
-        );
+        if ( ! is_null($mimeProcResult->format) and
+            is_callable($this->getContainer()->get(Application::CONFIG_API_VERSION_HANDLER))) {
+
+            call_user_func(
+                $this->getContainer()->get(Application::CONFIG_API_VERSION_HANDLER),
+                $mimeProcResult->apiVersion
+            );
+
+        }
     }
+
+    /**
+     * Returns the DI container
+     *
+     * @return \Orno\Di\Container
+     */
+    abstract protected function getContainer();
 
     /**
      * @return \Hateoas\Hateoas

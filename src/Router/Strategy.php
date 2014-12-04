@@ -3,12 +3,11 @@
 use Orno\Route\CustomStrategyInterface;
 use Phrest\HttpFoundation\Response;
 use Orno\Di\Container;
-use Phrest\Negotiate;
 use Phrest\Service;
 
 class Strategy implements CustomStrategyInterface
 {
-    use Negotiate\Serializer;
+    use Service\Hateoas\Util;
 
     /**
      * @var Container
@@ -92,14 +91,6 @@ class Strategy implements CustomStrategyInterface
     }
 
     /**
-     * @return \Hateoas\Hateoas
-     */
-    protected function serviceHateoas()
-    {
-        return $this->container->get(Service\Hateoas\Config::getServiceName());
-    }
-
-    /**
      * Returns the DI container
      *
      * @return \Orno\Di\Container
@@ -107,5 +98,13 @@ class Strategy implements CustomStrategyInterface
     protected function getContainer()
     {
         return $this->container;
+    }
+
+    /**
+     * @return \Hateoas\Hateoas
+     */
+    protected function serviceHateoas()
+    {
+        return $this->container->get(Service\Hateoas\Config::getServiceName());
     }
 }

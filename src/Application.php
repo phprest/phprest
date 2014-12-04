@@ -7,16 +7,15 @@ use Phrest\Service\Hateoas\Config as HateoasConfig;
 use Phrest\Service;
 use Phrest\Router\Strategy;
 use Phrest\Entity;
-use Phrest\Negotiate;
 
 class Application extends \Proton\Application
 {
     const CONFIG_DEBUG = 'debug';
     const CONFIG_VENDOR = 'vendor';
     const CONFIG_API_VERSION = 'api-version';
+    const CONFIG_API_VERSION_HANDLER = 'api-version-handler';
 
-    use Service\Hateoas\Getter;
-    use Negotiate\Serializer;
+    use Service\Hateoas\Getter, Service\Hateoas\Util;
 
     /**
      * @var callable
@@ -31,11 +30,13 @@ class Application extends \Proton\Application
     /**
      * @param string $vendor
      * @param int|string $apiVersion
+     * @param callable $apiVersionHandler
      * @param HateoasConfig $hateoasConfig
      * @param Strategy $routerStrategy
      */
     public function __construct($vendor,
                                 $apiVersion,
+                                callable $apiVersionHandler = null,
                                 HateoasConfig $hateoasConfig = null,
                                 Strategy $routerStrategy = null)
     {
@@ -43,6 +44,9 @@ class Application extends \Proton\Application
 
         $this->container->add(self::CONFIG_VENDOR, $vendor);
         $this->container->add(self::CONFIG_API_VERSION, $apiVersion);
+        $this->container->add(self::CONFIG_API_VERSION_HANDLER, function() use ($apiVersionHandler) {
+            return $apiVersionHandler;
+        });
 
         $this->setErrorHandlers();
         $this->registerBuiltInServices($hateoasConfig);
