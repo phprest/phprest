@@ -13,19 +13,19 @@ class Error
      * @var integer
      * @Serializer\Type("integer")
      */
-    private $code;
+    protected $code;
 
     /**
      * @var string
      * @Serializer\Type("string")
      */
-    private $message;
+    protected $message;
 
     /**
      * @var array
      * @Serializer\Type("array")
      */
-    private $details = [];
+    protected $details = [];
 
     /**
      * @param \Exception $exception

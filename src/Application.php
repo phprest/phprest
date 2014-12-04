@@ -3,8 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Phrest\Service\BuiltIn\Serializer\Config as SerializerConfig;
-use Phrest\Service\BuiltIn\Hateoas\Config as HateoasConfig;
+use Phrest\Service\Hateoas\Config as HateoasConfig;
 use Phrest\Service;
 use Phrest\Router\Strategy;
 use Phrest\Entity;
@@ -12,7 +11,11 @@ use Phrest\Negotiate;
 
 class Application extends \Proton\Application
 {
-    use Service\BuiltIn\Serializer\Getter, Service\BuiltIn\Hateoas\Getter;
+    const CONFIG_DEBUG = 'debug';
+    const CONFIG_VENDOR = 'vendor';
+    const CONFIG_API_VERSION = 'api-version';
+
+    use Service\Hateoas\Getter;
     use Negotiate\Serializer;
 
     /**
@@ -26,19 +29,24 @@ class Application extends \Proton\Application
     protected $registeredServiceNames = [];
 
     /**
-     * @param SerializerConfig $serializerConfig
+     * @param string $vendor
+     * @param int|string $apiVersion
      * @param HateoasConfig $hateoasConfig
      * @param Strategy $routerStrategy
      */
-    public function __construct(SerializerConfig $serializerConfig = null,
+    public function __construct($vendor,
+                                $apiVersion,
                                 HateoasConfig $hateoasConfig = null,
                                 Strategy $routerStrategy = null)
     {
         parent::__construct();
 
+        $this->container->add(self::CONFIG_VENDOR, $vendor);
+        $this->container->add(self::CONFIG_API_VERSION, $apiVersion);
+
         $this->setErrorHandlers();
-        $this->registerBuiltInServices($serializerConfig, $hateoasConfig);
-        $this->setRouterStrategy($routerStrategy);
+        $this->registerBuiltInServices($hateoasConfig);
+        $this->setRouterStrategy(is_null($routerStrategy) ? new Strategy($this->container) : $routerStrategy);
     }
 
     /**
@@ -69,25 +77,18 @@ class Application extends \Proton\Application
     }
 
     /**
-     * @param SerializerConfig $serializerConfig
      * @param HateoasConfig $hateoasConfig
      *
      * @return void
      */
-    protected function registerBuiltInServices(SerializerConfig $serializerConfig = null,
-                                               HateoasConfig $hateoasConfig = null)
+    protected function registerBuiltInServices(HateoasConfig $hateoasConfig = null)
     {
         AnnotationRegistry::registerLoader('class_exists');
 
-        if (is_null($serializerConfig)) {
-            $serializerConfig = new SerializerConfig($this['debug']);
-        }
-        $this->registerService(new Service\BuiltIn\Serializer\Service(), $serializerConfig);
-
         if (is_null($hateoasConfig)) {
-            $hateoasConfig = new HateoasConfig($this['debug']);
+            $hateoasConfig = new HateoasConfig($this[self::CONFIG_DEBUG]);
         }
-        $this->registerService(new Service\BuiltIn\Hateoas\Service(), $hateoasConfig);
+        $this->registerService(new Service\Hateoas\Service(), $hateoasConfig);
     }
 
     /**
@@ -95,11 +96,8 @@ class Application extends \Proton\Application
      *
      * @return void
      */
-    protected function setRouterStrategy(Strategy $routerStrategy = null)
+    public function setRouterStrategy(Strategy $routerStrategy)
     {
-        if (is_null($routerStrategy)) {
-            $routerStrategy = new Strategy($this->container);
-        }
         $this->router->setStrategy($routerStrategy);
     }
 
@@ -173,18 +171,22 @@ class Application extends \Proton\Application
 
         try {
             $response = $this->serialize(
-                $this['debug'] === false ? new Entity\Error($exception) : new Entity\DebugError($exception),
+                $this[self::CONFIG_DEBUG] === false ? new Entity\Error($exception) : new Entity\DebugError($exception),
                 Request::createFromGlobals(),
                 $response
             );
         } catch (\Exception $e) {
             $response->setContent(
-                $this->serviceSerializer()->serialize(
-                    $this['debug'] === false ? new Entity\Error($exception) : new Entity\DebugError($exception),
+                $this->serviceHateoas()->getSerializer()->serialize(
+                    $this[self::CONFIG_DEBUG] === false ? new Entity\Error($exception) : new Entity\DebugError($exception),
                     'json'
                 )
             );
-            $response->headers->set('Content-Type', Negotiate\Mime::JSON);
+
+            $vendor = $this->container->get(self::CONFIG_VENDOR);
+            $apiVersion = $this->container->get(self::CONFIG_API_VERSION);
+
+            $response->headers->set('Content-Type', 'application/vnd.' . $vendor . '+json; version=' . $apiVersion);
         }
 
         $response->setStatusCode(method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);

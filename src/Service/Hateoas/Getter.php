@@ -1,11 +1,11 @@
-<?php namespace Phrest\Service\BuiltIn\Hateoas;
+<?php namespace Phrest\Service\Hateoas;
 
 trait Getter
 {
     /**
      * @return \Hateoas\Hateoas
      */
-    public function serviceHateoas()
+    protected function serviceHateoas()
     {
         return $this->getContainer()->get(Config::getServiceName());
     }
@@ -15,5 +15,5 @@ trait Getter
      *
      * @return \Orno\Di\Container
      */
-    abstract public function getContainer();
+    abstract protected function getContainer();
 }

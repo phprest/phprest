@@ -9,19 +9,19 @@ class DebugError extends Error
      * @var string
      * @Serializer\Type("string")
      */
-    private $fileName;
+    protected $fileName;
 
     /**
      * @var integer
      * @Serializer\Type("integer")
      */
-    private $line;
+    protected $line;
 
     /**
      * @var string
      * @Serializer\Type("string")
      */
-    private $trace;
+    protected $trace;
 
     /**
      * @param \Exception $exception

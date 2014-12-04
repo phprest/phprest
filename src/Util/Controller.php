@@ -2,12 +2,12 @@
 
 use Orno\Di\Container;
 
-abstract class AbstractController
+abstract class Controller
 {
     /**
      * @var Container
      */
-    private $container;
+    protected $container;
 
     /**
      * @param Container $container

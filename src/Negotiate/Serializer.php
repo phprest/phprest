@@ -1,9 +1,11 @@
 <?php namespace Phrest\Negotiate;
 
+use Phrest\Application;
+use JMS\Serializer\SerializationContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Negotiation\FormatNegotiator;
-use Phrest\Exception\Exception;
+use Phrest\Exception;
 
 trait Serializer
 {
@@ -14,80 +16,80 @@ trait Serializer
      *
      * @return Response
      *
-     * @throws CannotSerializeException
+     * @throws Exception\PreconditionFailed
      */
-    public function serialize($value, Request $request, Response $response)
+    protected function serialize($value, Request $request, Response $response)
     {
         $request = $this->getNegotiatedRequest($request);
 
-        if ($request->attributes->get('_mime_type') === Mime::ANY) {
-            $request->attributes->set('_mime_type', Mime::HAL_JSON);
-            $request->attributes->set('_format', 'json');
+        $vendor = $request->attributes->get('_vendor');
+        $apiVersion = $request->attributes->get('_api_version');
+        $format = $request->attributes->get('_format');
+        $mime = $request->attributes->get('_mime');
+
+        if ($mime === '*/*') {
+            $mime = 'application/vnd.' . $vendor . '+json; version=' . $apiVersion;
+            $format = 'json';
         }
 
-        if (in_array($request->attributes->get('_mime_type'), [Mime::JSON, Mime::XML])) {
-            $response->setContent(
-                $this->serviceSerializer()->serialize(
-                    $value,
-                    $request->attributes->get('_format')
-                )
-            );
-
-            $response->headers->set('Content-Type', $request->attributes->get('_mime_type'));
-
-            return $response;
-
-        } elseif (in_array($request->attributes->get('_mime_type'), [Mime::HAL_JSON, Mime::HAL_XML])) {
+        if (in_array($format, ['json', 'xml'])) {
             $response->setContent(
                 $this->serviceHateoas()->serialize(
                     $value,
-                    $request->attributes->get('_format')
+                    $format,
+                    SerializationContext::create()->setVersion($apiVersion)
                 )
             );
 
-            $response->headers->set('Content-Type', $request->attributes->get('_mime_type'));
+            $response->headers->set('Content-Type', $mime);
 
             return $response;
         }
 
-        throw new CannotSerializeException();
+        throw new Exception\PreconditionFailed(PHP_INT_MAX - 2, [$mime . ' does not supported']);
     }
 
     /**
      * @param Request $request
      *
      * @return Request
-     *
-     * @throws Exception
      */
     protected function getNegotiatedRequest(Request $request)
     {
-        /** @var Request $clonedRequest */
-        $clonedRequest = clone $request;
-
         $negotiator = new FormatNegotiator();
-        $negotiator->registerFormat('json', [Mime::HAL_JSON, Mime::JSON], true);
-        $negotiator->registerFormat('xml', [Mime::HAL_XML, Mime::XML], true);
 
-        $clonedRequest->attributes->set(
-            '_format',
-            $negotiator->getBestFormat($clonedRequest->headers->get('accept'))
-        );
-        $clonedRequest->attributes->set(
-            '_mime_type',
-            $negotiator->getBest($clonedRequest->headers->get('accept'))->getValue()
-        );
+        $mime = $negotiator->getBest($request->headers->get('Accept'))->getValue();
+        $vendor = $this->getContainer()->get(Application::CONFIG_VENDOR);
+        $apiVersion = $this->getContainer()->get(Application::CONFIG_API_VERSION);
+        $format = null;
 
-        return $clonedRequest;
+        if (preg_match('#application/vnd\.' . $vendor . '-v([0-9\.]+)\+(xml|json)#', $mime, $matches)) {
+
+            list($mime, $apiVersion, $format) = $matches;
+
+        } elseif (preg_match('#application/vnd\.' . $vendor . '\+(xml|json).*?version=([0-9\.]+)#', $mime, $matches)) {
+
+            list($mime, $format, $apiVersion) = $matches;
+
+        }
+
+        $request->attributes->set('_vendor', $vendor);
+        $request->attributes->set('_api_version', $apiVersion);
+        $request->attributes->set('_format', $format);
+        $request->attributes->set('_mime', $mime);
+
+        return $request;
     }
 
     /**
-     * @return \JMS\Serializer\Serializer
+     * Returns the DI container
+     *
+     * @return \Orno\Di\Container
      */
-    abstract public function serviceSerializer();
+    abstract protected function getContainer();
 
     /**
      * @return \Hateoas\Hateoas
      */
-    abstract public function serviceHateoas();
+    abstract protected function serviceHateoas();
 }

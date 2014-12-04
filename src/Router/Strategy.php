@@ -61,14 +61,11 @@ class Strategy implements CustomStrategyInterface
         $response = $this->invokeController($controller, array_merge([$request], $vars));
 
         if ($response instanceof Response and $response->getContent() !== '') {
-            try {
-                return $this->serialize(
-                    $response->getContent(),
-                    $request,
-                    $response
-                );
-            } catch (Negotiate\CannotSerializeException $e) {
-            }
+            return $this->serialize(
+                $response->getContent(),
+                $request,
+                $response
+            );
         }
 
         return $response;
@@ -79,9 +76,10 @@ class Strategy implements CustomStrategyInterface
      *
      * @param  string|\Closure $controller
      * @param  array           $vars
+     *
      * @return \Orno\Http\ResponseInterface
      */
-    public function invokeController($controller, array $vars = [])
+    protected function invokeController($controller, array $vars = [])
     {
         if (is_array($controller)) {
             $controller = [
@@ -96,16 +94,18 @@ class Strategy implements CustomStrategyInterface
     /**
      * @return \Hateoas\Hateoas
      */
-    public function serviceHateoas()
+    protected function serviceHateoas()
     {
-        return $this->container->get(Service\BuiltIn\Hateoas\Config::getServiceName());
+        return $this->container->get(Service\Hateoas\Config::getServiceName());
     }
 
     /**
-     * @return \JMS\Serializer\Serializer
+     * Returns the DI container
+     *
+     * @return \Orno\Di\Container
      */
-    public function serviceSerializer()
+    protected function getContainer()
     {
-        return $this->container->get(Service\BuiltIn\Serializer\Config::getServiceName());
+        return $this->container;
     }
 }

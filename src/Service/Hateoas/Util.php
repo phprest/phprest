@@ -1,6 +1,5 @@
-<?php namespace Phrest\Service\BuiltIn\Serializer;
+<?php namespace Phrest\Service\Hateoas;
 
-use Phrest\Negotiate\Mime;
 use Symfony\Component\HttpFoundation\Request;
 
 trait Util
@@ -13,12 +12,12 @@ trait Util
     protected function getContentFormat(Request $request)
     {
         $format = 'json';
-        $contentType = $request->headers->get('Content-Type', Mime::JSON);
+        $contentType = $request->headers->get('Content-Type', 'application/json');
         $contentType = explode(';', $contentType)[0];
 
-        if ($contentType === Mime::JSON) {
+        if ($contentType === 'application/json') {
             $format = 'json';
-        } elseif ($contentType === Mime::XML) {
+        } elseif ($contentType === 'application/xml') {
             $format = 'xml';
         }
 
@@ -33,7 +32,7 @@ trait Util
      */
     protected function deserialize($type, Request $request)
     {
-        return $this->serviceSerializer()->deserialize(
+        return $this->serviceHateoas()->getSerializer()->deserialize(
             $request->getContent(),
             $type,
             $this->getContentFormat($request)
@@ -48,7 +47,7 @@ trait Util
      */
     protected function deserializeJson($type, Request $request)
     {
-        return $this->serviceSerializer()->deserialize(
+        return $this->serviceHateoas()->getSerializer()->deserialize(
             $request->getContent(),
             $type,
             'json'
@@ -63,7 +62,7 @@ trait Util
      */
     protected function deserializeXml($type, Request $request)
     {
-        return $this->serviceSerializer()->deserialize(
+        return $this->serviceHateoas()->getSerializer()->deserialize(
             $request->getContent(),
             $type,
             'xml'
@@ -71,7 +70,7 @@ trait Util
     }
 
     /**
-     * @return \JMS\Serializer\Serializer
+     * @return \Hateoas\Hateoas
      */
-    abstract public function serviceSerializer();
+    abstract protected function serviceHateoas();
 }

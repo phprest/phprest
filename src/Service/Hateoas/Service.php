@@ -1,4 +1,4 @@
-<?php namespace Phrest\Service\BuiltIn\Hateoas;
+<?php namespace Phrest\Service\Hateoas;
 
 use Phrest\Service\Contract\Serviceable;
 use Phrest\Service\Contract\Configurable;
@@ -15,9 +15,11 @@ class Service implements Serviceable
      */
     public function register(Container $container, Configurable $config)
     {
-        $hateoas = HateoasBuilder::create();
+        if ( ! $config instanceof Config) {
+            throw new \InvalidArgumentException('Wrong Config object');
+        }
 
-        /** @var Config $config */
+        $hateoas = HateoasBuilder::create();
 
         $hateoas->setDebug($config->debug);
         $hateoas->setCacheDir($config->cacheDir);

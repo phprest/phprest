@@ -1,4 +1,4 @@
-<?php namespace Phrest\Service\BuiltIn\Hateoas;
+<?php namespace Phrest\Service\Hateoas;
 
 use Phrest\Service\Contract\Configurable;
 
