@@ -1,7 +1,7 @@
 <?php namespace Phrest\Service\Hateoas;
 
-use Phrest\Service\Contract\Serviceable;
-use Phrest\Service\Contract\Configurable;
+use Phrest\Service\Serviceable;
+use Phrest\Service\Configurable;
 use Orno\Di\Container;
 use Hateoas\HateoasBuilder;
 

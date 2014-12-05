@@ -1,4 +1,4 @@
-<?php namespace Phrest\Service\Contract;
+<?php namespace Phrest\Service;
 
 interface Configurable
 {

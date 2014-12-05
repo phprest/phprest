@@ -50,8 +50,8 @@ $app = new Application(
     3, # api version
     function ($apiVersion) { # api version handler
         if ( ! in_array($apiVersion, [1, 2, 3])) {
-            throw new Exception\PreconditionFailed(
-                PHP_INT_MAX - 4,
+            throw new Exception\NotAcceptable(
+                PHP_INT_MAX - 3,
                 ['Not supported Api Version']
             );
         }
@@ -344,7 +344,10 @@ $app->get('/', function (Request $request) {
 |Gone|
 |InternalServerError|
 |MethodNotAllowed|
+|NotAcceptable|
 |NotFound|
+|TooManyRequests|
+|PreconditionFailed|
 |TooManyRequests|
 |Unauthorized|
 |UnprocessableEntity|

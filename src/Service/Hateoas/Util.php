@@ -18,7 +18,7 @@ trait Util
      *
      * @return Response
      *
-     * @throws Exception\PreconditionFailed
+     * @throws Exception\NotAcceptable
      */
     protected function serialize($value, Request $request, Response $response)
     {
@@ -48,7 +48,7 @@ trait Util
             return $response;
         }
 
-        throw new Exception\PreconditionFailed(PHP_INT_MAX - 2, [$mimeProcResult->mime . ' does not supported']);
+        throw new Exception\NotAcceptable(PHP_INT_MAX - 2, [$mimeProcResult->mime . ' is not supported']);
     }
 
     /**

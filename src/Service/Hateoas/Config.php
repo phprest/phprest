@@ -1,6 +1,6 @@
 <?php namespace Phrest\Service\Hateoas;
 
-use Phrest\Service\Contract\Configurable;
+use Phrest\Service\Configurable;
 
 class Config implements Configurable
 {
