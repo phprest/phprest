@@ -17,6 +17,16 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 * [Willdurand/Negotiation](https://github.com/willdurand/Negotiation)
 * [Willdurand/Hateoas](https://github.com/willdurand/Hateoas)
 
+# Skills
+
+* Dependency Injection
+* Routing
+* Serialization
+* Deserialization
+* Hateoas
+* Api Versioning
+* Serviceable
+
 # Installation
 
 Install it through composer.
@@ -46,24 +56,16 @@ use Phrest\Response;
 use Phrest\Exception;
 
 $app = new Application(
-    'vendor',
-    3, # api version
+    'vendor', # for api versioning
+    3, # actual api version
     function ($apiVersion) { # api version handler
         if ( ! in_array($apiVersion, [1, 2, 3])) {
-            throw new Exception\NotAcceptable(
-                PHP_INT_MAX - 3,
-                ['Not supported Api Version']
-            );
+            throw new Exception\NotAcceptable(PHP_INT_MAX - 3,['Not supported Api Version']);
         }
     }
 );
 
 $app['debug'] = true; # it is false by default
-
-if ( ! $app['debug']) {
-    # for fatal error handling (of course display_errors is Off on a prod machine...)
-    ini_set('display_errors', 'Off');
-}
 
 $app->get('/', function (Request $request) {
     return new Response\Ok('Hello World!');
@@ -140,23 +142,31 @@ For more information please visit [Orno/Route](https://github.com/orno/route).
 
 ## Api Versioning
 
-### Supported formats
+* Accept/Content-Type header can be:
+ * application/vnd.vendor-v*Version*+json
+ * application/vnd.vendor+json; version=*Version*
+ * application/vnd.vendor-v*Version*+xml
+ * application/vnd.vendor+xml; version=*Version*
 
-* In the Accept/Content-Type Header
- * application/vnd.vendor-v1+json
- * application/vnd.vendor+json; version=1
- * application/vnd.vendor-v1+xml
- * application/vnd.vendor+xml; version=1
+* If Accept header is \*/*
+ * then phrest automatically translate this to application/vnd.vendor-v*Version*+json
+ 
+* If Accept header is not parsable
+ * then phrest throws a Not Acceptable exception
+ 
+* If you do a deserialization and Content-Type header is not parsable
+ * then phrest throws an Unsupported Media Type exception
 
-## Serialization, Hateoas
+## Serialization, Deserialization, Hateoas
 
-Phrest will automatically serialize* your response based on the Accept header.
+* Phrest will automatically serialize* your response based on the Accept header.
+* Phrest can deserialize your content based on the Content-Type header.
 
 Except*:
 * If your response is not a Response instance (e.g. it a simple string)
 * If your response is empty
 
-### Example
+### Serialization Example
 
 Let's see a Temperature entity:
 
@@ -187,8 +197,9 @@ class Temperature
 
     /**
      * @var \DateTime
-     * @Serializer\Exclude
      * @Serializer\Type("DateTime")
+     * @Serializer\Since("2")
+     * @Serializer\Exclude
      */
     public $created;
 
@@ -241,6 +252,26 @@ Xml response (Accept: application/vnd.vendor+xml; version=1):
   <value>32</value>
   <link rel="self" href="/temperatures/1"/>
 </result>
+```
+
+### Deserialization Example
+
+You have to use the Phrest\Service\Hateoas\Util trait in your controller to do deserialization.
+
+```php
+...
+use JMS\Serializer\Exception\RuntimeException;
+...
+    public function post(Request $request)
+    {
+        try {
+            /** @var \Foo\Entity\Temperature $temperature */
+            $temperature = $this->deserialize('\Foo\Entity\Temperature', $request);
+        } catch (RuntimeException $e) {
+            throw new Exception\UnprocessableEntity(0, [new Service\Validator\Entity\Error('', $e->getMessage())]);
+        }
+    }
+...
 ```
 
 ## Default exception handler
