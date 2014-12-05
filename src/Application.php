@@ -18,6 +18,11 @@ class Application extends \Proton\Application
     use Service\Hateoas\Getter, Service\Hateoas\Util;
 
     /**
+     * @var boolean
+     */
+    protected $debug = false;
+
+    /**
      * @var callable
      */
     protected $exceptionHandler;
@@ -30,79 +35,27 @@ class Application extends \Proton\Application
     /**
      * @param string $vendor
      * @param int|string $apiVersion
-     * @param callable $apiVersionHandler
+     * @param boolean $debug
      * @param HateoasConfig $hateoasConfig
      * @param Strategy $routerStrategy
      */
     public function __construct($vendor,
                                 $apiVersion,
-                                callable $apiVersionHandler = null,
+                                $debug = false,
                                 HateoasConfig $hateoasConfig = null,
                                 Strategy $routerStrategy = null)
     {
         parent::__construct();
 
+        $this->debug = $debug;
+
         $this->container->add(self::CONFIG_VENDOR, $vendor);
         $this->container->add(self::CONFIG_API_VERSION, $apiVersion);
-        $this->container->add(self::CONFIG_API_VERSION_HANDLER, function() use ($apiVersionHandler) {
-            return $apiVersionHandler;
-        });
+        $this->container->add(self::CONFIG_DEBUG, $debug);
 
         $this->setErrorHandlers();
-        $this->registerBuiltInServices($hateoasConfig);
         $this->setRouterStrategy(is_null($routerStrategy) ? new Strategy($this->container) : $routerStrategy);
-    }
-
-    /**
-     * @return void
-     */
-    protected function setErrorHandlers()
-    {
-        $this->setExceptionDecorator(function (\Exception $e) {
-            throw $e;
-        });
-
-        set_error_handler(function($errNo, $errStr, $errFile, $errLine) {
-            throw new \ErrorException($errStr, PHP_INT_MAX - 1, $errNo, $errFile, $errLine);
-        });
-
-        $this->setDefaultExceptionHandler(function(\Exception $exception) {
-            $this->getExceptionResponse($exception)->send();
-        });
-
-        register_shutdown_function(function() {
-            if ($error = error_get_last()) {
-                call_user_func(
-                    $this->exceptionHandler,
-                    new \ErrorException($error['message'], PHP_INT_MAX, $error['type'], $error['file'], $error['line'])
-                );
-            }
-        });
-    }
-
-    /**
-     * @param HateoasConfig $hateoasConfig
-     *
-     * @return void
-     */
-    protected function registerBuiltInServices(HateoasConfig $hateoasConfig = null)
-    {
-        AnnotationRegistry::registerLoader('class_exists');
-
-        if (is_null($hateoasConfig)) {
-            $hateoasConfig = new HateoasConfig($this[self::CONFIG_DEBUG]);
-        }
-        $this->registerService(new Service\Hateoas\Service(), $hateoasConfig);
-    }
-
-    /**
-     * @param Strategy $routerStrategy
-     *
-     * @return void
-     */
-    public function setRouterStrategy(Strategy $routerStrategy)
-    {
-        $this->router->setStrategy($routerStrategy);
+        $this->registerBuiltInServices($hateoasConfig);
     }
 
     /**
@@ -122,6 +75,16 @@ class Application extends \Proton\Application
         $service->register($this->container, $config);
 
         $this->registeredServiceNames[] = $config->getServiceName();
+    }
+
+    /**
+     * @param Strategy $routerStrategy
+     *
+     * @return void
+     */
+    public function setRouterStrategy(Strategy $routerStrategy)
+    {
+        $this->router->setStrategy($routerStrategy);
     }
 
     /**
@@ -155,10 +118,65 @@ class Application extends \Proton\Application
      *
      * @return void
      */
+    public function setApiVersionHandler(callable $func)
+    {
+        $this->container->add(self::CONFIG_API_VERSION_HANDLER, function() use ($func) {
+            return $func;
+        });
+    }
+
+    /**
+     * @param callable $func
+     *
+     * @return void
+     */
     public function setDefaultExceptionHandler(callable $func) {
         set_exception_handler($func);
 
         $this->exceptionHandler = $func;
+    }
+
+    /**
+     * @param HateoasConfig $hateoasConfig
+     *
+     * @return void
+     */
+    protected function registerBuiltInServices(HateoasConfig $hateoasConfig = null)
+    {
+        AnnotationRegistry::registerLoader('class_exists');
+
+        if (is_null($hateoasConfig)) {
+            $hateoasConfig = new HateoasConfig($this->debug);
+        }
+
+        $this->registerService(new Service\Hateoas\Service(), $hateoasConfig);
+    }
+
+    /**
+     * @return void
+     */
+    protected function setErrorHandlers()
+    {
+        $this->setExceptionDecorator(function (\Exception $e) {
+            throw $e;
+        });
+
+        set_error_handler(function($errNo, $errStr, $errFile, $errLine) {
+            throw new \ErrorException($errStr, PHP_INT_MAX - 1, $errNo, $errFile, $errLine);
+        });
+
+        $this->setDefaultExceptionHandler(function(\Exception $exception) {
+            $this->getExceptionResponse($exception)->send();
+        });
+
+        register_shutdown_function(function() {
+            if ($error = error_get_last()) {
+                call_user_func(
+                    $this->exceptionHandler,
+                    new \ErrorException($error['message'], PHP_INT_MAX, $error['type'], $error['file'], $error['line'])
+                );
+            }
+        });
     }
 
     /**

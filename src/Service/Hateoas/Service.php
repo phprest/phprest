@@ -4,6 +4,7 @@ use Phrest\Service\Serviceable;
 use Phrest\Service\Configurable;
 use Orno\Di\Container;
 use Hateoas\HateoasBuilder;
+use Hateoas\UrlGenerator\CallableUrlGenerator;
 
 class Service implements Serviceable
 {
@@ -24,6 +25,7 @@ class Service implements Serviceable
         $hateoas->setDebug($config->debug);
         $hateoas->setCacheDir($config->cacheDir);
         $hateoas->addMetadataDir($config->metadataDir);
+        $hateoas->setUrlGenerator(null, new CallableUrlGenerator($config->urlGenerator));
 
         $container->singleton($config->getServiceName(), $hateoas->build());
     }

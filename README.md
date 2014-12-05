@@ -55,17 +55,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Phrest\Response;
 use Phrest\Exception;
 
-$app = new Application(
-    'vendor', # for api versioning
-    3, # actual api version
-    function ($apiVersion) { # api version handler
-        if ( ! in_array($apiVersion, [1, 2, 3])) {
-            throw new Exception\NotAcceptable(PHP_INT_MAX - 3,['Not supported Api Version']);
-        }
-    }
-);
+# vendorName, apiVersion, debug
+$app = new Application('vendor', 1, true);
 
-$app['debug'] = true; # it is false by default
+# optional
+$app->setApiVersionHandler(function ($apiVersion) {
+    if ( ! in_array($apiVersion, [1, 2, 3])) {
+
+        # tip: list your available versions in the exception
+        
+        throw new Phrest\Exception\NotAcceptable(PHP_INT_MAX - 3, ['Not supported Api Version']);
+    }
+});
 
 $app->get('/', function (Request $request) {
     return new Response\Ok('Hello World!');
@@ -179,7 +180,10 @@ use Hateoas\Configuration\Annotation as Hateoas;
 /**
  * @Serializer\XmlRoot("result")
  *
- * @Hateoas\Relation("self", href = "expr('/temperatures/' ~ object.id)")
+ * @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route("/temperatures", parameters = {"id" = "expr(object.id)"}, absolute = false)
+ * )
  */
 class Temperature
 {
