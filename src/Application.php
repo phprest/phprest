@@ -106,14 +106,14 @@ class Application extends \Proton\Application
     }
 
     /**
-     * @param Service\Contract\Serviceable $service
-     * @param Service\Contract\Configurable $config
+     * @param Service\Serviceable $service
+     * @param Service\Configurable $config
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function registerService(Service\Contract\Serviceable $service, Service\Contract\Configurable $config)
+    public function registerService(Service\Serviceable $service, Service\Configurable $config)
     {
         if (in_array($config->getServiceName(), $this->registeredServiceNames)) {
             throw new \Exception('Service <' . $config->getServiceName() . '> has been already registered!');
