@@ -14,8 +14,8 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 * [Orno\Di](https://github.com/orno/di)
 * [Orno\Route](https://github.com/orno/route)
 * [League\Event](https://github.com/thephpleague/event)
-* [Willdurand/Negotiation](https://github.com/willdurand/Negotiation)
-* [Willdurand/Hateoas](https://github.com/willdurand/Hateoas)
+* [Willdurand\Negotiation](https://github.com/willdurand/Negotiation)
+* [Willdurand\Hateoas](https://github.com/willdurand/Hateoas)
 
 # Skills
 
@@ -32,22 +32,28 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 * [Installation](https://github.com/phprest/phrest#installation)
 * [Usage](https://github.com/phprest/phrest#usage)
  * [Set up](https://github.com/phprest/phrest#set-up)
- * [Routing](https://github.com/phprest/phrest#routing)
-  * [Simple routing](https://github.com/phprest/phrest#simple-routing)
-  * [Routing with arguments](https://github.com/phprest/phrest#routing-with-arguments)
-  * [Routing through a controller](https://github.com/phprest/phrest#routing-through-a-controller)
-  * [Routing through a service controller](https://github.com/phprest/phrest#routing-through-a-service-controller)
-  * [Routing with annotations](https://github.com/phprest/phrest#routing-with-annotations)
+   * [Routing](https://github.com/phprest/phrest#routing)
+      * [Simple routing](https://github.com/phprest/phrest#simple-routing)
+      * [Routing with arguments](https://github.com/phprest/phrest#routing-with-arguments)
+      * [Routing through a controller](https://github.com/phprest/phrest#routing-through-a-controller)
+      * [Routing through a service controller](https://github.com/phprest/phrest#routing-through-a-service-controller)
+      * [Routing with annotations](https://github.com/phprest/phrest#routing-with-annotations)
  * [Api versioning](https://github.com/phprest/phrest#api-versioning)
  * [Serialization, Deserialization, Hateoas](https://github.com/phprest/phrest#serialization-deserialization-hateoas)
-  * [Serialization example](https://github.com/phprest/phrest#serialization-example)
-  * [Deserialization example](https://github.com/phprest/phrest#deserialization-example)
+    * [Serialization example](https://github.com/phprest/phrest#serialization-example)
+    * [Deserialization example](https://github.com/phprest/phrest#deserialization-example)
  * [Pagination](https://github.com/phprest/phrest#pagination)
- * [Exception handler](https://github.com/phprest/phrest#exception-handler)
-  * [On a single exception](https://github.com/phprest/phrest#on-a-single-exception)
-  * [Fatal error handler](https://github.com/phprest/phrest#fatal-error-handler)
  * [Responses](https://github.com/phprest/phrest#responses)
-  * [1xx, 2xx, 3xx ]
+    * [1xx, 2xx, 3xx status codes](https://github.com/phprest/phrest#1xx-2xx-3xx-status-codes)
+      * [Example](https://github.com/phprest/phrest#example) 
+      * [Types](https://github.com/phprest/phrest#types)
+    * [4xx, 5xx status codes](https://github.com/phprest/phrest#4xx-5xx-status-codes)
+      * [Example](https://github.com/phprest/phrest#example-1)
+      * [Types](https://github.com/phprest/phrest#types-1)
+ * [Exception handler](https://github.com/phprest/phrest#exception-handler)
+    * [On a single exception](https://github.com/phprest/phrest#on-a-single-exception)
+    * [Fatal error handler](https://github.com/phprest/phrest#fatal-error-handler)
+ * [Dependency Injection Container](https://github.com/phprest/phrest#dependency-injection-container)
 
 # Installation
 
@@ -353,6 +359,73 @@ $paginatedCollection = new PaginatedRepresentation(
 
 For more informations please visit the [Hateoas docs](https://github.com/willdurand/Hateoas#dealing-with-collections)
 
+## Responses
+
+There are several responses you can use by default, one of them is the Ok response.
+
+### 1xx, 2xx, 3xx status codes
+
+These are simple Response objects.
+
+#### Example
+
+```php
+<?php
+# ...
+$app->get('/', function (Request $request) {
+    return new Response\Ok('Hello World!');
+});
+# ...
+```
+
+#### Types
+
+|Responses|
+|-------------|
+|Accepted|
+|Created|
+|NoContent|
+|NotModified|
+|Ok|
+
+### 4xx, 5xx status codes
+
+These are Exceptions.
+
+#### Example
+
+```php
+<?php
+# ...
+$app->get('/', function (Request $request) {
+    # ...
+    
+    throw new \Phrest\Exception\BadRequest();
+    
+    # ...
+});
+# ...
+```
+
+#### Types
+
+|Exceptions|
+|----------|
+|BadRequest|
+|Conflict|
+|Forbidden|
+|Gone|
+|InternalServerError|
+|MethodNotAllowed|
+|NotAcceptable|
+|NotFound|
+|TooManyRequests|
+|PreconditionFailed|
+|TooManyRequests|
+|Unauthorized|
+|UnprocessableEntity|
+|UnsupportedMediaType|
+
 ## Exception handler
 
 ### On a single exception
@@ -395,73 +468,6 @@ For a clear error message you should do something like this:
 <?php
 ini_set('display_errors', 'Off');
 ```
-
-## Responses
-
-There are several responses you can use by default, one of them is the Ok response.
-
-### 1xx, 2xx, 3xx status codes
-
-These are simple Response objects.
-
-#### Example
-
-```php
-<?php
-# ...
-$app->get('/', function (Request $request) {
-    return new Response\Ok('Hello World!');
-});
-# ...
-```
-
-#### Types
-
-|Responses|
-|-------------|
-|Accepted|
-|Created|
-|NoContent|
-|NotModified|
-|Ok|
-
-### 4xx, 5xx
-
-These are Exceptions.
-
-#### Example
-
-```php
-<?php
-# ...
-$app->get('/', function (Request $request) {
-    # ...
-    
-    throw new \Phrest\Exception\BadRequest();
-    
-    # ...
-});
-# ...
-```
-
-#### Types
-
-|Exceptions|
-|----------|
-|BadRequest|
-|Conflict|
-|Forbidden|
-|Gone|
-|InternalServerError|
-|MethodNotAllowed|
-|NotAcceptable|
-|NotFound|
-|TooManyRequests|
-|PreconditionFailed|
-|TooManyRequests|
-|Unauthorized|
-|UnprocessableEntity|
-|UnsupportedMediaType|
 
 ## Dependency Injection Container
 
