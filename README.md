@@ -355,6 +355,8 @@ $paginatedCollection = new PaginatedRepresentation(
     true, # absolute URIs
     47 # total number of rows
 );
+...
+return new Response\Ok($paginatedCollection);
 ```
 
 For more informations please visit the [Hateoas docs](https://github.com/willdurand/Hateoas#dealing-with-collections)
