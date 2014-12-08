@@ -19,13 +19,35 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 
 # Skills
 
-* Dependency Injection
+* Dependency injection
 * Routing
 * Serialization
 * Deserialization
 * Hateoas
-* Api Versioning
+* Api versioning
 * Pagination
+
+# ToC
+
+* [Installation](https://github.com/phprest/phrest#installation)
+* [Usage](https://github.com/phprest/phrest#usage)
+ * [Set up](https://github.com/phprest/phrest#set-up)
+ * [Routing](https://github.com/phprest/phrest#routing)
+  * [Simple routing](https://github.com/phprest/phrest#simple-routing)
+  * [Routing with arguments](https://github.com/phprest/phrest#routing-with-arguments)
+  * [Routing through a controller](https://github.com/phprest/phrest#routing-through-a-controller)
+  * [Routing through a service controller](https://github.com/phprest/phrest#routing-through-a-service-controller)
+  * [Routing with annotations](https://github.com/phprest/phrest#routing-with-annotations)
+ * [Api versioning](https://github.com/phprest/phrest#api-versioning)
+ * [Serialization, Deserialization, Hateoas](https://github.com/phprest/phrest#serialization-deserialization-hateoas)
+  * [Serialization example](https://github.com/phprest/phrest#serialization-example)
+  * [Deserialization example](https://github.com/phprest/phrest#deserialization-example)
+ * [Pagination](https://github.com/phprest/phrest#pagination)
+ * [Exception handler](https://github.com/phprest/phrest#exception-handler)
+  * [On a single exception](https://github.com/phprest/phrest#on-a-single-exception)
+  * [Fatal error handler](https://github.com/phprest/phrest#fatal-error-handler)
+ * [Responses](https://github.com/phprest/phrest#responses)
+  * [1xx, 2xx, 3xx ]
 
 # Installation
 
@@ -139,7 +161,7 @@ $app->get('/', 'HomeController::index');
 # ...
 ```
 
-### Routing with Annotations
+### Routing with annotations
 
 You have to register your controller.
 
@@ -196,7 +218,7 @@ Except*:
 * If your response is not a Response instance (e.g. it a simple string)
 * If your response is empty
 
-### Serialization Example
+### Serialization example
 
 Let's see a Temperature entity:
 
@@ -287,7 +309,7 @@ Xml response (Accept: application/vnd.vendor+xml; version=1):
 </result>
 ```
 
-### Deserialization Example
+### Deserialization example
 
 You have to use the Phrest\Service\Hateoas\Util trait in your controller to do deserialization.
 
@@ -307,7 +329,31 @@ use JMS\Serializer\Exception\RuntimeException;
 ...
 ```
 
-## Default exception handler
+## Pagination
+
+```php
+<?php
+...
+use Hateoas\Representation\PaginatedRepresentation;
+use Hateoas\Representation\CollectionRepresentation;
+...
+$paginatedCollection = new PaginatedRepresentation(
+    new CollectionRepresentation([$user1, $user2, ...]),
+    '/users', # route
+    [], # route parameters, should be $request->query->all()
+    1, # page, should be (int)$request->query->get('page')
+    10, # limit, should be (int)$request->query->get('limit')
+    5, # total pages
+    'page', # page route parameter name, optional, defaults to 'page'
+    'limit', # limit route parameter name, optional, defaults to 'limit'
+    true, # absolute URIs
+    47 # total number of rows
+);
+```
+
+For more informations please visit the [Hateoas docs](https://github.com/willdurand/Hateoas#dealing-with-collections)
+
+## Exception handler
 
 ### On a single exception
 
@@ -349,30 +395,6 @@ For a clear error message you should do something like this:
 <?php
 ini_set('display_errors', 'Off');
 ```
-
-## Pagination
-
-```php
-<?php
-...
-use Hateoas\Representation\PaginatedRepresentation;
-use Hateoas\Representation\CollectionRepresentation;
-...
-$paginatedCollection = new PaginatedRepresentation(
-    new CollectionRepresentation([$user1, $user2, ...]),
-    '/users', # route
-    [], # route parameters, should be $request->query->all()
-    1, # page, should be (int)$request->query->get('page')
-    10, # limit, should be (int)$request->query->get('limit')
-    5, # total pages
-    'page', # page route parameter name, optional, defaults to 'page'
-    'limit', # limit route parameter name, optional, defaults to 'limit'
-    true, # absolute URIs
-    47 # total number of rows
-);
-```
-
-For more informations please visit the [Hateoas docs](https://github.com/willdurand/Hateoas#dealing-with-collections)
 
 ## Responses
 
