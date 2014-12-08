@@ -25,7 +25,7 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 * Deserialization
 * Hateoas
 * Api Versioning
-* Serviceable
+* Pagination
 
 # Installation
 
@@ -115,13 +115,13 @@ $app->get('/', '\Foo\Bar\HomeController::index'); # calls index method on HomeCo
 # HomeController.php
 
 use Symfony\Component\HttpFoundation\Request;
-use Phrest\HttpFoundation\Response;
+use Phrest\Response;
 
 class HomeController
 {
     public function index(Request $request)
     {
-        return new Response('Hello World!');
+        return new Response\Ok('Hello World!');
     }
 }
 ```
@@ -139,7 +139,36 @@ $app->get('/', 'HomeController::index');
 # ...
 ```
 
-For more information please visit [Orno/Route](https://github.com/orno/route).
+### Routing with Annotations
+
+You have to register your controller.
+
+```php
+<?php
+
+$app->registerController('\Foo\Bar\Controller\Home');
+```
+
+```php
+<?php namespace Foo\Bar\Controller;
+# Home.php
+
+use Phrest\Util\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Phrest\Response;
+use Phrest\Annotation as Phrest;
+
+class Home extends Controller
+{
+    /**
+     * @Phrest\Route(method="GET", path="/foobars/{id}")
+     */
+    public function get(Request $request, $id)
+    {
+        return new Response\Ok('Hello World!');
+    }
+}
+```
 
 ## Api Versioning
 
@@ -320,6 +349,30 @@ For a clear error message you should do something like this:
 <?php
 ini_set('display_errors', 'Off');
 ```
+
+## Pagination
+
+```php
+<?php
+...
+use Hateoas\Representation\PaginatedRepresentation;
+use Hateoas\Representation\CollectionRepresentation;
+...
+$paginatedCollection = new PaginatedRepresentation(
+    new CollectionRepresentation([$user1, $user2, ...]),
+    '/users', # route
+    [], # route parameters, should be $request->query->all()
+    1, # page, should be (int)$request->query->get('page')
+    10, # limit, should be (int)$request->query->get('limit')
+    5, # total pages
+    'page', # page route parameter name, optional, defaults to 'page'
+    'limit', # limit route parameter name, optional, defaults to 'limit'
+    true, # absolute URIs
+    47 # total number of rows
+);
+```
+
+For more informations please visit the [Hateoas docs](https://github.com/willdurand/Hateoas#dealing-with-collections)
 
 ## Responses
 
