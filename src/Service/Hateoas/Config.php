@@ -13,12 +13,12 @@ class Config implements Configurable
     /**
      * @var string
      */
-    public $cacheDir = '/tmp/hateoas';
+    public $cacheDir;
 
     /**
      * @var string
      */
-    public $metadataDir = '/tmp/hateoas';
+    public $metadataDir;
 
     /**
      * @var callable
@@ -27,13 +27,13 @@ class Config implements Configurable
 
     /**
      * @param boolean $debug
-     * @param string $cacheDir
-     * @param string $metadataDir
-     * @param callable $urlGenerator
+     * @param string|null $cacheDir
+     * @param string|null $metadataDir
+     * @param callable|null $urlGenerator
      */
     public function __construct($debug = false,
-                                $cacheDir = '/tmp/hateoas',
-                                $metadataDir = '/tmp/hateoas',
+                                $cacheDir = null,
+                                $metadataDir = null,
                                 $urlGenerator = null)
     {
         $this->debug = $debug;
@@ -41,13 +41,46 @@ class Config implements Configurable
         $this->metadataDir = $metadataDir;
         $this->urlGenerator = $urlGenerator;
 
+        if (is_null($cacheDir)) {
+            $this->cacheDir = sys_get_temp_dir() . '/hateoas';
+        }
+
+        if (is_null($metadataDir)) {
+            $this->metadataDir = sys_get_temp_dir() . '/hateoas';
+        }
+
         if (is_null($urlGenerator)) {
             $this->urlGenerator = function ($route, array $parameters, $absolute) {
-                if ($absolute) {
-                    return Request::createFromGlobals()->getSchemeAndHttpHost() . $route . '/' . implode('/', $parameters);
+
+                $queryParams = '';
+                $resourceParams = [];
+
+                foreach ($parameters as $paramName => $paramValue) {
+                    if (strpos(strtolower($paramName), 'id') !== false) {
+                        $resourceParams[$paramName] = $paramValue;
+                        continue;
+                    }
+
+                    $queryParams .= $paramName . '=' . $paramValue . '&';
                 }
 
-                return $route . '/' . implode('/', $parameters);
+                if ($queryParams !== '') {
+                    $queryParams = '?' . substr($queryParams, 0, -1);
+                }
+
+                $resourceParams = implode('/', $resourceParams);
+                if ( ! empty($resourceParams)) {
+                    $resourceParams = '/' . $resourceParams;
+                }
+
+                if ($absolute) {
+                    return Request::createFromGlobals()->getSchemeAndHttpHost() .
+                    $route .
+                    $resourceParams .
+                    $queryParams;
+                }
+
+                return $route . $resourceParams . $queryParams;
             };
         }
     }

@@ -14,6 +14,7 @@ class Application extends \Proton\Application
     const CONFIG_VENDOR = 'vendor';
     const CONFIG_API_VERSION = 'api-version';
     const CONFIG_API_VERSION_HANDLER = 'api-version-handler';
+    const CONFIG_ROUTER = 'router';
 
     use Service\Hateoas\Getter, Service\Hateoas\Util;
 
@@ -52,6 +53,7 @@ class Application extends \Proton\Application
         $this->container->add(self::CONFIG_VENDOR, $vendor);
         $this->container->add(self::CONFIG_API_VERSION, $apiVersion);
         $this->container->add(self::CONFIG_DEBUG, $debug);
+        $this->container->singleton(self::CONFIG_ROUTER, function() { return $this->router; } );
 
         $this->setErrorHandlers();
         $this->setRouterStrategy(is_null($routerStrategy) ? new Strategy($this->container) : $routerStrategy);
@@ -75,6 +77,20 @@ class Application extends \Proton\Application
         $service->register($this->container, $config);
 
         $this->registeredServiceNames[] = $config->getServiceName();
+    }
+
+    /**
+     * @param string $class Namespaced class name
+     *
+     * @return void
+     */
+    public function registerController($class)
+    {
+        $controller = new $class($this->container);
+
+        $this->container->singleton($class, function () use ($controller) {
+            return $controller;
+        });
     }
 
     /**
