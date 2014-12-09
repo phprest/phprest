@@ -200,18 +200,15 @@ class Home extends Controller
 
 ## Api Versioning
 
-|Accept/Content-Type header can be|
-|---------------------------------|
-|application/vnd.**Vendor**-v**Version**+json|
-|application/vnd.**Vendor**+json; version=**Version**|
-|application/vnd.**Vendor**-v**Version**+xml|
-|application/vnd.**Vendor**+xml; version=**Version**|
-
-|Accept header|Transfers to|
-|-------------|------------|
-|\*/\*|application/vnd.**Vendor**-v**Version**+json|
+|Accept/Content-Type header can be|Transfers to|
+|---------------------------------|------------|
+|application/vnd.**Vendor**-v**Version**+json|itself|
+|application/vnd.**Vendor**+json; version=**Version**|itself|
+|application/vnd.**Vendor**-v**Version**+xml|itself|
+|application/vnd.**Vendor**+xml; version=**Version**|itself|
 |application/json|application/vnd.**Vendor**-v**Version**+json|
 |application/xml|application/vnd.**Vendor**-v**Version**+xml|
+|\*/\*|application/vnd.**Vendor**-v**Version**+json|
  
 * If Accept header is not parsable
  * then phrest throws a Not Acceptable exception
