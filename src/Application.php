@@ -224,7 +224,7 @@ class Application extends \Proton\Application
             $vendor = $this->container->get(self::CONFIG_VENDOR);
             $apiVersion = $this->container->get(self::CONFIG_API_VERSION);
 
-            $response->headers->set('Content-Type', 'application/vnd.' . $vendor . '+json; version=' . $apiVersion);
+            $response->headers->set('Content-Type', 'application/vnd.' . $vendor . '-v' . $apiVersion . '+json');
         }
 
         $response->setStatusCode(method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);

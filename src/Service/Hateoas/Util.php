@@ -92,6 +92,12 @@ trait Util
             list($mime, $apiVersion, $format) = $matches;
         } elseif (preg_match('#application/vnd\.' . $vendor . '\+(xml|json).*?version=([0-9\.]+)#', $mime, $matches)) {
             list($mime, $format, $apiVersion) = $matches;
+        } elseif ('application/json' === $mime) {
+            $format = 'json';
+            $mime = 'application/vnd.' . $vendor . '-v' . $apiVersion . '+json';
+        } elseif ('application/xml' === $mime) {
+            $format = 'xml';
+            $mime = 'application/vnd.' . $vendor . '-v' . $apiVersion . '+xml';
         }
 
         return new MimeProcessResult($mime, $vendor, $apiVersion, $format);
