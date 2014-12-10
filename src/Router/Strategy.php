@@ -1,9 +1,9 @@
-<?php namespace Phrest\Router;
+<?php namespace Phprest\Router;
 
 use Orno\Route\CustomStrategyInterface;
-use Phrest\HttpFoundation\Response;
+use Phprest\HttpFoundation\Response;
 use Orno\Di\Container;
-use Phrest\Service;
+use Phprest\Service;
 
 class Strategy implements CustomStrategyInterface
 {

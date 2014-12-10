@@ -1,4 +1,4 @@
-<?php namespace Phrest\Exception;
+<?php namespace Phprest\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 

@@ -1,4 +1,4 @@
-<?php namespace Phrest\Annotation;
+<?php namespace Phprest\Annotation;
 
 /**
  * @Annotation

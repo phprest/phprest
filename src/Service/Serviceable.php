@@ -1,4 +1,4 @@
-<?php namespace Phrest\Service;
+<?php namespace Phprest\Service;
 
 use Orno\Di\Container;
 

@@ -1,7 +1,7 @@
 {
-    "name": "phprest/phrest",
-    "description": "Php Rest Micro Framework. Simple, Easy, Extensible.",
-    "keywords": ["phprest", "phrest", "micro", "framework", "rest", "restful", "api"],
+    "name": "phprest/phprest",
+    "description": "Php Rest Framework. Simple, Easy, Extensible.",
+    "keywords": ["phprest", "framework", "rest", "restful", "api"],
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -20,13 +20,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Phrest\\": "src"
+            "Phprest\\": "src"
         }
     },
     "suggest": {
-        "phprest/phrest-service-jsonmapper": "For mapping Json Object to Class.",
-        "phprest/phrest-service-validator": "For validating Entities.",
-        "phprest/phrest-service-rdbms": "For managins Relational Databases.",
+        "phprest/phprest-service-jsonmapper": "For mapping Json Object to Class.",
+        "phprest/phprest-service-validator": "For validating Entities.",
+        "phprest/phprest-service-rdbms": "For managins Relational Databases.",
         "zircote/swagger-php": "For creating your Api documentation."
     }
 }

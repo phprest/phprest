@@ -1,9 +1,9 @@
-<?php namespace Phrest\Util;
+<?php namespace Phprest\Util;
 
 use Orno\Di\Container;
 use Orno\Route\RouteCollection;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Phrest\Annotation\Route;
+use Phprest\Annotation\Route;
 
 abstract class Controller
 {
@@ -38,7 +38,7 @@ abstract class Controller
         /** @var \ReflectionMethod $method */
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
 
-            $docblock = $reader->getMethodAnnotation($method, '\Phrest\Annotation\Route');
+            $docblock = $reader->getMethodAnnotation($method, '\Phprest\Annotation\Route');
 
             if ($docblock instanceof Route) {
                 $router->addRoute(

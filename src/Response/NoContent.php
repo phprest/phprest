@@ -1,6 +1,6 @@
-<?php namespace Phrest\Response;
+<?php namespace Phprest\Response;
 
-use Phrest\HttpFoundation\Response;
+use Phprest\HttpFoundation\Response;
 
 class NoContent extends Response
 {

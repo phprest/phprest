@@ -1,8 +1,8 @@
-<?php namespace Phrest\Entity;
+<?php namespace Phprest\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Hateoas\Configuration\Annotation as Hateoas;
-use Phrest\Exception\Exception;
+use Phprest\Exception\Exception;
 
 /**
  * @Serializer\XmlRoot("result")

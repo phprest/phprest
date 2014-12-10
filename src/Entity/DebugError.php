@@ -1,4 +1,4 @@
-<?php namespace Phrest\Entity;
+<?php namespace Phprest\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Hateoas\Configuration\Annotation as Hateoas;

@@ -1,4 +1,4 @@
-<?php namespace Phrest\Service\Hateoas;
+<?php namespace Phprest\Service\Hateoas;
 
 trait Getter
 {

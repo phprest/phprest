@@ -1,11 +1,11 @@
-# Phrest
+# Phprest
 
 [![Author](http://img.shields.io/badge/author-@adammbalogh-blue.svg?style=flat-square)](https://twitter.com/adammbalogh)
 [![Software License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
 # Description
 
-Php Rest Micro Framework.
+Php Rest Framework.
 
 It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](http://stackphp.com/) compatible Framework.
 
@@ -29,31 +29,31 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 
 # ToC
 
-* [Installation](https://github.com/phprest/phrest#installation)
-* [Usage](https://github.com/phprest/phrest#usage)
- * [Set up](https://github.com/phprest/phrest#set-up)
- * [Routing](https://github.com/phprest/phrest#routing)
-    * [Simple routing](https://github.com/phprest/phrest#simple-routing)
-    * [Routing with arguments](https://github.com/phprest/phrest#routing-with-arguments)
-    * [Routing through a controller](https://github.com/phprest/phrest#routing-through-a-controller)
-    * [Routing through a service controller](https://github.com/phprest/phrest#routing-through-a-service-controller)
-    * [Routing with annotations](https://github.com/phprest/phrest#routing-with-annotations)
- * [Api versioning](https://github.com/phprest/phrest#api-versioning)
- * [Serialization, Deserialization, Hateoas](https://github.com/phprest/phrest#serialization-deserialization-hateoas)
-    * [Serialization example](https://github.com/phprest/phrest#serialization-example)
-    * [Deserialization example](https://github.com/phprest/phrest#deserialization-example)
- * [Pagination](https://github.com/phprest/phrest#pagination)
- * [Responses](https://github.com/phprest/phrest#responses)
-    * [1xx, 2xx, 3xx status codes](https://github.com/phprest/phrest#1xx-2xx-3xx-status-codes)
-      * [Example](https://github.com/phprest/phrest#example) 
-      * [Types](https://github.com/phprest/phrest#types)
-    * [4xx, 5xx status codes](https://github.com/phprest/phrest#4xx-5xx-status-codes)
-      * [Example](https://github.com/phprest/phrest#example-1)
-      * [Types](https://github.com/phprest/phrest#types-1)
- * [Exception handler](https://github.com/phprest/phrest#exception-handler)
-    * [On a single exception](https://github.com/phprest/phrest#on-a-single-exception)
-    * [Fatal error handler](https://github.com/phprest/phrest#fatal-error-handler)
- * [Dependency Injection Container](https://github.com/phprest/phrest#dependency-injection-container)
+* [Installation](https://github.com/phprest/phprest#installation)
+* [Usage](https://github.com/phprest/phprest#usage)
+ * [Set up](https://github.com/phprest/phprest#set-up)
+ * [Routing](https://github.com/phprest/phprest#routing)
+    * [Simple routing](https://github.com/phprest/phprest#simple-routing)
+    * [Routing with arguments](https://github.com/phprest/phprest#routing-with-arguments)
+    * [Routing through a controller](https://github.com/phprest/phprest#routing-through-a-controller)
+    * [Routing through a service controller](https://github.com/phprest/phprest#routing-through-a-service-controller)
+    * [Routing with annotations](https://github.com/phprest/phprest#routing-with-annotations)
+ * [Api versioning](https://github.com/phprest/phprest#api-versioning)
+ * [Serialization, Deserialization, Hateoas](https://github.com/phprest/phprest#serialization-deserialization-hateoas)
+    * [Serialization example](https://github.com/phprest/phprest#serialization-example)
+    * [Deserialization example](https://github.com/phprest/phprest#deserialization-example)
+ * [Pagination](https://github.com/phprest/phprest#pagination)
+ * [Responses](https://github.com/phprest/phprest#responses)
+    * [1xx, 2xx, 3xx status codes](https://github.com/phprest/phprest#1xx-2xx-3xx-status-codes)
+      * [Example](https://github.com/phprest/phprest#example) 
+      * [Types](https://github.com/phprest/phprest#types)
+    * [4xx, 5xx status codes](https://github.com/phprest/phprest#4xx-5xx-status-codes)
+      * [Example](https://github.com/phprest/phprest#example-1)
+      * [Types](https://github.com/phprest/phprest#types-1)
+ * [Exception handler](https://github.com/phprest/phprest#exception-handler)
+    * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
+    * [Fatal error handler](https://github.com/phprest/phprest#fatal-error-handler)
+ * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
 
 # Installation
 
@@ -62,12 +62,12 @@ Install it through composer.
 ```json
 {
     "require": {
-        "adammbalogh/phrest": "@stable"
+        "adammbalogh/phprest": "@stable"
     }
 }
 ```
 
-**tip:** you should browse the [`adammbalogh/phrest`](https://packagist.org/packages/adammbalogh/phrest)
+**tip:** you should browse the [`adammbalogh/phprest`](https://packagist.org/packages/adammbalogh/phprest)
 page to choose a stable version to use, avoid the `@stable` meta constraint.
 
 # Usage
@@ -78,10 +78,10 @@ page to choose a stable version to use, avoid the `@stable` meta constraint.
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Phrest\Application;
+use Phprest\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Phrest\Response;
-use Phrest\Exception;
+use Phprest\Response;
+use Phprest\Exception;
 
 # vendorName, apiVersion, debug
 $app = new Application('vendor', '0.1', true);
@@ -92,7 +92,7 @@ $app->setApiVersionHandler(function ($apiVersion) {
 
         # tip: list your available versions in the exception
         
-        throw new Phrest\Exception\NotAcceptable(PHP_INT_MAX - 3, ['Not supported Api Version']);
+        throw new Phprest\Exception\NotAcceptable(PHP_INT_MAX - 3, ['Not supported Api Version']);
     }
 });
 
@@ -143,7 +143,7 @@ $app->get('/', '\Foo\Bar\HomeController::index'); # calls index method on HomeCo
 # HomeController.php
 
 use Symfony\Component\HttpFoundation\Request;
-use Phrest\Response;
+use Phprest\Response;
 
 class HomeController
 {
@@ -181,15 +181,15 @@ $app->registerController('\Foo\Bar\Controller\Home');
 <?php namespace Foo\Bar\Controller;
 # Home.php
 
-use Phrest\Util\Controller;
+use Phprest\Util\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Phrest\Response;
-use Phrest\Annotation as Phrest;
+use Phprest\Response;
+use Phprest\Annotation as Phprest;
 
 class Home extends Controller
 {
     /**
-     * @Phrest\Route(method="GET", path="/foobars/{id}")
+     * @Phprest\Route(method="GET", path="/foobars/{id}")
      */
     public function get(Request $request, $id)
     {
@@ -211,15 +211,15 @@ class Home extends Controller
 |\*/\*|application/vnd.**Vendor**-v**Version**+json|
  
 * If Accept header is not parsable
- * then phrest throws a Not Acceptable exception
+ * then Phprest throws a Not Acceptable exception
  
 * If you do a deserialization and Content-Type header is not parsable
- * then phrest throws an Unsupported Media Type exception
+ * then Phprest throws an Unsupported Media Type exception
 
 ## Serialization, Deserialization, Hateoas
 
-* Phrest will automatically serialize* your response based on the Accept header.
-* Phrest can deserialize your content based on the Content-Type header.
+* Phprest will automatically serialize* your response based on the Accept header.
+* Phprest can deserialize your content based on the Content-Type header.
 
 Except*:
 * If your response is not a Response instance (e.g. it a simple string)
@@ -318,7 +318,7 @@ Xml response (Accept: application/vnd.vendor+xml; version=1):
 
 ### Deserialization example
 
-You have to use the Phrest\Service\Hateoas\Util trait in your controller to do deserialization.
+You have to use the Phprest\Service\Hateoas\Util trait in your controller to do deserialization.
 
 ```php
 ...
@@ -403,7 +403,7 @@ These are Exceptions.
 $app->get('/', function (Request $request) {
     # ...
     
-    throw new \Phrest\Exception\BadRequest();
+    throw new \Phprest\Exception\BadRequest();
     
     # ...
 });
@@ -437,7 +437,7 @@ $app->get('/', function (Request $request) {
 <?php
 # ...
 $app->get('/', function (Request $request) {
-    throw new \Phrest\Exception\Exception('Code Red!', 9, 503);
+    throw new \Phprest\Exception\Exception('Code Red!', 9, 503);
 });
 # ...
 ```
@@ -463,7 +463,7 @@ The response is content negotiationed (xml/json), the status code is 503.
 
 ### Fatal error handler
 
-Phrest can also handle all the non recoverable errors like E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR.
+Phprest can also handle all the non recoverable errors like E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR.
 
 For a clear error message you should do something like this:
 

@@ -1,13 +1,13 @@
-<?php namespace Phrest\Service\Hateoas;
+<?php namespace Phprest\Service\Hateoas;
 
-use Phrest\Application;
+use Phprest\Application;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\DeserializationContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Negotiation\FormatNegotiator;
-use Phrest\Service\Hateoas\DataStructure\MimeProcessResult;
-use Phrest\Exception;
+use Phprest\Service\Hateoas\DataStructure\MimeProcessResult;
+use Phprest\Exception;
 
 trait Util
 {

@@ -1,12 +1,12 @@
-<?php namespace Phrest;
+<?php namespace Phprest;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Phrest\Service\Hateoas\Config as HateoasConfig;
-use Phrest\Service;
-use Phrest\Router\Strategy;
-use Phrest\Entity;
+use Phprest\Service\Hateoas\Config as HateoasConfig;
+use Phprest\Service;
+use Phprest\Router\Strategy;
+use Phprest\Entity;
 
 class Application extends \Proton\Application
 {

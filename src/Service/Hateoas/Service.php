@@ -1,7 +1,7 @@
-<?php namespace Phrest\Service\Hateoas;
+<?php namespace Phprest\Service\Hateoas;
 
-use Phrest\Service\Serviceable;
-use Phrest\Service\Configurable;
+use Phprest\Service\Serviceable;
+use Phprest\Service\Configurable;
 use Orno\Di\Container;
 use Hateoas\HateoasBuilder;
 use Hateoas\UrlGenerator\CallableUrlGenerator;

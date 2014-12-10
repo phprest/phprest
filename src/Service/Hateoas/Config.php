@@ -1,6 +1,6 @@
-<?php namespace Phrest\Service\Hateoas;
+<?php namespace Phprest\Service\Hateoas;
 
-use Phrest\Service\Configurable;
+use Phprest\Service\Configurable;
 use Symfony\Component\HttpFoundation\Request;
 
 class Config implements Configurable
