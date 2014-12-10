@@ -32,7 +32,7 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 * [Installation](https://github.com/phprest/phrest#installation)
 * [Usage](https://github.com/phprest/phrest#usage)
  * [Set up](https://github.com/phprest/phrest#set-up)
-  * [Routing](https://github.com/phprest/phrest#routing)
+ * [Routing](https://github.com/phprest/phrest#routing)
     * [Simple routing](https://github.com/phprest/phrest#simple-routing)
     * [Routing with arguments](https://github.com/phprest/phrest#routing-with-arguments)
     * [Routing through a controller](https://github.com/phprest/phrest#routing-through-a-controller)
@@ -72,7 +72,7 @@ page to choose a stable version to use, avoid the `@stable` meta constraint.
 
 # Usage
 
-## Set up
+## Setup
 
 ```php
 <?php
@@ -84,11 +84,11 @@ use Phrest\Response;
 use Phrest\Exception;
 
 # vendorName, apiVersion, debug
-$app = new Application('vendor', 1, true);
+$app = new Application('vendor', '0.1', true);
 
 # optional
 $app->setApiVersionHandler(function ($apiVersion) {
-    if ( ! in_array($apiVersion, [1, 2, 3])) {
+    if ( ! in_array($apiVersion, ['0.1'])) {
 
         # tip: list your available versions in the exception
         
