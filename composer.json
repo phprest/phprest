@@ -1,6 +1,6 @@
 {
     "name": "phprest/phprest",
-    "description": "Php Rest Framework. Simple, Easy, Extensible.",
+    "description": "Php Rest Framework.",
     "keywords": ["phprest", "framework", "rest", "restful", "api"],
     "license": "MIT",
     "type": "library",
@@ -24,9 +24,9 @@
         }
     },
     "suggest": {
-        "phprest/phprest-service-jsonmapper": "For mapping Json Object to Class.",
+        "phprest/phprest-service-request-filter": "For filtering Entites.",
         "phprest/phprest-service-validator": "For validating Entities.",
-        "phprest/phprest-service-rdbms": "For managins Relational Databases.",
+        "phprest/phprest-service-orm": "For managing Relational Databases.",
         "zircote/swagger-php": "For creating your Api documentation."
     }
 }
