@@ -475,3 +475,14 @@ ini_set('display_errors', 'Off');
 ## Dependency Injection Container
 
 See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [Orno/Di](https://github.com/orno/di).
+
+# Api testing
+
+There are a couple of great tools out there for testing your Api.
+
+* [Postman](http://www.getpostman.com/) and [Newman](https://github.com/a85/Newman)
+ * Tip: Create collections in Postman and then run these in Newman
+* [Frisby](https://github.com/vlucas/frisby)
+ * Frisby is a REST API testing framework built on node.js and Jasmine that makes testing API endpoints easy, fast, and fun.
+* [Runscope](https://www.runscope.com/)
+ * For Api Monitoring and Testing
