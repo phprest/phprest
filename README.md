@@ -50,10 +50,11 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
     * [4xx, 5xx status codes](https://github.com/phprest/phprest#4xx-5xx-status-codes)
       * [Example](https://github.com/phprest/phprest#example-1)
       * [Types](https://github.com/phprest/phprest#types-1)
+ * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
  * [Exception handler](https://github.com/phprest/phprest#exception-handler)
     * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
     * [Fatal error handler](https://github.com/phprest/phprest#fatal-error-handler)
- * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
+* [Api Testing](https://github.com/phprest/phprest#api-testing)
 
 # Installation
 
@@ -197,6 +198,8 @@ class Home extends Controller
     }
 }
 ```
+
+For more information please visit [Orno/Route](https://github.com/orno/route).
 
 ## Api Versioning
 
@@ -429,6 +432,10 @@ $app->get('/', function (Request $request) {
 |UnprocessableEntity|
 |UnsupportedMediaType|
 
+## Dependency Injection Container
+
+See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [Orno/Di](https://github.com/orno/di).
+
 ## Exception handler
 
 ### On a single exception
@@ -471,10 +478,6 @@ For a clear error message you should do something like this:
 <?php
 ini_set('display_errors', 'Off');
 ```
-
-## Dependency Injection Container
-
-See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [Orno/Di](https://github.com/orno/di).
 
 # Api testing
 
