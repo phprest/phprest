@@ -3,6 +3,9 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Orno\Di\Container;
+use Phprest\Router\RouteCollection;
+use League\Event\Emitter as EventEmitter;
 use Phprest\Service\Hateoas\Config as HateoasConfig;
 use Phprest\Service;
 use Phprest\Router\Strategy;
@@ -46,9 +49,10 @@ class Application extends \Proton\Application
                                 HateoasConfig $hateoasConfig = null,
                                 Strategy $routerStrategy = null)
     {
-        parent::__construct();
-
         $this->debug = $debug;
+        $this->container = new Container();
+        $this->router = new RouteCollection($this->container);
+        $this->eventEmitter = new EventEmitter;
 
         $this->container->add(self::CONFIG_VENDOR, $vendor);
         $this->container->add(self::CONFIG_API_VERSION, $apiVersion);
