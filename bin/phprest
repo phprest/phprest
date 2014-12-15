@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../../../autoload.php';
+
+use Symfony\Component\Console\Application;
+use Phprest\Command;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
+function error($errorString) { (new ConsoleOutput())->writeln('<fg=red>' . $errorString . '</fg=red>'); exit(1); }
+
+$appPath = __DIR__ . '/../../../../app/app.php';
+
+if ( ! file_exists($appPath)) {
+    if ( ! ($paths = @include_once(__DIR__ . '/../../../../paths.php'))) {
+        error(__DIR__ . '/../../../../paths.php' . ' does not exist');
+    }
+    if ( ! array_key_exists('app', $paths)) {
+        error('app array key does not exist in ' . __DIR__ . '/../../../../paths.php');
+    }
+    if ( ! file_exists($paths['app'])) {
+        error($paths['app'] . ' does not exist');
+    }
+
+    $appPath = $paths['app'];
+}
+
+$app = require_once $appPath;
+
+if ( ! $app instanceof \Phprest\Application) {
+    error($paths['app'] . ' returns with a non \\Phrest\\Application instance');
+}
+
+$commands = [
+    new Command\Route\Get($app)
+];
+
+$application = new Application('Phprest', '0.1');
+
+foreach ($commands as $command) {
+    $application->add($command);
+}
+
+$application->run();

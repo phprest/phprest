@@ -54,7 +54,8 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
  * [Exception handler](https://github.com/phprest/phprest#exception-handler)
     * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
     * [Fatal error handler](https://github.com/phprest/phprest#fatal-error-handler)
-* [Api Testing](https://github.com/phprest/phprest#api-testing)
+ * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
+* [Api testing](https://github.com/phprest/phprest#api-testing)
 
 # Installation
 

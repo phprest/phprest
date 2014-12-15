@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "32c49f2c519f2dfd57cdeb44d85abea9",
+    "hash": "afa13f40d8d1fd051917929b3c731954",
     "packages": [
         {
             "name": "alexbilbie/proton",
@@ -661,16 +661,16 @@
         },
         {
             "name": "nikic/fast-route",
-            "version": "v0.2.0",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/FastRoute.git",
-                "reference": "7dc9a43cb856debc22fe158a1144018e16f7a637"
+                "reference": "57a2aec2d597f166c4139e44953bc42b7eaf9e54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/7dc9a43cb856debc22fe158a1144018e16f7a637",
-                "reference": "7dc9a43cb856debc22fe158a1144018e16f7a637",
+                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/57a2aec2d597f166c4139e44953bc42b7eaf9e54",
+                "reference": "57a2aec2d597f166c4139e44953bc42b7eaf9e54",
                 "shasum": ""
             },
             "require": {
@@ -700,7 +700,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2014-05-17 11:33:04"
+            "time": "2014-11-26 18:36:25"
         },
         {
             "name": "orno/di",
@@ -985,21 +985,22 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v2.5.7",
+            "version": "v2.6.1",
             "target-dir": "Symfony/Component/Debug",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "6a7289a58ddcb270568b42f1e46e0cfc60a3e6ba"
+                "reference": "08b529b4c0aa3e746d187fe2a63f08cb955a3566"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/6a7289a58ddcb270568b42f1e46e0cfc60a3e6ba",
-                "reference": "6a7289a58ddcb270568b42f1e46e0cfc60a3e6ba",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/08b529b4c0aa3e746d187fe2a63f08cb955a3566",
+                "reference": "08b529b4c0aa3e746d187fe2a63f08cb955a3566",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.3",
+                "psr/log": "~1.0"
             },
             "require-dev": {
                 "symfony/http-foundation": "~2.1",
@@ -1012,7 +1013,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -1036,21 +1037,21 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-20 13:22:25"
+            "time": "2014-12-02 20:19:20"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.5.7",
+            "version": "v2.6.1",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "bb6fc12085cd195dceaf48016087b12b632df497"
+                "reference": "720fe9bca893df7ad1b4546649473b5afddf0216"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/bb6fc12085cd195dceaf48016087b12b632df497",
-                "reference": "bb6fc12085cd195dceaf48016087b12b632df497",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/720fe9bca893df7ad1b4546649473b5afddf0216",
+                "reference": "720fe9bca893df7ad1b4546649473b5afddf0216",
                 "shasum": ""
             },
             "require": {
@@ -1059,7 +1060,8 @@
             "require-dev": {
                 "psr/log": "~1.0",
                 "symfony/config": "~2.0",
-                "symfony/dependency-injection": "~2.0,<2.6.0",
+                "symfony/dependency-injection": "~2.6",
+                "symfony/expression-language": "~2.6",
                 "symfony/stopwatch": "~2.2"
             },
             "suggest": {
@@ -1069,7 +1071,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -1093,21 +1095,21 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2014-10-30 20:17:55"
+            "time": "2014-12-02 20:19:20"
         },
         {
             "name": "symfony/expression-language",
-            "version": "v2.5.7",
+            "version": "v2.6.1",
             "target-dir": "Symfony/Component/ExpressionLanguage",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "50477a066c652c118439171a06d8222c856eb955"
+                "reference": "1ed31333a56c494ba8426e82432c4bac9270c4d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/50477a066c652c118439171a06d8222c856eb955",
-                "reference": "50477a066c652c118439171a06d8222c856eb955",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/1ed31333a56c494ba8426e82432c4bac9270c4d0",
+                "reference": "1ed31333a56c494ba8426e82432c4bac9270c4d0",
                 "shasum": ""
             },
             "require": {
@@ -1116,7 +1118,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -1140,21 +1142,21 @@
             ],
             "description": "Symfony ExpressionLanguage Component",
             "homepage": "http://symfony.com",
-            "time": "2014-10-30 20:17:55"
+            "time": "2014-11-28 10:00:40"
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.5.7",
+            "version": "v2.6.1",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "24545d3def96e6d6c3d7f1efdb48f330f27e244d"
+                "reference": "0109221f3cf012bf027768ad3e4236dae1af5332"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/24545d3def96e6d6c3d7f1efdb48f330f27e244d",
-                "reference": "24545d3def96e6d6c3d7f1efdb48f330f27e244d",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/0109221f3cf012bf027768ad3e4236dae1af5332",
+                "reference": "0109221f3cf012bf027768ad3e4236dae1af5332",
                 "shasum": ""
             },
             "require": {
@@ -1166,7 +1168,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -1193,21 +1195,21 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-20 13:22:25"
+            "time": "2014-12-02 20:19:20"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v2.5.7",
+            "version": "v2.5.8",
             "target-dir": "Symfony/Component/HttpKernel",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "03b9f8fbfe75044ff6ca923e6471f117faf7b965"
+                "reference": "c16051a1f3d259f806115fd9897430ae162d19a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/03b9f8fbfe75044ff6ca923e6471f117faf7b965",
-                "reference": "03b9f8fbfe75044ff6ca923e6471f117faf7b965",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/c16051a1f3d259f806115fd9897430ae162d19a0",
+                "reference": "c16051a1f3d259f806115fd9897430ae162d19a0",
                 "shasum": ""
             },
             "require": {
@@ -1265,7 +1267,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-20 16:00:03"
+            "time": "2014-12-03 14:18:17"
         },
         {
             "name": "willdurand/hateoas",
