@@ -206,9 +206,15 @@ class Application extends \Proton\Application
      * @param \Exception $exception
      *
      * @return Response
+     *
+     * @throws \Exception
      */
     protected function getExceptionResponse(\Exception $exception)
     {
+        if (php_sapi_name() === 'cli') {
+            throw $exception;
+        }
+
         $response = new Response();
 
         try {
