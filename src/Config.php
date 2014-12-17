@@ -5,8 +5,10 @@ use Orno\Route\RouteCollection;
 use Phprest\Router\RouteCollection as PhprestRouteCollection;
 use Phprest\Router\Strategy as RouterStrategy;
 use League\Event\Emitter as EventEmitter;
-use Phprest\Service\Hateoas\Service as HateoasService;
 use Phprest\Service\Hateoas\Config as HateoasConfig;
+use Phprest\Service\Hateoas\Service as HateoasService;
+use Phprest\Service\Logger\Config as LoggerConfig;
+use Phprest\Service\Logger\Service as LoggerService;
 
 class Config
 {
@@ -51,6 +53,16 @@ class Config
     protected $hateoasService;
 
     /**
+     * @var LoggerConfig
+     */
+    protected $loggerConfig;
+
+    /**
+     * @var LoggerService
+     */
+    protected $loggerService;
+
+    /**
      * @var callable
      */
     protected $apiVersionHandler;
@@ -68,8 +80,8 @@ class Config
         $this->setContainer(new Container());
         $this->setRouter(new PhprestRouteCollection());
         $this->setEventEmitter(new EventEmitter());
-        $this->setHateoasService(new HateoasService());
         $this->setHateoasConfig(new HateoasConfig($this->debug));
+        $this->setHateoasService(new HateoasService());
 
         $this->router->setStrategy(new RouterStrategy($this->container));
     }
@@ -155,6 +167,22 @@ class Config
     }
 
     /**
+     * @param HateoasConfig $config
+     */
+    public function setHateoasConfig(HateoasConfig $config)
+    {
+        $this->hateoasConfig = $config;
+    }
+
+    /**
+     * @return HateoasConfig
+     */
+    public function getHateoasConfig()
+    {
+        return $this->hateoasConfig;
+    }
+
+    /**
      * @param HateoasService $service
      */
     public function setHateoasService(HateoasService $service)
@@ -171,19 +199,35 @@ class Config
     }
 
     /**
-     * @param HateoasConfig $config
+     * @param LoggerConfig $config
      */
-    public function setHateoasConfig(HateoasConfig $config)
+    public function setLoggerConfig(LoggerConfig $config)
     {
-        $this->hateoasConfig = $config;
+        $this->loggerConfig = $config;
     }
 
     /**
-     * @return HateoasConfig
+     * @return LoggerConfig
      */
-    public function getHateoasConfig()
+    public function getLoggerConfig()
     {
-        return $this->hateoasConfig;
+        return $this->loggerConfig;
+    }
+
+    /**
+     * @param LoggerService $service
+     */
+    public function setLoggerService(LoggerService $service)
+    {
+        $this->loggerService = $service;
+    }
+
+    /**
+     * @return LoggerService
+     */
+    public function getLoggerService()
+    {
+        return $this->loggerService;
     }
 
     /**
