@@ -3,6 +3,8 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Phprest\Exception\Exception;
+use Orno\Di\Exception\ReflectionException;
 use Phprest\Service;
 use Phprest\Entity;
 
@@ -15,6 +17,7 @@ class Application extends \Proton\Application
     const CNTRID_ROUTER = 'router';
 
     use Service\Hateoas\Getter, Service\Hateoas\Util;
+    use Service\Logger\Getter;
 
     /**
      * @var Config
@@ -39,7 +42,11 @@ class Application extends \Proton\Application
         AnnotationRegistry::registerLoader('class_exists');
 
         $this->setErrorHandlers();
+
         $this->registerService($config->getHateoasService(), $config->getHateoasConfig());
+        if ( ! is_null($config->getLoggerConfig()) and ! is_null($config->getLoggerService())) {
+            $this->registerService($config->getLoggerService(), $config->getLoggerConfig());
+        }
 
         $this->container->add(self::CNTRID_VENDOR, $config->getVendor());
         $this->container->add(self::CNTRID_API_VERSION, $config->getApiVersion());
@@ -115,11 +122,11 @@ class Application extends \Proton\Application
     protected function setErrorHandlers()
     {
         set_error_handler(function($errNo, $errStr, $errFile, $errLine) {
-            throw new \ErrorException($errStr, PHP_INT_MAX - 1, $errNo, $errFile, $errLine);
+            throw new \ErrorException($errStr, 0, $errNo, $errFile, $errLine);
         });
 
         $exceptionHandler = function(\Exception $exception) {
-            $this->getExceptionResponse($exception)->send();
+            $this->exceptionHandler($exception);
         };
 
         set_exception_handler($exceptionHandler);
@@ -128,7 +135,7 @@ class Application extends \Proton\Application
             if ($error = error_get_last()) {
                 call_user_func(
                     $exceptionHandler,
-                    new \ErrorException($error['message'], PHP_INT_MAX, $error['type'], $error['file'], $error['line'])
+                    new \ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])
                 );
             }
         });
@@ -139,8 +146,41 @@ class Application extends \Proton\Application
     }
 
     /**
-     * Returns with a xml/json response.
-     * Default: json.
+     * @param \Exception $exception
+     *
+     * @return void
+     */
+    protected function exceptionHandler(\Exception $exception)
+    {
+        if ( ! $this->config->isDebug()) {
+            try {
+                $this->serviceLogger()->addError(   $exception->getMessage() .
+                    ' Stack Trace: ' .
+                    $exception->getTraceAsString()
+                );
+
+                if ($exception instanceof Exception) {
+                    $exception = new Exception( $this->config->getLoggerConfig()->prodErrorMessage,
+                        $exception->getCode(),
+                        $exception->getStatusCode(),
+                        $exception->getDetails(),
+                        $exception->getPrevious()
+                    );
+                } else {
+                    $exception = new \Exception($this->config->getLoggerConfig()->prodErrorMessage,
+                        $exception->getCode(),
+                        $exception->getPrevious()
+                    );
+                }
+            } catch (ReflectionException $e) {
+            }
+        }
+
+        $this->getExceptionResponse($exception)->send();
+    }
+
+    /**
+     * Returns with a serialized response.
      *
      * @param \Exception $exception
      *

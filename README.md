@@ -16,6 +16,7 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 * [League\Event](https://github.com/thephpleague/event)
 * [Willdurand\Negotiation](https://github.com/willdurand/Negotiation)
 * [Willdurand\Hateoas](https://github.com/willdurand/Hateoas)
+* [Monolog\Monolog](https://github.com/Seldaek/monolog)
 
 # Skills
 
@@ -26,12 +27,14 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 * Hateoas
 * Api versioning
 * Pagination
+* Logging
 
 # ToC
 
 * [Installation](https://github.com/phprest/phprest#installation)
 * [Usage](https://github.com/phprest/phprest#usage)
  * [Set up](https://github.com/phprest/phprest#set-up)
+    * [Logging](https://github.com/phprest/phprest#logging)
  * [Routing](https://github.com/phprest/phprest#routing)
     * [Simple routing](https://github.com/phprest/phprest#simple-routing)
     * [Routing with arguments](https://github.com/phprest/phprest#routing-with-arguments)
@@ -91,7 +94,7 @@ $config->setDebug(true);
 $config->setApiVersionHandler(function ($apiVersion) {
     if ( ! in_array($apiVersion, ['0.1'])) {
         # tip: list your available versions in the exception
-        throw new Phprest\Exception\NotAcceptable(PHP_INT_MAX - 3, ['Not supported Api Version']);
+        throw new Phprest\Exception\NotAcceptable(0, ['Not supported Api Version']);
     }
 });
 
@@ -102,6 +105,23 @@ $app->get('/', function (Request $request) {
 });
 
 $app->run();
+```
+
+### Logging
+
+```php
+<?php
+use Phprest\Service\Logger\Config as LoggerConfig;
+use Phprest\Service\Logger\Service as LoggerService;
+use Monolog\Handler\StreamHandler;
+# ...
+$config = new Config('vendor.name', '0.1');
+# ...
+$loggerHandlers[] = new StreamHandler('path_to_the_log_file', \Monolog\Logger::DEBUG);
+
+$config->setLoggerConfig(new LoggerConfig('phprest', $loggerHandlers));
+$config->setLoggerService(new LoggerService());
+# ...
 ```
 
 ## Routing

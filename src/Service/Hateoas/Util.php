@@ -48,7 +48,7 @@ trait Util
             return $response;
         }
 
-        throw new Exception\NotAcceptable(PHP_INT_MAX - 2, [$mimeProcResult->mime . ' is not supported']);
+        throw new Exception\NotAcceptable(0, [$mimeProcResult->mime . ' is not supported']);
     }
 
     /**
@@ -64,7 +64,7 @@ trait Util
         $mimeProcResult = $this->processMime($request->headers->get('Content-Type'));
 
         if (is_null($mimeProcResult->format)) {
-            throw new Exception\UnsupportedMediaType(PHP_INT_MAX - 3);
+            throw new Exception\UnsupportedMediaType();
         }
 
         $this->apiVersionHandler($mimeProcResult);
