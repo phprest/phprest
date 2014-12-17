@@ -90,9 +90,9 @@ $config = new Config('vendor.name', '0.1');
 $config->setDebug(true);
 $config->setApiVersionHandler(function ($apiVersion) {
     if ( ! in_array($apiVersion, ['0.1'])) {
-            # tip: list your available versions in the exception
-            throw new Phprest\Exception\NotAcceptable(PHP_INT_MAX - 3, ['Not supported Api Version']);
-        }
+        # tip: list your available versions in the exception
+        throw new Phprest\Exception\NotAcceptable(PHP_INT_MAX - 3, ['Not supported Api Version']);
+    }
 });
 
 $app = new Application($config);
