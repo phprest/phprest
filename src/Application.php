@@ -155,21 +155,21 @@ class Application extends \Proton\Application
         if ( ! $this->config->isDebug()) {
             try {
                 $this->serviceLogger()->addError(   $exception->getMessage() .
-                    ' Stack Trace: ' .
-                    $exception->getTraceAsString()
+                                                    ' Stack Trace: ' .
+                                                    $exception->getTraceAsString()
                 );
 
                 if ($exception instanceof Exception) {
                     $exception = new Exception( $this->config->getLoggerConfig()->prodErrorMessage,
-                        $exception->getCode(),
-                        $exception->getStatusCode(),
-                        $exception->getDetails(),
-                        $exception->getPrevious()
+                                                $exception->getCode(),
+                                                $exception->getStatusCode(),
+                                                $exception->getDetails(),
+                                                $exception->getPrevious()
                     );
                 } else {
                     $exception = new \Exception($this->config->getLoggerConfig()->prodErrorMessage,
-                        $exception->getCode(),
-                        $exception->getPrevious()
+                                                $exception->getCode(),
+                                                $exception->getPrevious()
                     );
                 }
             } catch (ReflectionException $e) {
