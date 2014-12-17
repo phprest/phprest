@@ -67,12 +67,12 @@ Install it through composer.
 ```json
 {
     "require": {
-        "adammbalogh/phprest": "@stable"
+        "phprest/phprest": "@stable"
     }
 }
 ```
 
-**tip:** you should browse the [`adammbalogh/phprest`](https://packagist.org/packages/adammbalogh/phprest)
+**tip:** you should browse the [`phprest/phprest`](https://packagist.org/packages/phprest/phprest)
 page to choose a stable version to use, avoid the `@stable` meta constraint.
 
 # Usage
