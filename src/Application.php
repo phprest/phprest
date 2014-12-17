@@ -3,33 +3,23 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Orno\Di\Container;
-use Phprest\Router\RouteCollection;
-use League\Event\Emitter as EventEmitter;
-use Phprest\Service\Hateoas\Config as HateoasConfig;
 use Phprest\Service;
-use Phprest\Router\Strategy;
 use Phprest\Entity;
 
 class Application extends \Proton\Application
 {
-    const CONFIG_DEBUG = 'debug';
-    const CONFIG_VENDOR = 'vendor';
-    const CONFIG_API_VERSION = 'api-version';
-    const CONFIG_API_VERSION_HANDLER = 'api-version-handler';
-    const CONFIG_ROUTER = 'router';
+    const CNTRID_DEBUG = 'debug';
+    const CNTRID_VENDOR = 'vendor';
+    const CNTRID_API_VERSION = 'api-version';
+    const CNTRID_API_VERSION_HANDLER = 'api-version-handler';
+    const CNTRID_ROUTER = 'router';
 
     use Service\Hateoas\Getter, Service\Hateoas\Util;
 
     /**
-     * @var boolean
+     * @var Config
      */
-    protected $debug = false;
-
-    /**
-     * @var callable
-     */
-    protected $exceptionHandler;
+    protected $config;
 
     /**
      * @var array
@@ -37,31 +27,27 @@ class Application extends \Proton\Application
     protected $registeredServiceNames = [];
 
     /**
-     * @param string $vendor
-     * @param int|string $apiVersion
-     * @param boolean $debug
-     * @param HateoasConfig $hateoasConfig
-     * @param Strategy $routerStrategy
+     * @param Config $config
      */
-    public function __construct($vendor,
-                                $apiVersion,
-                                $debug = false,
-                                HateoasConfig $hateoasConfig = null,
-                                Strategy $routerStrategy = null)
+    public function __construct(Config $config)
     {
-        $this->debug = $debug;
-        $this->container = new Container();
-        $this->router = new RouteCollection($this->container);
-        $this->eventEmitter = new EventEmitter;
+        $this->config = $config;
+        $this->container = $config->getContainer();
+        $this->router = $config->getRouter();
+        $this->eventEmitter = $config->getEventEmitter();
 
-        $this->container->add(self::CONFIG_VENDOR, $vendor);
-        $this->container->add(self::CONFIG_API_VERSION, $apiVersion);
-        $this->container->add(self::CONFIG_DEBUG, $debug);
-        $this->container->singleton(self::CONFIG_ROUTER, function() { return $this->router; } );
+        AnnotationRegistry::registerLoader('class_exists');
 
         $this->setErrorHandlers();
-        $this->setRouterStrategy(is_null($routerStrategy) ? new Strategy($this->container) : $routerStrategy);
-        $this->registerBuiltInServices($hateoasConfig);
+        $this->registerService($config->getHateoasService(), $config->getHateoasConfig());
+
+        $this->container->add(self::CNTRID_VENDOR, $config->getVendor());
+        $this->container->add(self::CNTRID_API_VERSION, $config->getApiVersion());
+        $this->container->add(self::CNTRID_DEBUG, $config->isDebug());
+        $this->container->add(self::CNTRID_ROUTER, function() { return $this->router; } );
+        $this->container->add(self::CNTRID_API_VERSION_HANDLER, function() use ($config) {
+            return $config->getApiVersionHandler();
+        });
     }
 
     /**
@@ -92,19 +78,9 @@ class Application extends \Proton\Application
     {
         $controller = new $class($this->container);
 
-        $this->container->singleton($class, function () use ($controller) {
+        $this->container->add($class, function () use ($controller) {
             return $controller;
         });
-    }
-
-    /**
-     * @param Strategy $routerStrategy
-     *
-     * @return void
-     */
-    public function setRouterStrategy(Strategy $routerStrategy)
-    {
-        $this->router->setStrategy($routerStrategy);
     }
 
     /**
@@ -134,68 +110,31 @@ class Application extends \Proton\Application
     }
 
     /**
-     * @param callable $func
-     *
-     * @return void
-     */
-    public function setApiVersionHandler(callable $func)
-    {
-        $this->container->add(self::CONFIG_API_VERSION_HANDLER, function() use ($func) {
-            return $func;
-        });
-    }
-
-    /**
-     * @param callable $func
-     *
-     * @return void
-     */
-    public function setDefaultExceptionHandler(callable $func) {
-        set_exception_handler($func);
-
-        $this->exceptionHandler = $func;
-    }
-
-    /**
-     * @param HateoasConfig $hateoasConfig
-     *
-     * @return void
-     */
-    protected function registerBuiltInServices(HateoasConfig $hateoasConfig = null)
-    {
-        AnnotationRegistry::registerLoader('class_exists');
-
-        if (is_null($hateoasConfig)) {
-            $hateoasConfig = new HateoasConfig($this->debug);
-        }
-
-        $this->registerService(new Service\Hateoas\Service(), $hateoasConfig);
-    }
-
-    /**
      * @return void
      */
     protected function setErrorHandlers()
     {
-        $this->setExceptionDecorator(function (\Exception $e) {
-            throw $e;
-        });
-
         set_error_handler(function($errNo, $errStr, $errFile, $errLine) {
             throw new \ErrorException($errStr, PHP_INT_MAX - 1, $errNo, $errFile, $errLine);
         });
 
-        $this->setDefaultExceptionHandler(function(\Exception $exception) {
+        $exceptionHandler = function(\Exception $exception) {
             $this->getExceptionResponse($exception)->send();
-        });
+        };
 
-        register_shutdown_function(function() {
+        set_exception_handler($exceptionHandler);
+
+        register_shutdown_function(function() use ($exceptionHandler) {
             if ($error = error_get_last()) {
                 call_user_func(
-                    $this->exceptionHandler,
+                    $exceptionHandler,
                     new \ErrorException($error['message'], PHP_INT_MAX, $error['type'], $error['file'], $error['line'])
                 );
             }
+        });
+
+        $this->setExceptionDecorator(function (\Exception $e) {
+            throw $e;
         });
     }
 
@@ -219,20 +158,20 @@ class Application extends \Proton\Application
 
         try {
             $response = $this->serialize(
-                $this[self::CONFIG_DEBUG] === false ? new Entity\Error($exception) : new Entity\DebugError($exception),
+                ! $this->config->isDebug() ? new Entity\Error($exception) : new Entity\DebugError($exception),
                 Request::createFromGlobals(),
                 $response
             );
         } catch (\Exception $e) {
             $response->setContent(
                 $this->serviceHateoas()->getSerializer()->serialize(
-                    $this[self::CONFIG_DEBUG] === false ? new Entity\Error($exception) : new Entity\DebugError($exception),
+                    ! $this->config->isDebug() ? new Entity\Error($exception) : new Entity\DebugError($exception),
                     'json'
                 )
             );
 
-            $vendor = $this->container->get(self::CONFIG_VENDOR);
-            $apiVersion = $this->container->get(self::CONFIG_API_VERSION);
+            $vendor = $this->container->get(self::CNTRID_VENDOR);
+            $apiVersion = $this->container->get(self::CNTRID_API_VERSION);
 
             $response->headers->set('Content-Type', 'application/vnd.' . $vendor . '-v' . $apiVersion . '+json');
         }

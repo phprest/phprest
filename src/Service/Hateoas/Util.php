@@ -23,7 +23,7 @@ trait Util
     protected function serialize($value, Request $request, Response $response)
     {
         $mimeProcResult = $this->processMime(
-            (new FormatNegotiator())->getBest($request->headers->get('Accept'))->getValue()
+            (new FormatNegotiator())->getBest($request->headers->get('Accept', '*/*'))->getValue()
         );
 
         $this->apiVersionHandler($mimeProcResult);
@@ -84,8 +84,8 @@ trait Util
      */
     protected function processMime($mime)
     {
-        $vendor = $this->getContainer()->get(Application::CONFIG_VENDOR);
-        $apiVersion = $this->getContainer()->get(Application::CONFIG_API_VERSION);
+        $vendor = $this->getContainer()->get(Application::CNTRID_VENDOR);
+        $apiVersion = $this->getContainer()->get(Application::CNTRID_API_VERSION);
         $format = null;
 
         if (preg_match('#application/vnd\.' . $vendor . '-v([0-9\.]+)\+(xml|json)#', $mime, $matches)) {
@@ -111,10 +111,10 @@ trait Util
     protected function apiVersionHandler(MimeProcessResult $mimeProcResult)
     {
         if ( ! is_null($mimeProcResult->format) and
-            is_callable($this->getContainer()->get(Application::CONFIG_API_VERSION_HANDLER))) {
+            is_callable($this->getContainer()->get(Application::CNTRID_API_VERSION_HANDLER))) {
 
             call_user_func(
-                $this->getContainer()->get(Application::CONFIG_API_VERSION_HANDLER),
+                $this->getContainer()->get(Application::CNTRID_API_VERSION_HANDLER),
                 $mimeProcResult->apiVersion
             );
 

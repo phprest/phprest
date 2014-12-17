@@ -27,6 +27,6 @@ class Service implements Serviceable
         $hateoas->addMetadataDir($config->metadataDir);
         $hateoas->setUrlGenerator(null, new CallableUrlGenerator($config->urlGenerator));
 
-        $container->singleton($config->getServiceName(), $hateoas->build());
+        $container->add($config->getServiceName(), $hateoas->build());
     }
 }

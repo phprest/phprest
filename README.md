@@ -81,22 +81,21 @@ page to choose a stable version to use, avoid the `@stable` meta constraint.
 require __DIR__ . '/../vendor/autoload.php';
 
 use Phprest\Application;
+use Phprest\Config;
 use Symfony\Component\HttpFoundation\Request;
 use Phprest\Response;
 use Phprest\Exception;
 
-# vendorName, apiVersion, debug
-$app = new Application('vendor', '0.1', true);
-
-# optional
-$app->setApiVersionHandler(function ($apiVersion) {
+$config = new Config('vendor.name', '0.1');
+$config->setDebug(true);
+$config->setApiVersionHandler(function ($apiVersion) {
     if ( ! in_array($apiVersion, ['0.1'])) {
-
-        # tip: list your available versions in the exception
-        
-        throw new Phprest\Exception\NotAcceptable(PHP_INT_MAX - 3, ['Not supported Api Version']);
-    }
+            # tip: list your available versions in the exception
+            throw new Phprest\Exception\NotAcceptable(PHP_INT_MAX - 3, ['Not supported Api Version']);
+        }
 });
+
+$app = new Application($config);
 
 $app->get('/', function (Request $request) {
     return new Response\Ok('Hello World!');
