@@ -41,6 +41,7 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
     * [Routing through a controller](https://github.com/phprest/phprest#routing-through-a-controller)
     * [Routing through a service controller](https://github.com/phprest/phprest#routing-through-a-service-controller)
     * [Routing with annotations](https://github.com/phprest/phprest#routing-with-annotations)
+ * [Controller](https://github.com/phprest/phprest#controller)
  * [Api versioning](https://github.com/phprest/phprest#api-versioning)
  * [Serialization, Deserialization, Hateoas](https://github.com/phprest/phprest#serialization-deserialization-hateoas)
     * [Serialization example](https://github.com/phprest/phprest#serialization-example)
@@ -222,6 +223,22 @@ class Home extends Controller
 ```
 
 For more information please visit [Orno/Route](https://github.com/orno/route).
+
+## Controller
+
+To create a Phprest Controller simply extends your class from ```\Phprest\Util\Controller```.
+
+```php
+<?php namespace App\Module\Controller;
+
+class Index extends \Phprest\Util\Controller
+{
+   public function index(Request $request)
+   {
+      # ...
+   }
+}
+```
 
 ## Api Versioning
 
