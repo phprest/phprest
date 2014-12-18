@@ -58,6 +58,8 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
     * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
     * [Fatal error handler](https://github.com/phprest/phprest#fatal-error-handler)
  * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
+* [Authentication](https://github.com/phprest/phprest#authentication)
+ * [Basic Authentication](https://github.com/phprest/phprest#basic-authentication)
 * [Api testing](https://github.com/phprest/phprest#api-testing)
 
 # Installation
@@ -497,6 +499,37 @@ For a clear error message you should do something like this:
 ```php
 <?php
 ini_set('display_errors', 'Off');
+```
+
+# Authentication
+
+### Basic Authentication
+
+You'll need these components:
+* [Stackphp\Builder](https://github.com/stackphp/builder)
+* [Stackphp\Run](https://github.com/stackphp/run)
+* [Dflydev\Dflydev-stack-basic-authentication](https://github.com/dflydev/dflydev-stack-basic-authentication)
+
+```php
+# ...
+$app = (new \Stack\Builder())
+    ->push('Dflydev\Stack\BasicAuthentication', [
+        'firewall' => [
+            ['path' => '/', 'anonymous' => false],
+            ['path' => '/temperatures', 'method' => 'GET', 'anonymous' => true]
+        ],
+        'authenticator' => function ($username, $password) {
+            if ('admin' === $username && 'admin' === $password) {
+                // Basic YWRtaW46YWRtaW4=
+                return 'success';
+            }
+        },
+        'realm' => 'The Glowing Territories',
+    ])
+    ->resolve($app);
+    
+Stack\run($app);
+# ...
 ```
 
 # Api testing
