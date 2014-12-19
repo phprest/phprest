@@ -33,7 +33,8 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 
 * [Installation](https://github.com/phprest/phprest#installation)
 * [Usage](https://github.com/phprest/phprest#usage)
- * [Set up](https://github.com/phprest/phprest#set-up)
+ * [Setup](https://github.com/phprest/phprest#setup)
+    * [Configuration](https://github.com/phprest/phprest#configuration)
     * [Logging](https://github.com/phprest/phprest#logging)
  * [Routing](https://github.com/phprest/phprest#routing)
     * [Simple routing](https://github.com/phprest/phprest#simple-routing)
@@ -54,11 +55,12 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
     * [4xx, 5xx status codes](https://github.com/phprest/phprest#4xx-5xx-status-codes)
       * [Example](https://github.com/phprest/phprest#example-1)
       * [Types](https://github.com/phprest/phprest#types-1)
+ * [Services](https://github.com/phprest/phprest#services)
  * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
+ * [Cli](https://github.com/phprest/phprest#cli)
  * [Exception handler](https://github.com/phprest/phprest#exception-handler)
     * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
     * [Fatal error handler](https://github.com/phprest/phprest#fatal-error-handler)
- * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
 * [Authentication](https://github.com/phprest/phprest#authentication)
  * [Basic Authentication](https://github.com/phprest/phprest#basic-authentication)
 * [Api testing](https://github.com/phprest/phprest#api-testing)
@@ -109,6 +111,10 @@ $app->get('/', function (Request $request) {
 
 $app->run();
 ```
+
+### Configuration
+
+For the configuration you should check the [Config](src/Config.php) class.
 
 ### Logging
 
@@ -471,9 +477,28 @@ $app->get('/', function (Request $request) {
 |UnprocessableEntity|
 |UnsupportedMediaType|
 
+## Services
+
+There are a couple of services which help you to solve some general problems:
+* [Validator](https://github.com/phprest/phprest-service-validator)
+* [Request Filter](https://github.com/phprest/phprest-service-request-filter)
+* [Orm](https://github.com/phprest/phprest-service-orm)
+
+*These are separate repositories.*
+
 ## Dependency Injection Container
 
 See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [Orno/Di](https://github.com/orno/di).
+
+## Cli
+
+You can use a helper script if you want after a composer install (```vendor/bin/phprest```).
+
+You have to provide the (bootstrapped) app instance for the script. You have two options for this:
+* Put your app instance to a specific file: ```app/app.php```
+ * You have to return with the bootstrapped app instance in the proper file
+* Put the path of the app instance in the ```paths.php``` file
+ * You have to return with an array from the ```paths.php``` file with the app file path under the ```app``` array key
 
 ## Exception handler
 
