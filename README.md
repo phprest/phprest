@@ -94,8 +94,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Phprest\Response;
 use Phprest\Exception;
 
-$config = new Config('vendor.name', '0.1');
-$config->setDebug(true);
+# vendor name, api version, debug
+$config = new Config('vendor.name', '0.1', true);
 $config->setApiVersionHandler(function ($apiVersion) {
     if ( ! in_array($apiVersion, ['0.1'])) {
         # tip: list your available versions in the exception

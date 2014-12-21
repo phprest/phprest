@@ -70,17 +70,18 @@ class Config
     /**
      * @param string $vendor
      * @param string $apiVersion
+     * @param boolean $debug
      */
-    public function __construct($vendor, $apiVersion)
+    public function __construct($vendor, $apiVersion, $debug = false)
     {
         $this->vendor = $vendor;
         $this->apiVersion = $apiVersion;
+        $this->debug = $debug;
 
-        $this->setDebug(false);
         $this->setContainer(new Container());
         $this->setRouter(new PhprestRouteCollection());
         $this->setEventEmitter(new EventEmitter());
-        $this->setHateoasConfig(new HateoasConfig($this->debug));
+        $this->setHateoasConfig(new HateoasConfig($debug));
         $this->setHateoasService(new HateoasService());
 
         $this->router->setStrategy(new RouterStrategy($this->container));
@@ -100,14 +101,6 @@ class Config
     public function getApiVersion()
     {
         return $this->apiVersion;
-    }
-
-    /**
-     * @param boolean $debug
-     */
-    public function setDebug($debug)
-    {
-        $this->debug = $debug;
     }
 
     /**

@@ -23,8 +23,10 @@ class Service implements Serviceable
         $hateoas = HateoasBuilder::create();
 
         $hateoas->setDebug($config->debug);
-        $hateoas->setCacheDir($config->cacheDir);
-        $hateoas->addMetadataDir($config->metadataDir);
+        if ( ! $config->debug) {
+            $hateoas->setCacheDir($config->cacheDir);
+            $hateoas->addMetadataDir($config->metadataDir);
+        }
         $hateoas->setUrlGenerator(null, new CallableUrlGenerator($config->urlGenerator));
 
         $container->add($config->getServiceName(), $hateoas->build());
