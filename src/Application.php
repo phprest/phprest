@@ -122,6 +122,9 @@ class Application extends \Proton\Application
     protected function setErrorHandlers()
     {
         set_error_handler(function($errNo, $errStr, $errFile, $errLine) {
+            if (0 === error_reporting()) { # error is caused with @ operator
+                return false;
+            }
             throw new \ErrorException($errStr, 0, $errNo, $errFile, $errLine);
         });
 
