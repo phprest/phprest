@@ -13,8 +13,9 @@ class Application extends \Proton\Application
     const CNTRID_DEBUG = 'debug';
     const CNTRID_VENDOR = 'vendor';
     const CNTRID_API_VERSION = 'api-version';
-    const CNTRID_API_VERSION_HANDLER = 'api-version-handler';
     const CNTRID_ROUTER = 'router';
+
+    const API_VERSION_REG_EXP = '((?:[0-9](?:\.[0-9])?){1})';
 
     use Service\Hateoas\Getter, Service\Hateoas\Util;
     use Service\Logger\Getter;
@@ -52,9 +53,6 @@ class Application extends \Proton\Application
         $this->container->add(self::CNTRID_API_VERSION, $config->getApiVersion());
         $this->container->add(self::CNTRID_DEBUG, $config->isDebug());
         $this->container->add(self::CNTRID_ROUTER, function() { return $this->router; } );
-        $this->container->add(self::CNTRID_API_VERSION_HANDLER, function() use ($config) {
-            return $config->getApiVersionHandler();
-        });
     }
 
     /**
@@ -91,6 +89,29 @@ class Application extends \Proton\Application
     }
 
     /**
+     * Run the application
+     *
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function run(Request $request = null)
+    {
+        $app = (new \Stack\Builder())
+            ->push('Phprest\Middleware\ApiVersion')
+            ->resolve($this);
+
+        if (null === $request) {
+            $request = Request::createFromGlobals();
+        }
+
+        $response = $app->handle($request);
+        $response->send();
+
+        $app->terminate($request, $response);
+    }
+
+    /**
      * Add a HEAD route
      *
      * @param string $route
@@ -114,6 +135,14 @@ class Application extends \Proton\Application
     public function options($route, $action)
     {
         $this->router->addRoute('OPTIONS', $route, $action);
+    }
+
+    /**
+     * @return Config
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**

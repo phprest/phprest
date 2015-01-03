@@ -26,8 +26,6 @@ trait Util
             (new FormatNegotiator())->getBest($request->headers->get('Accept', '*/*'))->getValue()
         );
 
-        $this->apiVersionHandler($mimeProcResult);
-
         if ($mimeProcResult->mime === '*/*') {
             $mimeProcResult->mime = 'application/vnd.' . $mimeProcResult->vendor .
                 '+json; version=' . $mimeProcResult->apiVersion;
@@ -67,8 +65,6 @@ trait Util
             throw new Exception\UnsupportedMediaType();
         }
 
-        $this->apiVersionHandler($mimeProcResult);
-
         return $this->serviceHateoas()->getSerializer()->deserialize(
             $request->getContent(),
             $type,
@@ -86,11 +82,16 @@ trait Util
     {
         $vendor = $this->getContainer()->get(Application::CNTRID_VENDOR);
         $apiVersion = $this->getContainer()->get(Application::CNTRID_API_VERSION);
+        $apiVersionRegExp = Application::API_VERSION_REG_EXP;
         $format = null;
 
-        if (preg_match('#application/vnd\.' . $vendor . '-v([0-9\.]+)\+(xml|json)#', $mime, $matches)) {
+        if (preg_match( '#application/vnd\.' . $vendor . '-v' . $apiVersionRegExp . '\+(xml|json)#',
+            $mime,
+            $matches)) {
             list($mime, $apiVersion, $format) = $matches;
-        } elseif (preg_match('#application/vnd\.' . $vendor . '\+(xml|json).*?version=([0-9\.]+)#', $mime, $matches)) {
+        } elseif (preg_match(   '#application/vnd\.' . $vendor . '\+(xml|json).*?version=' . $apiVersionRegExp . '#',
+            $mime,
+            $matches)) {
             list($mime, $format, $apiVersion) = $matches;
         } elseif ('application/json' === $mime) {
             $format = 'json';
@@ -101,24 +102,6 @@ trait Util
         }
 
         return new MimeProcessResult($mime, $vendor, $apiVersion, $format);
-    }
-
-    /**
-     * @param MimeProcessResult $mimeProcResult
-     *
-     * @return void
-     */
-    protected function apiVersionHandler(MimeProcessResult $mimeProcResult)
-    {
-        if ( ! is_null($mimeProcResult->format) and
-            is_callable($this->getContainer()->get(Application::CNTRID_API_VERSION_HANDLER))) {
-
-            call_user_func(
-                $this->getContainer()->get(Application::CNTRID_API_VERSION_HANDLER),
-                $mimeProcResult->apiVersion
-            );
-
-        }
     }
 
     /**

@@ -63,17 +63,16 @@ class Config
     protected $loggerService;
 
     /**
-     * @var callable
-     */
-    protected $apiVersionHandler;
-
-    /**
      * @param string $vendor
      * @param string $apiVersion
      * @param boolean $debug
      */
     public function __construct($vendor, $apiVersion, $debug = false)
     {
+        if ( ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', (string)$apiVersion)) {
+            throw new \InvalidArgumentException('Api version is not valid');
+        }
+
         $this->vendor = $vendor;
         $this->apiVersion = $apiVersion;
         $this->debug = $debug;
@@ -221,21 +220,5 @@ class Config
     public function getLoggerService()
     {
         return $this->loggerService;
-    }
-
-    /**
-     * @param callable $func
-     */
-    public function setApiVersionHandler(callable $func)
-    {
-        $this->apiVersionHandler = $func;
-    }
-
-    /**
-     * @return callable
-     */
-    public function getApiVersionHandler()
-    {
-        return $this->apiVersionHandler;
     }
 }
