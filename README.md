@@ -7,7 +7,7 @@
 
 Php Rest Framework.
 
-It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](http://stackphp.com/) compatible Framework.
+It extends the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http://stackphp.com/) compatible) Micro  Framework.
 
 # Components
 
@@ -17,6 +17,7 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
 * [Willdurand\Negotiation](https://github.com/willdurand/Negotiation)
 * [Willdurand\Hateoas](https://github.com/willdurand/Hateoas)
 * [Monolog\Monolog](https://github.com/Seldaek/monolog)
+* [Stack\Builder](https://github.com/stackphp/builder)
 
 # Skills
 
@@ -36,6 +37,8 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
  * [Setup](https://github.com/phprest/phprest#setup)
     * [Configuration](https://github.com/phprest/phprest#configuration)
     * [Logging](https://github.com/phprest/phprest#logging)
+    * [Usage with Stack](https://github.com/phprest/phprest#usage-with-stack)
+ * [Api versioning](https://github.com/phprest/phprest#api-versioning)
  * [Routing](https://github.com/phprest/phprest#routing)
     * [Simple routing](https://github.com/phprest/phprest#simple-routing)
     * [Routing with arguments](https://github.com/phprest/phprest#routing-with-arguments)
@@ -43,7 +46,6 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) Micro [StackPhp](h
     * [Routing through a service controller](https://github.com/phprest/phprest#routing-through-a-service-controller)
     * [Routing with annotations](https://github.com/phprest/phprest#routing-with-annotations)
  * [Controller](https://github.com/phprest/phprest#controller)
- * [Api versioning](https://github.com/phprest/phprest#api-versioning)
  * [Serialization, Deserialization, Hateoas](https://github.com/phprest/phprest#serialization-deserialization-hateoas)
     * [Serialization example](https://github.com/phprest/phprest#serialization-example)
     * [Deserialization example](https://github.com/phprest/phprest#deserialization-example)
@@ -92,20 +94,13 @@ use Phprest\Application;
 use Phprest\Config;
 use Symfony\Component\HttpFoundation\Request;
 use Phprest\Response;
-use Phprest\Exception;
 
 # vendor name, api version, debug
 $config = new Config('vendor.name', '0.1', true);
-$config->setApiVersionHandler(function ($apiVersion) {
-    if ( ! in_array($apiVersion, ['0.1'])) {
-        # tip: list your available versions in the exception
-        throw new Phprest\Exception\NotAcceptable(0, ['Not supported Api Version']);
-    }
-});
 
 $app = new Application($config);
 
-$app->get('/', function (Request $request) {
+$app->get('/{version:\d\.\d}/', function (Request $request) {
     return new Response\Ok('Hello World!');
 });
 
@@ -133,6 +128,61 @@ $config->setLoggerService(new LoggerService());
 # ...
 ```
 
+### Usage with Stack
+
+You should push the ```Phprest\Middleware\ApiVersion``` Middleware as well.
+
+```php
+<?php
+$app = (new \Stack\Builder())
+    ->push('Phprest\Middleware\ApiVersion')
+    ->push(...)
+    ->push(...)
+    ->resolve($app);
+
+\Stack\run($app);
+```
+
+## Api Versioning
+
+Phprest works with api versions by default. This means that the [ApiVersion Middleware](src/Middleware/ApiVersion.php) manipulates the incoming request. The version (based on the current Accept header) is added to the path.
+
+What does it mean?
+
+
+|Accept header|Route|Result route*|
+|-------------|-----|-------------|
+|application/vnd.phprest-v1+json|/temperatures|/1.0/temperatures|
+|application/vnd.phprest-v3.5+json|/temperatures|/3.5/temperatures|
+|\*/\*|/temperatures|/*the version which you set in your [Config](src/Config.php#L70)*/temperatures|
+
+\* *It is not a redirect or a forward method, it is just an inner application routing through a middleware.*
+
+==================
+|Accept/Content-Type header can be|Transfers to|
+|---------------------------------|------------|
+|application/vnd.**Vendor**-v**Version**+json|itself|
+|application/vnd.**Vendor**+json; version=**Version**|itself|
+|application/vnd.**Vendor**-v**Version**+xml|itself|
+|application/vnd.**Vendor**+xml; version=**Version**|itself|
+|application/json|application/vnd.**Vendor**-v**Version**+json|
+|application/xml|application/vnd.**Vendor**-v**Version**+xml|
+|\*/\*|application/vnd.**Vendor**-v**Version**+json|
+ 
+**Version** only can be :worried: one in the following ranges for now:
+* 0 - 9
+* 0.0 - 9.9
+
+================== 
+* If Accept header is not parsable
+ * then Phprest throws a Not Acceptable exception
+ 
+* If you do a deserialization and Content-Type header is not parsable
+ * then Phprest throws an Unsupported Media Type exception
+
+
+*(thanks for the help to [@alexbilbie](https://twitter.com/alexbilbie))*
+
 ## Routing
 
 ### Simple routing
@@ -140,22 +190,28 @@ $config->setLoggerService(new LoggerService());
 ```php
 <?php
 # ...
-$app->get('/hello', function (Request $request) { # You can leave the $request variable
+$app->get('/{version:\d\.\d}/hello', function (Request $request) { # You can leave the $request variable
     return new Response\Ok('Hello World!');
 });
 # ...
 ```
+
+* The [ApiVersion Middleware](src/Middleware/ApiVersion.php) manipulates the inner routing every time, so you have to care about the first part of your route as a version number.
+* This route is available in all versions (see the ```\d\.\d``` regular expression)
+* You can set a fix version number too e.g. ```'/3.6/hello'```
 
 ### Routing with arguments
 
 ```php
 <?php
 # ...
-$app->get('/hello/{name:word}', function (Request $request, $name) {
+$app->get('/2.4/hello/{name:word}', function (Request $request, $name) {
     return new Response\Ok('Hello ' . $name);
 });
 # ...
 ```
+
+* This route is available only in version 2.4
 
 ### Routing through a controller
 
@@ -164,7 +220,7 @@ $app->get('/hello/{name:word}', function (Request $request, $name) {
 # index.php
 
 # ...
-$app->get('/', '\Foo\Bar\HomeController::index'); # calls index method on HomeController class
+$app->get('/{version:\d\.\d}/', '\Foo\Bar\HomeController::index'); # calls index method on HomeController class
 # ...
 ```
 
@@ -193,7 +249,7 @@ $app['HomeController'] = function () {
     return new \Foo\Bar\HomeController();
 };
 
-$app->get('/', 'HomeController::index');
+$app->get('/{version:\d\.\d}/', 'HomeController::index');
 # ...
 ```
 
@@ -219,7 +275,7 @@ use Phprest\Annotation as Phprest;
 class Home extends Controller
 {
     /**
-     * @Phprest\Route(method="GET", path="/foobars/{id}")
+     * @Phprest\Route(method="GET", path="/foobars/{id}", since=1.2, until=2.8)
      */
     public function get(Request $request, $id)
     {
@@ -227,6 +283,9 @@ class Home extends Controller
     }
 }
 ```
+
+* ```since``` tag is optional
+* ```until``` tag is optional
 
 For more information please visit [Orno/Route](https://github.com/orno/route).
 
@@ -245,24 +304,6 @@ class Index extends \Phprest\Util\Controller
    }
 }
 ```
-
-## Api Versioning
-
-|Accept/Content-Type header can be|Transfers to|
-|---------------------------------|------------|
-|application/vnd.**Vendor**-v**Version**+json|itself|
-|application/vnd.**Vendor**+json; version=**Version**|itself|
-|application/vnd.**Vendor**-v**Version**+xml|itself|
-|application/vnd.**Vendor**+xml; version=**Version**|itself|
-|application/json|application/vnd.**Vendor**-v**Version**+json|
-|application/xml|application/vnd.**Vendor**-v**Version**+xml|
-|\*/\*|application/vnd.**Vendor**-v**Version**+json|
- 
-* If Accept header is not parsable
- * then Phprest throws a Not Acceptable exception
- 
-* If you do a deserialization and Content-Type header is not parsable
- * then Phprest throws an Unsupported Media Type exception
 
 ## Serialization, Deserialization, Hateoas
 
@@ -332,7 +373,7 @@ The router:
 ```php
 <?php
 # ...
-$app->post('/temperatures', function () use ($app) {
+$app->post('/{version:\d\.\d}/temperatures', function () use ($app) {
     $temperature = new \Foo\Entity\Temperature(1, 32, new \DateTime());
     
     return new Response\Created('/temperatures/1', $temperature);
@@ -507,7 +548,7 @@ You have to provide the (bootstrapped) app instance for the script. You have two
 ```php
 <?php
 # ...
-$app->get('/', function (Request $request) {
+$app->get('/{version:\d\.\d}/', function (Request $request) {
     throw new \Phprest\Exception\Exception('Code Red!', 9, 503);
 });
 # ...
@@ -548,13 +589,13 @@ ini_set('display_errors', 'Off');
 ### Basic Authentication
 
 You'll need these components:
-* [Stackphp\Builder](https://github.com/stackphp/builder)
 * [Stackphp\Run](https://github.com/stackphp/run)
 * [Dflydev\Dflydev-stack-basic-authentication](https://github.com/dflydev/dflydev-stack-basic-authentication)
 
 ```php
 # ...
 $app = (new \Stack\Builder())
+    ->push('Phprest\Middleware\ApiVersion') # you should push this too
     ->push('Dflydev\Stack\BasicAuthentication', [
         'firewall' => [
             ['path' => '/', 'anonymous' => false],
