@@ -164,7 +164,12 @@ class Application extends \Proton\Application
         set_exception_handler($exceptionHandler);
 
         register_shutdown_function(function() use ($exceptionHandler) {
-            if ($error = error_get_last()) {
+            if (($error = error_get_last())
+                and in_array(
+                    $error['type'],
+                    [E_ERROR, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING, E_PARSE]
+                )
+            ) {
                 call_user_func(
                     $exceptionHandler,
                     new \ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])

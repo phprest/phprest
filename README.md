@@ -575,7 +575,13 @@ The response is content negotiationed (xml/json), the status code is 503.
 
 ### Fatal error handler
 
-Phprest can also handle all the non recoverable errors like E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR.
+Phprest can also handle the non recoverable errors:
+* E_ERROR
+* E_CORE_ERROR
+* E_CORE_WARNING
+* E_COMPILE_ERROR
+* E_COMPILE_WARNING
+* E_PARSE
 
 For a clear error message you should do something like this:
 
