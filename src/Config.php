@@ -1,8 +1,8 @@
 <?php namespace Phprest;
 
 use Orno\Di\Container;
-use Orno\Route\RouteCollection;
-use Phprest\Router\RouteCollection as PhprestRouteCollection;
+use Phprest\Router\RouteCollection;
+use Orno\Route\CustomStrategyInterface;
 use Phprest\Router\Strategy as RouterStrategy;
 use League\Event\Emitter as EventEmitter;
 use Phprest\Service\Hateoas\Config as HateoasConfig;
@@ -78,7 +78,7 @@ class Config
         $this->debug = $debug;
 
         $this->setContainer(new Container());
-        $this->setRouter(new PhprestRouteCollection());
+        $this->setRouter(new RouteCollection());
         $this->setEventEmitter(new EventEmitter());
         $this->setHateoasConfig(new HateoasConfig($debug));
         $this->setHateoasService(new HateoasService());
@@ -132,6 +132,14 @@ class Config
     public function setRouter(RouteCollection $router)
     {
         $this->router = $router;
+    }
+
+    /**
+     * @param CustomStrategyInterface $strategy
+     */
+    public function setRouterStrategy(CustomStrategyInterface $strategy)
+    {
+        $this->router->setStrategy($strategy);
     }
 
     /**
