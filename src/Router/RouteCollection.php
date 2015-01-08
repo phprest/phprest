@@ -34,4 +34,23 @@ class RouteCollection extends \Orno\Route\RouteCollection
     {
         return $this->routingTable;
     }
+
+    /**
+     * Convenience method to convert pre-defined key words in to regex strings
+     *
+     * @param  string $route
+     *
+     * @return string
+     */
+    protected function parseRouteString($route)
+    {
+        $wildcards = [
+            '/{(.+?):number}/'          => '{$1:[0-9]+}',
+            '/{(.+?):word}/'            => '{$1:[a-zA-Z]+}',
+            '/{(.+?):alphanum_dash}/'   => '{$1:[a-zA-Z0-9-_]+}',
+            '/{version:(any)}/'         => '{$1:\d\.\d}'
+        ];
+
+        return preg_replace(array_keys($wildcards), array_values($wildcards), $route);
+    }
 }

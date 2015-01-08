@@ -45,7 +45,7 @@ class Route
 
         $this->method = $options['method'];
         $this->path = $options['path'];
-        $this->version = ! is_null($version) ? '{version:' . $version . '}' : '{version:\d\.\d}';
+        $this->version = ! is_null($version) ? '{version:' . $version . '}' : '{version:any}';
     }
 
     /**
