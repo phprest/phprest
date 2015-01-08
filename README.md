@@ -190,7 +190,7 @@ What does it mean?
 ```php
 <?php
 # ...
-$app->get('/{version:\d\.\d}/hello', function (Request $request) { # You can leave the $request variable
+$app->get('/{version:\d\.\d}/hello', function (Request $request, $version) { # You can leave the $request and the $version variable
     return new Response\Ok('Hello World!');
 });
 # ...
@@ -233,7 +233,7 @@ use Phprest\Response;
 
 class HomeController
 {
-    public function index(Request $request)
+    public function index(Request $request, $version)
     {
         return new Response\Ok('Hello World!');
     }
@@ -277,7 +277,7 @@ class Home extends Controller
     /**
      * @Phprest\Route(method="GET", path="/foobars/{id}", since=1.2, until=2.8)
      */
-    public function get(Request $request, $id)
+    public function get(Request $request, $version, $id)
     {
         return new Response\Ok('Hello World!');
     }
@@ -373,7 +373,7 @@ The router:
 ```php
 <?php
 # ...
-$app->post('/{version:\d\.\d}/temperatures', function () use ($app) {
+$app->post('/{version:\d\.\d}/temperatures', function () use ($app, $version) {
     $temperature = new \Foo\Entity\Temperature(1, 32, new \DateTime());
     
     return new Response\Created('/temperatures/1', $temperature);
@@ -548,7 +548,7 @@ You have to provide the (bootstrapped) app instance for the script. You have two
 ```php
 <?php
 # ...
-$app->get('/{version:\d\.\d}/', function (Request $request) {
+$app->get('/{version:\d\.\d}/', function (Request $request, $version) {
     throw new \Phprest\Exception\Exception('Code Red!', 9, 503);
 });
 # ...
