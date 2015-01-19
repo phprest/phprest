@@ -368,6 +368,9 @@ class Temperature
 }
 ```
 
+**You do not have to use annotations! You can use configuration files! Browse in** [Jms\Serializer](http://jmsyst.com/libs/serializer) **and** [Willdurand\Hateoas](https://github.com/willdurand/Hateoas)
+
+
 The router:
 
 ```php
