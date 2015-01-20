@@ -68,7 +68,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
             'until' => '5.2'
         ]);
 
-        var_dump($route->version);
+        $this->assertEquals('{version:(?:2\.[3-9])|(?:5\.[0-2])|(?:[3-4]\.\d)}', $route->version);
     }
 
     public function testSinceAndUntilWithEqualFirstNum()
