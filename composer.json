@@ -30,6 +30,11 @@
             "Phprest\\": "src"
         }
     },
+	"autoload-dev": {
+		"psr-4": {
+			"Phprest\\Stub\\": "stub/"
+		}
+	},
     "suggest": {
         "phprest/phprest-service-request-filter": "For filtering Entites.",
         "phprest/phprest-service-validator": "For validating Entities.",

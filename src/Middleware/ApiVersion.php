@@ -1,15 +1,15 @@
 <?php namespace Phprest\Middleware;
 
 use Phprest\Application;
+use Phprest\HttpFoundation\Request;
+use Phprest\Util;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
-use Phprest\HttpFoundation\Request;
-use Phprest\Service;
 use Negotiation\FormatNegotiator;
 
 class ApiVersion implements HttpKernelInterface
 {
-    use Service\Hateoas\Util;
+    use Util\Mime;
 
     /**
      * @var Application
@@ -53,13 +53,5 @@ class ApiVersion implements HttpKernelInterface
     protected function getContainer()
     {
         return $this->app->getConfig()->getContainer();
-    }
-
-    /**
-     * @return \Hateoas\Hateoas
-     */
-    protected function serviceHateoas()
-    {
-        return $this->app->getConfig()->getHateoasService();
     }
 }

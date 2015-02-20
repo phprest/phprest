@@ -1,9 +1,9 @@
 <?php namespace Phprest\Router;
 
-use Orno\Route\CustomStrategyInterface;
 use Phprest\HttpFoundation\Response;
-use Orno\Di\Container;
 use Phprest\Service;
+use Orno\Route\CustomStrategyInterface;
+use Orno\Di\Container;
 
 class Strategy implements CustomStrategyInterface
 {
@@ -33,13 +33,16 @@ class Strategy implements CustomStrategyInterface
      *     - array    (controller is a class method [0 => ClassName, 1 => MethodName])
      *     - \Closure (controller is an anonymous function)
      *
-     * @param  string|array|\Closure $controller
-     * @param  array                 $vars - named wildcard segments of the matched route
+     * @param string|array|\Closure $handler
+     * @param array $vars - named wildcard segments of the matched route
+     *
      * @return mixed
+     *
+     * @throws \RuntimeException
      */
-    public function dispatch($controller, array $vars)
+    public function dispatch($handler, array $vars)
     {
-        $handler = $controller;
+        $controller = null;
 
         // figure out what the controller is
         if (($handler instanceof \Closure) || (is_string($handler) && is_callable($handler))) {
@@ -51,11 +54,11 @@ class Strategy implements CustomStrategyInterface
         }
 
         // if controller method wasn't specified, throw exception.
-        if (! $controller){
+        if ( ! $controller){
             throw new \RuntimeException('A class method must be provided as a controller. ClassName::methodName');
         }
 
-        $request = $this->container->get('Orno\Http\Request');
+        $request = $this->getContainer()->get('Orno\Http\Request');
 
         $response = $this->invokeController($controller, array_merge([$request], $vars));
 
@@ -73,21 +76,31 @@ class Strategy implements CustomStrategyInterface
     /**
      * Invoke a controller action
      *
-     * @param  string|\Closure $controller
-     * @param  array           $vars
+     * @param string|\Closure $controller
+     * @param array $vars
      *
      * @return \Orno\Http\ResponseInterface
      */
-    protected function invokeController($controller, array $vars = [])
+    protected  function invokeController($controller, array $vars = [])
     {
         if (is_array($controller)) {
             $controller = [
-                $this->container->get($controller[0]),
+                $this->getContainer()->get($controller[0]),
                 $controller[1]
             ];
         }
 
         return call_user_func_array($controller, array_values($vars));
+    }
+
+    /**
+     * @return \Hateoas\Hateoas
+     *
+     * @codeCoverageIgnore
+     */
+    protected function serviceHateoas()
+    {
+        return $this->getContainer()->get(Service\Hateoas\Config::getServiceName());
     }
 
     /**
@@ -98,13 +111,5 @@ class Strategy implements CustomStrategyInterface
     protected function getContainer()
     {
         return $this->container;
-    }
-
-    /**
-     * @return \Hateoas\Hateoas
-     */
-    protected function serviceHateoas()
-    {
-        return $this->container->get(Service\Hateoas\Config::getServiceName());
     }
 }

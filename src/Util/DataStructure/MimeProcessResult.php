@@ -1,4 +1,4 @@
-<?php namespace Phprest\Service\Hateoas\DataStructure;
+<?php namespace Phprest\Util\DataStructure;
 
 class MimeProcessResult
 {
