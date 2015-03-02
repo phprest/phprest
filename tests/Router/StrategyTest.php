@@ -39,7 +39,7 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
     public function testDispatchWithClassAndMethod()
     {
         $result = $this->strategy->dispatch(
-            '\Phprest\Stub\TestController::getTheAnswerOfEverything',
+            '\Phprest\Stub\SimpleController::getTheAnswerOfEverything',
             []
         );
 
@@ -51,7 +51,7 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
         $this->setRequestParameters('phprest-test', 1, '*/*');
 
         $result = $this->strategy->dispatch(
-            '\Phprest\Stub\TestController::getSampleResponse',
+            '\Phprest\Stub\SimpleController::getSampleResponse',
             []
         );
 

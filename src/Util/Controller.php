@@ -1,5 +1,6 @@
 <?php namespace Phprest\Util;
 
+use Phprest\Application;
 use Orno\Di\Container;
 use Orno\Route\RouteCollection;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -33,7 +34,7 @@ abstract class Controller
         $reader = new AnnotationReader();
         $class = new \ReflectionClass($this);
         /** @var RouteCollection $router */
-        $router = $this->container->get('router');
+        $router = $this->getContainer()->get(Application::CNTRID_ROUTER);
 
         /** @var \ReflectionMethod $method */
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {

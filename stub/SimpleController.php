@@ -2,7 +2,7 @@
 
 use Phprest\HttpFoundation\Response;
 
-class TestController
+class SimpleController
 {
     /**
      * @return integer
