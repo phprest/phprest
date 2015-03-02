@@ -45,7 +45,7 @@ class Strategy implements CustomStrategyInterface
         $controller = null;
 
         // figure out what the controller is
-        if (($handler instanceof \Closure) || (is_string($handler) && is_callable($handler))) {
+        if (($handler instanceof \Closure) || (is_string($handler) && is_callable($handler)) || is_array($handler)) {
             $controller = $handler;
         }
 
