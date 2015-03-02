@@ -1,7 +1,7 @@
 <?php namespace Phprest\Util;
 
 use Phprest\Application;
-use Phprest\Stub\PhprestController;
+use Phprest\Stub\Controller\Routed as RoutedController;
 use Orno\Di\Container;
 use Phprest\Router\RouteCollection;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 class ControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var PhprestController
+     * @var RoutedController
      */
     private $controller;
 
@@ -30,7 +30,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $container = new Container();
         $container->add(Application::CNTRID_ROUTER, $this->router);
 
-        $this->controller = new PhprestController($container);
+        $this->controller = new RoutedController($container);
     }
 
     public function testRoutingTable()
@@ -40,11 +40,11 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $routingTable);
 
         $this->assertEquals('GET', $routingTable[0]['method']);
-        $this->assertEquals('\Phprest\Stub\PhprestController::getFoo', $routingTable[0]['handler']);
+        $this->assertEquals('\Phprest\Stub\Controller\Routed::getFoo', $routingTable[0]['handler']);
         $this->assertEquals('/{version:(?:1\.[2-9])|(?:2\.[0-8])}/foos/{id}', $routingTable[0]['route']);
 
         $this->assertEquals('POST', $routingTable[1]['method']);
-        $this->assertEquals('\Phprest\Stub\PhprestController::postBar', $routingTable[1]['handler']);
+        $this->assertEquals('\Phprest\Stub\Controller\Routed::postBar', $routingTable[1]['handler']);
         $this->assertEquals('/{version:(?:0\.[5-7])}/bars', $routingTable[1]['route']);
     }
 }

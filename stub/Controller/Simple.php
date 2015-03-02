@@ -1,8 +1,8 @@
-<?php namespace Phprest\Stub;
+<?php namespace Phprest\Stub\Controller;
 
 use Phprest\HttpFoundation\Response;
 
-class SimpleController
+class Simple
 {
     /**
      * @return integer

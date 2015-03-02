@@ -1,11 +1,11 @@
-<?php namespace Phprest\Stub;
+<?php namespace Phprest\Stub\Controller;
 
-use Phprest\Util\Controller;
+use Phprest\Util\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Phprest\Response;
 use Phprest\Annotation as Phprest;
 
-class PhprestController extends Controller
+class Routed extends BaseController
 {
     /**
      * @Phprest\Route(method="GET", path="/foos/{id}", since=1.2, until=2.8)
