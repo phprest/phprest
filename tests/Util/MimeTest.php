@@ -1,7 +1,7 @@
 <?php namespace Phprest\Util;
 
 use Phprest\Application;
-use Orno\Di\Container;
+use League\Container\Container;
 
 class MimeTest extends \PHPUnit_Framework_TestCase
 {
@@ -92,7 +92,7 @@ class MimeTest extends \PHPUnit_Framework_TestCase
     /**
      * Returns the DI container
      *
-     * @return \Orno\Di\Container
+     * @return \League\Container\Container
      */
     protected function getContainer()
     {

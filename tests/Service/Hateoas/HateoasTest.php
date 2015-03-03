@@ -1,7 +1,7 @@
 <?php namespace Phprest\Service\Hateoas;
 
-use Orno\Di\Container;
 use Phprest\Stub\Service\SampleConfig;
+use League\Container\Container;
 
 class HateoasTest extends \PHPUnit_Framework_TestCase
 {

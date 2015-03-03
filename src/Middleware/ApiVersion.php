@@ -48,10 +48,10 @@ class ApiVersion implements HttpKernelInterface
     /**
      * Returns the DI container
      *
-     * @return \Orno\Di\Container
+     * @return \League\Container\Container
      */
     protected function getContainer()
     {
-        return $this->app->getConfig()->getContainer();
+        return $this->app->getConfiguration()->getContainer();
     }
 }

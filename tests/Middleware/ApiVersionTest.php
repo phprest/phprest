@@ -37,7 +37,7 @@ class ApiVersionTest extends \PHPUnit_Framework_TestCase
         $config->getContainer()->add(Application::CNTRID_API_VERSION, $config->getApiVersion());
         $config->getContainer()->add(Application::CNTRID_DEBUG, $config->isDebug());
 
-        $app->shouldReceive('getConfig')->andReturn($config);
+        $app->shouldReceive('getConfiguration')->andReturn($config);
         $app->shouldReceive('getContainer')->andReturn($config->getContainer());
 
         return [[$app]];

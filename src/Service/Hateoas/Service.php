@@ -2,7 +2,7 @@
 
 use Phprest\Service\Serviceable;
 use Phprest\Service\Configurable;
-use Orno\Di\Container;
+use League\Container\Container;
 use Hateoas\HateoasBuilder;
 use Hateoas\UrlGenerator\CallableUrlGenerator;
 

@@ -1,7 +1,7 @@
 <?php namespace Phprest\Service\Hateoas;
 
 use Phprest\Application;
-use Orno\Di\Container;
+use League\Container\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;

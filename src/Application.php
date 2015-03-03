@@ -1,12 +1,12 @@
 <?php namespace Phprest;
 
+use Phprest\Exception\Exception;
+use Phprest\Service;
+use Phprest\Entity;
+use League\Container\Exception\ReflectionException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Phprest\Exception\Exception;
-use Orno\Di\Exception\ReflectionException;
-use Phprest\Service;
-use Phprest\Entity;
 
 class Application extends \Proton\Application
 {
@@ -23,7 +23,7 @@ class Application extends \Proton\Application
     /**
      * @var Config
      */
-    protected $config;
+    protected $configuration;
 
     /**
      * @var array
@@ -31,27 +31,27 @@ class Application extends \Proton\Application
     protected $registeredServiceNames = [];
 
     /**
-     * @param Config $config
+     * @param Config $configuration
      */
-    public function __construct(Config $config)
+    public function __construct(Config $configuration)
     {
-        $this->config = $config;
-        $this->container = $config->getContainer();
-        $this->router = $config->getRouter();
-        $this->eventEmitter = $config->getEventEmitter();
+        $this->configuration = $configuration;
+        $this->container = $configuration->getContainer();
+        $this->router = $configuration->getRouter();
+        $this->eventEmitter = $configuration->getEventEmitter();
 
         AnnotationRegistry::registerLoader('class_exists');
 
         $this->setErrorHandlers();
 
-        $this->registerService($config->getHateoasService(), $config->getHateoasConfig());
-        if ( ! is_null($config->getLoggerConfig()) and ! is_null($config->getLoggerService())) {
-            $this->registerService($config->getLoggerService(), $config->getLoggerConfig());
+        $this->registerService($configuration->getHateoasService(), $configuration->getHateoasConfig());
+        if ( ! is_null($configuration->getLoggerConfig()) and ! is_null($configuration->getLoggerService())) {
+            $this->registerService($configuration->getLoggerService(), $configuration->getLoggerConfig());
         }
 
-        $this->container->add(self::CNTRID_VENDOR, $config->getVendor());
-        $this->container->add(self::CNTRID_API_VERSION, $config->getApiVersion());
-        $this->container->add(self::CNTRID_DEBUG, $config->isDebug());
+        $this->container->add(self::CNTRID_VENDOR, $configuration->getVendor());
+        $this->container->add(self::CNTRID_API_VERSION, $configuration->getApiVersion());
+        $this->container->add(self::CNTRID_DEBUG, $configuration->isDebug());
         $this->container->add(self::CNTRID_ROUTER, function() { return $this->router; } );
     }
 
@@ -140,9 +140,9 @@ class Application extends \Proton\Application
     /**
      * @return Config
      */
-    public function getConfig()
+    public function getConfiguration()
     {
-        return $this->config;
+        return $this->configuration;
     }
 
     /**
@@ -189,7 +189,7 @@ class Application extends \Proton\Application
      */
     protected function exceptionHandler(\Exception $exception)
     {
-        if ( ! $this->config->isDebug()) {
+        if ( ! $this->configuration->isDebug()) {
             try {
                 if ($exception instanceof Exception) {
                     $this->serviceLogger()->addError(
@@ -201,7 +201,7 @@ class Application extends \Proton\Application
                         $exception->getTraceAsString()
                     );
 
-                    $exception = new Exception( $this->config->getLoggerConfig()->prodErrorMessage,
+                    $exception = new Exception( $this->configuration->getLoggerConfig()->prodErrorMessage,
                         $exception->getCode(),
                         $exception->getStatusCode(),
                         $exception->getDetails(),
@@ -215,7 +215,7 @@ class Application extends \Proton\Application
                         $exception->getTraceAsString()
                     );
 
-                    $exception = new \Exception($this->config->getLoggerConfig()->prodErrorMessage,
+                    $exception = new \Exception($this->configuration->getLoggerConfig()->prodErrorMessage,
                         $exception->getCode(),
                         $exception->getPrevious()
                     );
@@ -246,14 +246,14 @@ class Application extends \Proton\Application
 
         try {
             $response = $this->serialize(
-                ! $this->config->isDebug() ? new Entity\Error($exception) : new Entity\DebugError($exception),
+                ! $this->configuration->isDebug() ? new Entity\Error($exception) : new Entity\DebugError($exception),
                 Request::createFromGlobals(),
                 $response
             );
         } catch (\Exception $e) {
             $response->setContent(
                 $this->serviceHateoas()->getSerializer()->serialize(
-                    ! $this->config->isDebug() ? new Entity\Error($exception) : new Entity\DebugError($exception),
+                    ! $this->configuration->isDebug() ? new Entity\Error($exception) : new Entity\DebugError($exception),
                     'json'
                 )
             );

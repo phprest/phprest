@@ -1,6 +1,6 @@
 <?php namespace Phprest\Service;
 
-use Orno\Di\Container;
+use League\Container\Container;
 
 interface Serviceable
 {
