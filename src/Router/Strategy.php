@@ -2,10 +2,12 @@
 
 use Phprest\HttpFoundation\Response;
 use Phprest\Service;
-use Orno\Route\CustomStrategyInterface;
-use Orno\Di\Container;
+use League\Route\Strategy\StrategyInterface;
+use League\Route\Strategy\AbstractStrategy;
+use League\Container\Container;
+use League\Route\Http\Exception as HttpException;
 
-class Strategy implements CustomStrategyInterface
+class Strategy extends AbstractStrategy implements StrategyInterface
 {
     use Service\Hateoas\Util;
 
@@ -24,7 +26,7 @@ class Strategy implements CustomStrategyInterface
 
     /**
      * Dispatch the controller, the return value of this method will bubble out and be
-     * returned by \Orno\Route\Dispatcher::dispatch, it does not require a response, however,
+     * returned by \League\Route\Dispatcher::dispatch, it does not require a response, however,
      * beware that there is no output buffering by default in the router
      *
      * $controller can be one of three types but based on the type you can infer what the
@@ -33,34 +35,19 @@ class Strategy implements CustomStrategyInterface
      *     - array    (controller is a class method [0 => ClassName, 1 => MethodName])
      *     - \Closure (controller is an anonymous function)
      *
-     * @param string|array|\Closure $handler
-     * @param array $vars - named wildcard segments of the matched route
+     * @param  string|array|\Closure $controller
+     * @param  array $vars - named wildcard segments of the matched route
      *
      * @return mixed
-     *
-     * @throws \RuntimeException
      */
-    public function dispatch($handler, array $vars)
+    public function dispatch($controller, array $vars)
     {
-        $controller = null;
+        $request = $this->getContainer()->get('Symfony\Component\HttpFoundation\Request');
 
-        // figure out what the controller is
-        if (($handler instanceof \Closure) || (is_string($handler) && is_callable($handler)) || is_array($handler)) {
-            $controller = $handler;
-        }
-
-        if (is_string($handler) && strpos($handler, '::') !== false) {
-            $controller = explode('::', $handler);
-        }
-
-        // if controller method wasn't specified, throw exception.
-        if ( ! $controller){
-            throw new \RuntimeException('A class method must be provided as a controller. ClassName::methodName');
-        }
-
-        $request = $this->getContainer()->get('Orno\Http\Request');
-
-        $response = $this->invokeController($controller, array_merge([$request], $vars));
+        $response = $this->invokeController($controller, [
+            $request,
+            $vars
+        ]);
 
         if ($response instanceof Response and $response->getContent() !== '') {
             return $this->serialize(
@@ -71,26 +58,6 @@ class Strategy implements CustomStrategyInterface
         }
 
         return $response;
-    }
-
-    /**
-     * Invoke a controller action
-     *
-     * @param string|\Closure $controller
-     * @param array $vars
-     *
-     * @return \Orno\Http\ResponseInterface
-     */
-    protected  function invokeController($controller, array $vars = [])
-    {
-        if (is_array($controller)) {
-            $controller = [
-                $this->getContainer()->get($controller[0]),
-                $controller[1]
-            ];
-        }
-
-        return call_user_func_array($controller, array_values($vars));
     }
 
     /**
@@ -106,9 +73,9 @@ class Strategy implements CustomStrategyInterface
     /**
      * Returns the DI container
      *
-     * @return \Orno\Di\Container
+     * @return \League\Container\Container
      */
-    protected function getContainer()
+    public function getContainer()
     {
         return $this->container;
     }

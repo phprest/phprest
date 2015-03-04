@@ -1,10 +1,10 @@
 <?php namespace Phprest\Util;
 
 use Phprest\Application;
-use Orno\Di\Container;
-use Orno\Route\RouteCollection;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Phprest\Annotation\Route;
+use League\Container\Container;
+use League\Route\RouteCollection;
+use Doctrine\Common\Annotations\AnnotationReader;
 
 abstract class Controller
 {

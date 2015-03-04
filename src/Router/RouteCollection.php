@@ -1,6 +1,8 @@
 <?php namespace Phprest\Router;
 
-class RouteCollection extends \Orno\Route\RouteCollection
+use League\Route\Strategy\StrategyInterface;
+
+class RouteCollection extends \League\Route\RouteCollection
 {
     /**
      * @var array keys: method, route, handler
@@ -10,13 +12,13 @@ class RouteCollection extends \Orno\Route\RouteCollection
     /**
      * Add a route to the collection
      *
-     * @param  string          $method
-     * @param  string          $route
-     * @param  string|\Closure $handler
-     * @param  integer         $strategy
-     * @return \Orno\Route\RouteCollection
+     * @param  string                                   $method
+     * @param  string                                   $route
+     * @param  string|\Closure                          $handler
+     * @param  \League\Route\Strategy\StrategyInterface $strategy
+     * @return \League\Route\RouteCollection
      */
-    public function addRoute($method, $route, $handler, $strategy = self::REQUEST_RESPONSE_STRATEGY)
+    public function addRoute($method, $route, $handler, StrategyInterface $strategy = null)
     {
         parent::addRoute($method, $route, $handler, $strategy);
 
@@ -25,6 +27,8 @@ class RouteCollection extends \Orno\Route\RouteCollection
             'route'     => $route,
             'handler'   => $handler
         ];
+
+        return $this;
     }
 
     /**

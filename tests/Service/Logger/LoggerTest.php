@@ -1,6 +1,6 @@
 <?php namespace Phprest\Service\Logger;
 
-use Orno\Di\Container;
+use League\Container\Container;
 use Phprest\Stub\Service\SampleConfig;
 
 class LoggerTest extends \PHPUnit_Framework_TestCase

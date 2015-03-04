@@ -2,8 +2,8 @@
 
 use Phprest\Application;
 use Phprest\Stub\Controller\Routed as RoutedController;
-use Orno\Di\Container;
 use Phprest\Router\RouteCollection;
+use League\Container\Container;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
 class ControllerTest extends \PHPUnit_Framework_TestCase

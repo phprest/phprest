@@ -7,7 +7,7 @@ class Simple
     /**
      * @return integer
      */
-    public function getTheAnswerOfEverything()
+    static public function getTheAnswerOfEverything()
     {
         return 42;
     }
@@ -15,7 +15,7 @@ class Simple
     /**
      * @return Response
      */
-    public function getSampleResponse()
+    static public function getSampleResponse()
     {
         return new Response('sample');
     }

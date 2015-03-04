@@ -2,8 +2,8 @@
 
 use Phprest\Application;
 use Phprest\Service;
-use Orno\Di\Container;
-use Orno\Http\Request;
+use League\Container\Container;
+use Symfony\Component\HttpFoundation\Request;
 
 class StrategyTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +39,7 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
     public function testDispatchWithClassAndMethod()
     {
         $result = $this->strategy->dispatch(
-            '\Phprest\Stub\Controller\Simple::getTheAnswerOfEverything',
+            'Phprest\Stub\Controller\Simple::getTheAnswerOfEverything',
             []
         );
 
@@ -51,7 +51,7 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
         $this->setRequestParameters('phprest-test', 1, '*/*');
 
         $result = $this->strategy->dispatch(
-            '\Phprest\Stub\Controller\Simple::getSampleResponse',
+            'Phprest\Stub\Controller\Simple::getSampleResponse',
             []
         );
 
@@ -59,14 +59,6 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
         if ($result instanceof \Phprest\HttpFoundation\Response) {
             $this->assertEquals(json_encode('sample'), $result->getContent());
         }
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testDispatchWithWrongController()
-    {
-        $this->strategy->dispatch('this-is-not-okay', []);
     }
 
     /**
@@ -85,6 +77,6 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
         $request = new Request();
         $request->headers->set('Accept', $acceptHeader, true);
 
-        $this->container->add('Orno\Http\Request', $request);
+        $this->container->add('Symfony\Component\HttpFoundation\Request', $request);
     }
 }
