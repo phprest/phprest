@@ -6,6 +6,7 @@ use League\Route\Strategy\StrategyInterface;
 use League\Route\Strategy\AbstractStrategy;
 use League\Container\Container;
 use League\Route\Http\Exception as HttpException;
+use Symfony\Component\HttpFoundation\Request;
 
 class Strategy extends AbstractStrategy implements StrategyInterface
 {
@@ -42,12 +43,12 @@ class Strategy extends AbstractStrategy implements StrategyInterface
      */
     public function dispatch($controller, array $vars)
     {
-        $request = $this->getContainer()->get('Symfony\Component\HttpFoundation\Request');
+        $request = Request::createFromGlobals();
 
-        $response = $this->invokeController($controller, [
-            $request,
-            $vars
-        ]);
+        $response = $this->invokeController($controller, array_merge(
+            [$request],
+            array_values($vars)
+        ));
 
         if ($response instanceof Response and $response->getContent() !== '') {
             return $this->serialize(

@@ -1,6 +1,7 @@
 <?php namespace Phprest;
 
 use Phprest\Exception\Exception;
+use Phprest\Router\RouteCollection;
 use Phprest\Service;
 use Phprest\Entity;
 use League\Container\Exception\ReflectionException;
@@ -26,9 +27,9 @@ class Application extends \Proton\Application
     protected $configuration;
 
     /**
-     * @var array
+     * @var \League\Container\Container
      */
-    protected $registeredServiceNames = [];
+    protected $container;
 
     /**
      * @param Config $configuration
@@ -60,18 +61,10 @@ class Application extends \Proton\Application
      * @param Service\Configurable $config
      *
      * @return void
-     *
-     * @throws \Exception
      */
     public function registerService(Service\Serviceable $service, Service\Configurable $config)
     {
-        if (in_array($config->getServiceName(), $this->registeredServiceNames)) {
-            throw new \Exception('Service <' . $config->getServiceName() . '> has been already registered!');
-        }
-
         $service->register($this->container, $config);
-
-        $this->registeredServiceNames[] = $config->getServiceName();
     }
 
     /**
@@ -143,6 +136,22 @@ class Application extends \Proton\Application
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+    /**
+     * @return \League\Container\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * @return RouteCollection
+     */
+    public function getRouter()
+    {
+        return $this->router;
     }
 
     /**

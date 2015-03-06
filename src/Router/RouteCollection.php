@@ -1,5 +1,8 @@
 <?php namespace Phprest\Router;
 
+use FastRoute\DataGenerator;
+use FastRoute\RouteParser;
+use League\Container\ContainerInterface;
 use League\Route\Strategy\StrategyInterface;
 
 class RouteCollection extends \League\Route\RouteCollection
@@ -10,13 +13,29 @@ class RouteCollection extends \League\Route\RouteCollection
     protected $routingTable = [];
 
     /**
+     * @param \League\Container\ContainerInterface $container
+     * @param \FastRoute\RouteParser               $parser
+     * @param \FastRoute\DataGenerator             $generator
+     */
+    public function __construct(
+        ContainerInterface $container = null,
+        RouteParser        $parser    = null,
+        DataGenerator      $generator = null
+    ) {
+        parent::__construct($container, $parser, $generator);
+
+        $this->addPatternMatcher('any', '\d\.\d');
+    }
+
+    /**
      * Add a route to the collection
      *
      * @param  string                                   $method
      * @param  string                                   $route
      * @param  string|\Closure                          $handler
      * @param  \League\Route\Strategy\StrategyInterface $strategy
-     * @return \League\Route\RouteCollection
+     *
+     * @return RouteCollection
      */
     public function addRoute($method, $route, $handler, StrategyInterface $strategy = null)
     {
@@ -37,24 +56,5 @@ class RouteCollection extends \League\Route\RouteCollection
     public function getRoutingTable()
     {
         return $this->routingTable;
-    }
-
-    /**
-     * Convenience method to convert pre-defined key words in to regex strings
-     *
-     * @param  string $route
-     *
-     * @return string
-     */
-    protected function parseRouteString($route)
-    {
-        $wildcards = [
-            '/{(.+?):number}/'          => '{$1:[0-9]+}',
-            '/{(.+?):word}/'            => '{$1:[a-zA-Z]+}',
-            '/{(.+?):alphanum_dash}/'   => '{$1:[a-zA-Z0-9-_]+}',
-            '/{version:(any)}/'         => '{$1:\d\.\d}'
-        ];
-
-        return preg_replace(array_keys($wildcards), array_values($wildcards), $route);
     }
 }

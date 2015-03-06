@@ -3,8 +3,8 @@
 
 require_once __DIR__ . '/../../../autoload.php';
 
-use Symfony\Component\Console\Application;
 use Phprest\Command;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 function error($errorString) { (new ConsoleOutput())->writeln('<fg=red>' . $errorString . '</fg=red>'); exit(1); }
@@ -35,7 +35,7 @@ $commands = [
     new Command\Route\Get($app)
 ];
 
-$application = new Application('Phprest', '0.1');
+$application = new Application('Phprest', '1.0');
 
 foreach ($commands as $command) {
     $application->add($command);

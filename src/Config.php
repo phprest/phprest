@@ -78,12 +78,12 @@ class Config
         $this->debug = $debug;
 
         $this->setContainer(new Container());
-        $this->setRouter(new RouteCollection());
+        $this->setRouter(new RouteCollection($this->getContainer()));
         $this->setEventEmitter(new EventEmitter());
         $this->setHateoasConfig(new HateoasConfig($debug));
         $this->setHateoasService(new HateoasService());
 
-        $this->router->setStrategy(new RouterStrategy($this->container));
+        $this->router->setStrategy(new RouterStrategy($this->getContainer()));
     }
 
     /**

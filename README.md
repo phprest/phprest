@@ -11,8 +11,8 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http:/
 
 # Components
 
-* [Orno\Di](https://github.com/orno/di)
-* [Orno\Route](https://github.com/orno/route)
+* [League\Container](https://github.com/thephpleague/container)
+* [League\Route](https://github.com/thephpleague/route)
 * [League\Event](https://github.com/thephpleague/event)
 * [Willdurand\Negotiation](https://github.com/willdurand/Negotiation)
 * [Willdurand\Hateoas](https://github.com/willdurand/Hateoas)
@@ -180,9 +180,6 @@ What does it mean?
 * If you do a deserialization and Content-Type header is not parsable
  * then Phprest throws an Unsupported Media Type exception
 
-
-*(thanks for the help to [@alexbilbie](https://twitter.com/alexbilbie))*
-
 ## Routing
 
 ### Simple routing
@@ -287,7 +284,7 @@ class Home extends Controller
 * ```since``` tag is optional
 * ```until``` tag is optional
 
-For more information please visit [Orno/Route](https://github.com/orno/route).
+For more information please visit [League/Route](https://github.com/thephpleague/route).
 
 ## Controller
 
@@ -532,7 +529,7 @@ There are a couple of services which help you to solve some general problems:
 
 ## Dependency Injection Container
 
-See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [Orno/Di](https://github.com/orno/di).
+See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [League/Container](https://github.com/thephpleague/container).
 
 ## Cli
 

@@ -1,7 +1,7 @@
 {
     "name": "phprest/phprest",
     "description": "Php Rest Framework.",
-    "keywords": ["phprest", "framework", "rest", "restful", "api"],
+    "keywords": ["phprest", "framework", "microe", "rest", "restful", "api"],
     "license": "MIT",
     "type": "library",
     "authors": [
