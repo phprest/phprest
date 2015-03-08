@@ -83,7 +83,7 @@ class Config
         $this->setHateoasConfig(new HateoasConfig($debug));
         $this->setHateoasService(new HateoasService());
 
-        $this->router->setStrategy(new RouterStrategy($this->getContainer()));
+        $this->setRouterStrategy(new RouterStrategy($this->getContainer()));
     }
 
     /**
