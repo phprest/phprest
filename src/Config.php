@@ -6,9 +6,12 @@ use Phprest\Service\Hateoas\Config as HateoasConfig;
 use Phprest\Service\Hateoas\Service as HateoasService;
 use Phprest\Service\Logger\Config as LoggerConfig;
 use Phprest\Service\Logger\Service as LoggerService;
+use Phprest\ErrorHandler\Formatter\JsonXml as JsonXmlFormatter;
 use League\Event\Emitter as EventEmitter;
 use League\Route\Strategy\StrategyInterface;
 use League\Container\Container;
+use League\BooBoo\Runner;
+use Monolog\Logger;
 
 class Config
 {
@@ -41,6 +44,11 @@ class Config
      * @var EventEmitter
      */
     protected $eventEmitter;
+
+    /**
+     * @var Runner
+     */
+    protected $errorHandler;
 
     /**
      * @var HateoasConfig
@@ -82,8 +90,14 @@ class Config
         $this->setEventEmitter(new EventEmitter());
         $this->setHateoasConfig(new HateoasConfig($debug));
         $this->setHateoasService(new HateoasService());
-
+        $this->setLoggerConfig(new LoggerConfig('phprest'));
+        $this->setLoggerService(new LoggerService());
         $this->setRouterStrategy(new RouterStrategy($this->getContainer()));
+
+        $errorHandler = new Runner([new JsonXmlFormatter($this)]);
+        $errorHandler->treatErrorsAsExceptions(true);
+
+        $this->setErrorHandler($errorHandler);
     }
 
     /**
@@ -164,6 +178,22 @@ class Config
     public function getEventEmitter()
     {
         return $this->eventEmitter;
+    }
+
+    /**
+     * @param Runner $errorHandler
+     */
+    public function setErrorHandler(Runner $errorHandler)
+    {
+        $this->errorHandler = $errorHandler;
+    }
+
+    /**
+     * @return Runner
+     */
+    public function getErrorHandler()
+    {
+        return $this->errorHandler;
     }
 
     /**

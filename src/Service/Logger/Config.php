@@ -15,20 +15,13 @@ class Config implements Configurable
     public $handlers;
 
     /**
-     * @var string
-     */
-    public $prodErrorMessage;
-
-    /**
      * @param string $name
      * @param \Monolog\Handler\HandlerInterface[] $handlers
-     * @param string $prodErrorMessage
      */
-    public function __construct($name, array $handlers = [], $prodErrorMessage = 'Server Error')
+    public function __construct($name, array $handlers = [])
     {
         $this->name = $name;
         $this->handlers = $handlers;
-        $this->prodErrorMessage = $prodErrorMessage;
     }
 
     /**
