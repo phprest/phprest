@@ -14,6 +14,7 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http:/
 * [League\Container](https://github.com/thephpleague/container)
 * [League\Route](https://github.com/thephpleague/route)
 * [League\Event](https://github.com/thephpleague/event)
+* [League\BooBoo](https://github.com/thephpleague/booboo)
 * [Willdurand\Negotiation](https://github.com/willdurand/Negotiation)
 * [Willdurand\Hateoas](https://github.com/willdurand/Hateoas)
 * [Monolog\Monolog](https://github.com/Seldaek/monolog)

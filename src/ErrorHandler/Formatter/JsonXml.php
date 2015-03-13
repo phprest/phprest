@@ -18,32 +18,39 @@ class JsonXml extends AbstractFormatter
     protected $config;
 
     /**
-     * @param $config
+     * @var null|Request
      */
-    public function __construct(Config $config)
+    protected $request;
+
+    /**
+     * @param Config $config
+     * @param null|Request $request
+     */
+    public function __construct(Config $config, Request $request = null)
     {
         $this->config = $config;
+        $this->request = $request;
     }
 
     /**
      * @param \Exception $exception
+     *
+     * @return string
      */
     public function format(\Exception $exception)
     {
-        $this->handleCli($exception);
-
         $response = new Response();
 
         try {
             $response = $this->serialize(
                 $this->config->isDebug() ? new Entity\DebugError($exception) : new Entity\Error($exception),
-                Request::createFromGlobals(),
+                is_null($this->request) ? Request::createFromGlobals() : $this->request,
                 $response
             );
         } catch (\Exception $e) {
             $response->setContent(
                 $this->serviceHateoas()->getSerializer()->serialize(
-                    $this->config->isDebug() ? new Entity\DebugError($exception) : new Entity\Error($exception),
+                    $this->config->isDebug() ? new Entity\DebugError($e) : new Entity\Error($e),
                     'json'
                 )
             );
@@ -56,19 +63,9 @@ class JsonXml extends AbstractFormatter
 
         $response->setStatusCode(method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);
 
-        $response->send();
-    }
+        $response->sendHeaders();
 
-    /**
-     * @param \Exception $exception
-     *
-     * @throws \Exception
-     */
-    protected function handleCli(\Exception $exception)
-    {
-        if (php_sapi_name() === 'cli') {
-            throw $exception;
-        }
+        return $response->getContent();
     }
 
     /**

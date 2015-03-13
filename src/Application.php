@@ -3,7 +3,6 @@
 use Phprest\Router\RouteCollection;
 use Phprest\Service;
 use Phprest\Entity;
-use Phprest\ErrorHandler\Handler\Log as LogHandler;
 use League\Container\Exception\ReflectionException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -96,7 +95,7 @@ class Application extends \Proton\Application
             $request = Request::createFromGlobals();
         }
 
-        $response = $app->handle($request);
+        $response = $app->handle($request, self::MASTER_REQUEST, false);
         $response->send();
 
         $app->terminate($request, $response);
@@ -157,11 +156,9 @@ class Application extends \Proton\Application
      */
     protected function setErrorHandler()
     {
-        $this->setExceptionDecorator(function (\Exception $e) {
-            throw $e;
-        });
+        $this->configuration->getLogHandler()->setLogger($this->serviceLogger());
 
-        $this->configuration->getErrorHandler()->pushHandler(new LogHandler($this->serviceLogger()));
+        $this->configuration->getErrorHandler()->pushHandler($this->configuration->getLogHandler());
         $this->configuration->getErrorHandler()->register();
     }
 }

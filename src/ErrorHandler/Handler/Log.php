@@ -5,21 +5,30 @@ use Phprest\Entity;
 use Phprest\Exception\Exception as PhprestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use League\BooBoo\Formatter\AbstractFormatter;
 use League\BooBoo\Handler\HandlerInterface;
 use Psr\Log\LoggerInterface;
 
 class Log implements HandlerInterface
 {
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
     protected $logger;
 
     /**
+     * @param LoggerInterface|null $logger
+     */
+    public function __construct(LoggerInterface $logger = null)
+    {
+        if ( ! is_null($logger)) {
+            $this->setLogger($logger);
+        }
+    }
+
+    /**
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }

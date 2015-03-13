@@ -7,6 +7,7 @@ use Phprest\Service\Hateoas\Service as HateoasService;
 use Phprest\Service\Logger\Config as LoggerConfig;
 use Phprest\Service\Logger\Service as LoggerService;
 use Phprest\ErrorHandler\Formatter\JsonXml as JsonXmlFormatter;
+use Phprest\ErrorHandler\Handler\Log as LogHandler;
 use League\Event\Emitter as EventEmitter;
 use League\Route\Strategy\StrategyInterface;
 use League\Container\Container;
@@ -71,6 +72,11 @@ class Config
     protected $loggerService;
 
     /**
+     * @var LogHandler
+     */
+    protected $logHandler;
+
+    /**
      * @param string $vendor
      * @param string $apiVersion
      * @param boolean $debug
@@ -92,6 +98,7 @@ class Config
         $this->setHateoasService(new HateoasService());
         $this->setLoggerConfig(new LoggerConfig('phprest'));
         $this->setLoggerService(new LoggerService());
+        $this->setLogHandler(new LogHandler());
         $this->setRouterStrategy(new RouterStrategy($this->getContainer()));
 
         $errorHandler = new Runner([new JsonXmlFormatter($this)]);
@@ -258,5 +265,21 @@ class Config
     public function getLoggerService()
     {
         return $this->loggerService;
+    }
+
+    /**
+     * @param LogHandler $logHandler
+     */
+    public function setLogHandler(LogHandler $logHandler)
+    {
+        $this->logHandler = $logHandler;
+    }
+
+    /**
+     * @return LogHandler
+     */
+    public function getLogHandler()
+    {
+        return $this->logHandler;
     }
 }
