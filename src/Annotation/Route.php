@@ -35,7 +35,7 @@ class Route
 
         $version = null;
 
-        if (isset($options['since']) and isset($options['until'])) {
+        if (isset($options['since']) && isset($options['until'])) {
             $version = $this->getSinceUntilRegExp($options['since'], $options['until']);
         } elseif (isset($options['since'])) {
             $version = $this->getSinceRegExp($options['since']);
@@ -62,10 +62,10 @@ class Route
         } elseif (! isset($options['path'])) {
             throw new \InvalidArgumentException('path property is missing');
         } elseif (isset($options['since'])
-            and ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['since'])) {
+            && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['since'])) {
             throw new \InvalidArgumentException('since property is not valid');
         } elseif (isset($options['until'])
-            and ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['until'])) {
+            && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['until'])) {
             throw new \InvalidArgumentException('until property is not valid');
         }
     }

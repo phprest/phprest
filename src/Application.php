@@ -38,7 +38,7 @@ class Application extends \Proton\Application
         $this->configuration = $configuration;
         $this->container = $configuration->getContainer();
         $this->router = $configuration->getRouter();
-        $this->eventEmitter = $configuration->getEventEmitter();
+        $this->emitter = $configuration->getEventEmitter();
 
         AnnotationRegistry::registerLoader('class_exists');
 

@@ -75,9 +75,9 @@ abstract class Controller
      */
     protected function addVersionToRoute(Route $docblock)
     {
-        if (! is_null($docblock->version) and $docblock->path[0] === '/') {
+        if (! is_null($docblock->version) && $docblock->path[0] === '/') {
             $docblock->path = '/' . $docblock->version . $docblock->path;
-        } elseif (! is_null($docblock->version) and $docblock->path[0] !== '/') {
+        } elseif (! is_null($docblock->version) && $docblock->path[0] !== '/') {
             $docblock->path = '/' . $docblock->version . '/' . $docblock->path;
         }
     }

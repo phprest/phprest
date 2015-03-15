@@ -50,7 +50,7 @@ class Strategy extends AbstractStrategy implements StrategyInterface
             array_values($vars)
         ));
 
-        if ($response instanceof Response and $response->getContent() !== '') {
+        if ($response instanceof Response && $response->getContent() !== '') {
             return $this->serialize(
                 $response->getContent(),
                 $request,

@@ -96,7 +96,7 @@ class Log implements HandlerInterface
     {
         $message = $exception->getMessage() . "({$exception->getCode()})";
 
-        if ($exception instanceof PhprestException and $exception->getDetails()) {
+        if ($exception instanceof PhprestException && $exception->getDetails()) {
             $message .= ' Details :: ' . json_encode($exception->getDetails());
         }
 

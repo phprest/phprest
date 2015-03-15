@@ -10,7 +10,7 @@ class Routed extends BaseController
     /**
      * @Phprest\Route(method="GET", path="/foos/{id}", since=1.2, until=2.8)
      */
-    static public function getFoo(Request $request, $version, $id)
+    static public function getFoo()
     {
         return new Response\Ok('Hello World!');
     }
@@ -18,7 +18,7 @@ class Routed extends BaseController
     /**
      * @Phprest\Route(method="POST", path="bars", since=0.5, until=0.7)
      */
-    static public function postBar(Request $request, $version)
+    static public function postBar()
     {
         return new Response\Created('sample location');
     }
