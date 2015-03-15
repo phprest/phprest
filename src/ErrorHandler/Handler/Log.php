@@ -20,7 +20,7 @@ class Log implements HandlerInterface
      */
     public function __construct(LoggerInterface $logger = null)
     {
-        if ( ! is_null($logger)) {
+        if (! is_null($logger)) {
             $this->setLogger($logger);
         }
     }

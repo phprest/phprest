@@ -27,7 +27,7 @@ class Config implements Configurable
     /**
      * @return string
      */
-    static public function getServiceName()
+    public static function getServiceName()
     {
         return 'logger';
     }

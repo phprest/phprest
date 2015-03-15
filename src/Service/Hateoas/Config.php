@@ -31,11 +31,12 @@ class Config implements Configurable
      * @param string|null $metadataDir
      * @param callable|null $urlGenerator
      */
-    public function __construct($debug = false,
-                                $cacheDir = null,
-                                $metadataDir = null,
-                                $urlGenerator = null)
-    {
+    public function __construct(
+        $debug = false,
+        $cacheDir = null,
+        $metadataDir = null,
+        $urlGenerator = null
+    ) {
         $this->debug = $debug;
         $this->cacheDir = $cacheDir;
         $this->metadataDir = $metadataDir;
@@ -69,7 +70,7 @@ class Config implements Configurable
                 }
 
                 $resourceParams = implode('/', $resourceParams);
-                if ( ! empty($resourceParams)) {
+                if (! empty($resourceParams)) {
                     $resourceParams = '/' . $resourceParams;
                 }
 
@@ -88,7 +89,7 @@ class Config implements Configurable
     /**
      * @return string
      */
-    static public function getServiceName()
+    public static function getServiceName()
     {
         return 'hateoas';
     }

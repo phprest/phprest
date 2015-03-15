@@ -41,7 +41,7 @@ class Get extends Command
         $routes = [];
         $routingTable = $this->app->getRouter()->getRoutingTable();
 
-        usort($routingTable, function($a, $b) {
+        usort($routingTable, function ($a, $b) {
             return ($a['route'] < $b['route']) ? -1 : 1;
         });
 

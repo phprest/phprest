@@ -83,7 +83,7 @@ class Config
      */
     public function __construct($vendor, $apiVersion, $debug = false)
     {
-        if ( ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', (string)$apiVersion)) {
+        if (! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', (string)$apiVersion)) {
             throw new \InvalidArgumentException('Api version is not valid');
         }
 

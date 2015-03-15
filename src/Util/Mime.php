@@ -17,13 +17,17 @@ trait Mime
         $apiVersionRegExp = Application::API_VERSION_REG_EXP;
         $format = null;
 
-        if (preg_match( '#application/vnd\.' . $vendor . '-v' . $apiVersionRegExp . '\+(xml|json)#',
+        if (preg_match(
+            '#application/vnd\.' . $vendor . '-v' . $apiVersionRegExp . '\+(xml|json)#',
             $mime,
-            $matches)) {
+            $matches
+        )) {
             list($mime, $apiVersion, $format) = $matches;
-        } elseif (preg_match(   '#application/vnd\.' . $vendor . '\+(xml|json).*?version=' . $apiVersionRegExp . '#',
+        } elseif (preg_match(
+            '#application/vnd\.' . $vendor . '\+(xml|json).*?version=' . $apiVersionRegExp . '#',
             $mime,
-            $matches)) {
+            $matches
+        )) {
             list($mime, $format, $apiVersion) = $matches;
         } elseif ('application/json' === $mime) {
             $format = 'json';

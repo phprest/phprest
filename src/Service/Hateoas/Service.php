@@ -16,7 +16,7 @@ class Service implements Serviceable
      */
     public function register(Container $container, Configurable $config)
     {
-        if ( ! $config instanceof Config) {
+        if (! $config instanceof Config) {
             throw new \InvalidArgumentException('Wrong Config object');
         }
 
@@ -25,7 +25,7 @@ class Service implements Serviceable
         $hateoas->setDebug($config->debug);
         $hateoas->setUrlGenerator(null, new CallableUrlGenerator($config->urlGenerator));
 
-        if ( ! $config->debug) {
+        if (! $config->debug) {
             $hateoas->setCacheDir($config->cacheDir);
             $hateoas->addMetadataDir($config->metadataDir);
         }

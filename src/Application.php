@@ -50,7 +50,9 @@ class Application extends \Proton\Application
         $this->container->add(self::CNTRID_VENDOR, $configuration->getVendor());
         $this->container->add(self::CNTRID_API_VERSION, $configuration->getApiVersion());
         $this->container->add(self::CNTRID_DEBUG, $configuration->isDebug());
-        $this->container->add(self::CNTRID_ROUTER, function() { return $this->router; } );
+        $this->container->add(self::CNTRID_ROUTER, function () {
+            return $this->router;
+        });
     }
 
     /**

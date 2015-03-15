@@ -53,18 +53,18 @@ class Route
      *
      * @return void
      */
-    protected  function validate(array $options)
+    protected function validate(array $options)
     {
-        if ( ! isset($options['method'])) {
+        if (! isset($options['method'])) {
             throw new \InvalidArgumentException('method property is missing');
-        } elseif ( ! in_array($options['method'], ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE', 'HEAD'])) {
+        } elseif (! in_array($options['method'], ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE', 'HEAD'])) {
             throw new \InvalidArgumentException('method property is not valid');
-        } elseif ( ! isset($options['path'])) {
+        } elseif (! isset($options['path'])) {
             throw new \InvalidArgumentException('path property is missing');
-        } elseif (  isset($options['since'])
+        } elseif (isset($options['since'])
             and ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['since'])) {
             throw new \InvalidArgumentException('since property is not valid');
-        } elseif (  isset($options['until'])
+        } elseif (isset($options['until'])
             and ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['until'])) {
             throw new \InvalidArgumentException('until property is not valid');
         }
@@ -81,7 +81,7 @@ class Route
         $sinceVersion = str_pad($sinceVersion, 3, '.0');
         $untilVersion = str_pad($untilVersion, 3, '.0');
 
-        if ( ! ($sinceVersion < $untilVersion)) {
+        if (! ($sinceVersion < $untilVersion)) {
             throw new \LogicException('since must be lesser than until');
         }
 

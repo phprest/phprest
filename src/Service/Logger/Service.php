@@ -15,7 +15,7 @@ class Service implements Serviceable
      */
     public function register(Container $container, Configurable $config)
     {
-        if ( ! $config instanceof Config) {
+        if (! $config instanceof Config) {
             throw new \InvalidArgumentException('Wrong Config object');
         }
 

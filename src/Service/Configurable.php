@@ -5,5 +5,5 @@ interface Configurable
     /**
      * @return string
      */
-    static public function getServiceName();
+    public static function getServiceName();
 }

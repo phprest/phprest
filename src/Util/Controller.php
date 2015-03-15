@@ -53,18 +53,19 @@ abstract class Controller
      * @param \ReflectionMethod $method
      * @param mixed $docblock
      */
-    protected function registerRoute(RouteCollection $router,
-                                     \ReflectionClass $class,
-                                     \ReflectionMethod $method,
-                                     $docblock)
-    {
+    protected function registerRoute(
+        RouteCollection $router,
+        \ReflectionClass $class,
+        \ReflectionMethod $method,
+        $docblock
+    ) {
         if ($docblock instanceof Route) {
-
             $this->addVersionToRoute($docblock);
 
             $router->addRoute(
                 $docblock->method,
-                $docblock->path, '\\' . $class->getName() . '::' . $method->getName()
+                $docblock->path,
+                '\\' . $class->getName() . '::' . $method->getName()
             );
         }
     }
@@ -74,9 +75,9 @@ abstract class Controller
      */
     protected function addVersionToRoute(Route $docblock)
     {
-        if ( ! is_null($docblock->version) and $docblock->path[0] === '/') {
+        if (! is_null($docblock->version) and $docblock->path[0] === '/') {
             $docblock->path = '/' . $docblock->version . $docblock->path;
-        } elseif ( ! is_null($docblock->version) and $docblock->path[0] !== '/') {
+        } elseif (! is_null($docblock->version) and $docblock->path[0] !== '/') {
             $docblock->path = '/' . $docblock->version . '/' . $docblock->path;
         }
     }
