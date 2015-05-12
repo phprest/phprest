@@ -69,12 +69,12 @@ Phprest gives you only the very basics to build your own architecture within you
    * [Services](https://github.com/phprest/phprest#services)
    * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
    * [CLI](https://github.com/phprest/phprest#cli)
-   * [Error handler](https://github.com/phprest/phprest#error-handler)
-      * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
-      * [Fatal error handler](https://github.com/phprest/phprest#fatal-error-handler)
-   * [Authentication](https://github.com/phprest/phprest#authentication)
-      * [Basic Authentication](https://github.com/phprest/phprest#basic-authentication)
-   * [API testing](https://github.com/phprest/phprest#api-testing)
+* [Error handler](https://github.com/phprest/phprest#error-handler)
+   * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
+* [Authentication](https://github.com/phprest/phprest#authentication)
+   * [Basic Authentication](https://github.com/phprest/phprest#basic-authentication)
+* [API testing](https://github.com/phprest/phprest#api-testing)
+* [API documentation](https://github.com/phprest/phprest#api-documentation)
 
 # Installation
 
@@ -615,3 +615,12 @@ There are a couple of great tools out there for testing your API.
  * Frisby is a REST API testing framework built on node.js and Jasmine that makes testing API endpoints easy, fast, and fun.
 * [Runscope](https://www.runscope.com/)
  * For Api Monitoring and Testing
+
+# API documentation
+
+Just a few recommendations:
+
+* [API Blueprint](https://apiblueprint.org/)
+   * API Blueprint is a documentation-oriented API description language. A couple of semantic assumptions over the plain Markdown. 
+* [Swagger](http://swagger.io/)
+   * With a Swagger-enabled API, you get interactive documentation, client SDK generation and discoverability.
