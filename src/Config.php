@@ -12,7 +12,6 @@ use League\Event\Emitter as EventEmitter;
 use League\Route\Strategy\StrategyInterface;
 use League\Container\Container;
 use League\BooBoo\Runner;
-use Monolog\Logger;
 
 class Config
 {
@@ -87,9 +86,9 @@ class Config
             throw new \InvalidArgumentException('Api version is not valid');
         }
 
-        $this->vendor = $vendor;
-        $this->apiVersion = $apiVersion;
-        $this->debug = $debug;
+        $this->vendor       = $vendor;
+        $this->apiVersion   = $apiVersion;
+        $this->debug        = $debug;
 
         $this->setContainer(new Container());
         $this->setRouter(new RouteCollection($this->getContainer()));

@@ -3,8 +3,6 @@
 use Phprest\Service;
 use Phprest\Entity;
 use Phprest\Exception\Exception as PhprestException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use League\BooBoo\Handler\HandlerInterface;
 use Psr\Log\LoggerInterface;
 

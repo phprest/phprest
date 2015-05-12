@@ -3,19 +3,17 @@
 use Phprest\Router\RouteCollection;
 use Phprest\Service;
 use Phprest\Entity;
-use League\Container\Exception\ReflectionException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
 class Application extends \Proton\Application
 {
-    const CNTRID_DEBUG = 'debug';
-    const CNTRID_VENDOR = 'vendor';
-    const CNTRID_API_VERSION = 'api-version';
-    const CNTRID_ROUTER = 'router';
+    const CNTRID_DEBUG          = 'debug';
+    const CNTRID_VENDOR         = 'vendor';
+    const CNTRID_API_VERSION    = 'api-version';
+    const CNTRID_ROUTER         = 'router';
 
-    const API_VERSION_REG_EXP = '((?:[0-9](?:\.[0-9])?){1})';
+    const API_VERSION_REG_EXP   = '((?:[0-9](?:\.[0-9])?){1})';
 
     use Service\Hateoas\Getter, Service\Hateoas\Util;
     use Service\Logger\Getter;
@@ -35,10 +33,10 @@ class Application extends \Proton\Application
      */
     public function __construct(Config $configuration)
     {
-        $this->configuration = $configuration;
-        $this->container = $configuration->getContainer();
-        $this->router = $configuration->getRouter();
-        $this->emitter = $configuration->getEventEmitter();
+        $this->configuration    = $configuration;
+        $this->container        = $configuration->getContainer();
+        $this->router           = $configuration->getRouter();
+        $this->emitter          = $configuration->getEventEmitter();
 
         AnnotationRegistry::registerLoader('class_exists');
 

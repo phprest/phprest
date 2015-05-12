@@ -10,9 +10,11 @@
 
 # Description
 
-Php Rest Framework.
+PHP REST micro-framework.
 
-It extends the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http://stackphp.com/) compatible) Micro  Framework.
+It extends the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http://stackphp.com/) compatible) micro-framework.
+
+Phprest gives you only the very basics to build your own architecture within your own framework and assemble any folder structure you like. It is just a thin layer around your application with the help of some great libraries.
 
 # Components
 
@@ -29,10 +31,11 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http:/
 
 * Dependency injection
 * Routing
+* Error handling
 * Serialization
 * Deserialization
-* Hateoas
-* Api versioning
+* HATEOAS
+* API versioning
 * Pagination
 * Logging
 
@@ -40,38 +43,38 @@ It extends the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http:/
 
 * [Installation](https://github.com/phprest/phprest#installation)
 * [Usage](https://github.com/phprest/phprest#usage)
- * [Setup](https://github.com/phprest/phprest#setup)
-    * [Configuration](https://github.com/phprest/phprest#configuration)
-    * [Logging](https://github.com/phprest/phprest#logging)
-    * [Usage with Stack](https://github.com/phprest/phprest#usage-with-stack)
- * [Api versioning](https://github.com/phprest/phprest#api-versioning)
- * [Routing](https://github.com/phprest/phprest#routing)
-    * [Simple routing](https://github.com/phprest/phprest#simple-routing)
-    * [Routing with arguments](https://github.com/phprest/phprest#routing-with-arguments)
-    * [Routing through a controller](https://github.com/phprest/phprest#routing-through-a-controller)
-    * [Routing through a service controller](https://github.com/phprest/phprest#routing-through-a-service-controller)
-    * [Routing with annotations](https://github.com/phprest/phprest#routing-with-annotations)
- * [Controller](https://github.com/phprest/phprest#controller)
- * [Serialization, Deserialization, Hateoas](https://github.com/phprest/phprest#serialization-deserialization-hateoas)
-    * [Serialization example](https://github.com/phprest/phprest#serialization-example)
-    * [Deserialization example](https://github.com/phprest/phprest#deserialization-example)
- * [Pagination](https://github.com/phprest/phprest#pagination)
- * [Responses](https://github.com/phprest/phprest#responses)
-    * [1xx, 2xx, 3xx status codes](https://github.com/phprest/phprest#1xx-2xx-3xx-status-codes)
-      * [Example](https://github.com/phprest/phprest#example) 
-      * [Types](https://github.com/phprest/phprest#types)
-    * [4xx, 5xx status codes](https://github.com/phprest/phprest#4xx-5xx-status-codes)
-      * [Example](https://github.com/phprest/phprest#example-1)
-      * [Types](https://github.com/phprest/phprest#types-1)
- * [Services](https://github.com/phprest/phprest#services)
- * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
- * [Cli](https://github.com/phprest/phprest#cli)
- * [Exception handler](https://github.com/phprest/phprest#exception-handler)
-    * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
-    * [Fatal error handler](https://github.com/phprest/phprest#fatal-error-handler)
-* [Authentication](https://github.com/phprest/phprest#authentication)
- * [Basic Authentication](https://github.com/phprest/phprest#basic-authentication)
-* [Api testing](https://github.com/phprest/phprest#api-testing)
+   * [Setup](https://github.com/phprest/phprest#setup)
+      * [Configuration](https://github.com/phprest/phprest#configuration)
+      * [Logging](https://github.com/phprest/phprest#logging)
+      * [Usage with Stack](https://github.com/phprest/phprest#usage-with-stack)
+   * [API versioning](https://github.com/phprest/phprest#api-versioning)
+   * [Routing](https://github.com/phprest/phprest#routing)
+      * [Simple routing](https://github.com/phprest/phprest#simple-routing)
+      * [Routing with arguments](https://github.com/phprest/phprest#routing-with-arguments)
+      * [Routing through a controller](https://github.com/phprest/phprest#routing-through-a-controller)
+      * [Routing through a service controller](https://github.com/phprest/phprest#routing-through-a-service-controller)
+      * [Routing with annotations](https://github.com/phprest/phprest#routing-with-annotations)
+   * [Controller](https://github.com/phprest/phprest#controller)
+   * [Serialization, Deserialization, HATEOAS](https://github.com/phprest/phprest#serialization-deserialization-hateoas)
+      * [Serialization example](https://github.com/phprest/phprest#serialization-example)
+      * [Deserialization example](https://github.com/phprest/phprest#deserialization-example)
+   * [Pagination](https://github.com/phprest/phprest#pagination)
+   * [Responses](https://github.com/phprest/phprest#responses)
+      * [1xx, 2xx, 3xx status codes](https://github.com/phprest/phprest#1xx-2xx-3xx-status-codes)
+         * [Example](https://github.com/phprest/phprest#example) 
+         * [Types](https://github.com/phprest/phprest#types)
+      * [4xx, 5xx status codes](https://github.com/phprest/phprest#4xx-5xx-status-codes)
+         * [Example](https://github.com/phprest/phprest#example-1)
+         * [Types](https://github.com/phprest/phprest#types-1)
+   * [Services](https://github.com/phprest/phprest#services)
+   * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
+   * [CLI](https://github.com/phprest/phprest#cli)
+   * [Error handler](https://github.com/phprest/phprest#error-handler)
+      * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
+      * [Fatal error handler](https://github.com/phprest/phprest#fatal-error-handler)
+   * [Authentication](https://github.com/phprest/phprest#authentication)
+      * [Basic Authentication](https://github.com/phprest/phprest#basic-authentication)
+   * [API testing](https://github.com/phprest/phprest#api-testing)
 
 # Installation
 
@@ -101,7 +104,7 @@ use Phprest\Config;
 use Symfony\Component\HttpFoundation\Request;
 use Phprest\Response;
 
-# vendor name, api version, debug
+# vendor name, current API version, debug
 $config = new Config('vendor.name', '0.1', true);
 
 $app = new Application($config);
@@ -124,14 +127,13 @@ For the configuration you should check the [Config](src/Config.php) class.
 use Phprest\Service\Logger\Config as LoggerConfig;
 use Phprest\Service\Logger\Service as LoggerService;
 use Monolog\Handler\StreamHandler;
-# ...
+
 $config = new Config('vendor.name', '0.1');
-# ...
+
 $loggerHandlers[] = new StreamHandler('path_to_the_log_file', \Monolog\Logger::DEBUG);
 
 $config->setLoggerConfig(new LoggerConfig('phprest', $loggerHandlers));
 $config->setLoggerService(new LoggerService());
-# ...
 ```
 
 ### Usage with Stack
@@ -149,9 +151,9 @@ $app = (new \Stack\Builder())
 \Stack\run($app);
 ```
 
-## Api Versioning
+## API Versioning
 
-Phprest works with api versions by default. This means that the [ApiVersion Middleware](src/Middleware/ApiVersion.php) manipulates the incoming request. The version (based on the current Accept header) is added to the path.
+Phprest works with API versions by default. This means that the [ApiVersion Middleware](src/Middleware/ApiVersion.php) manipulates the incoming request. The version (based on the current Accept header) is added to the path.
 
 What does it mean?
 
@@ -164,7 +166,7 @@ What does it mean?
 
 \* *It is not a redirect or a forward method, it is just an inner application routing through a middleware.*
 
-==================
+---
 |Accept/Content-Type header can be|Transfers to|
 |---------------------------------|------------|
 |application/vnd.**Vendor**-v**Version**+json|itself|
@@ -175,11 +177,11 @@ What does it mean?
 |application/xml|application/vnd.**Vendor**-v**Version**+xml|
 |\*/\*|application/vnd.**Vendor**-v**Version**+json|
  
-**Version** only can be :worried: one in the following ranges for now:
+API **Version** only can be one of the following ranges:
 * 0 - 9
 * 0.0 - 9.9
 
-================== 
+---
 * If Accept header is not parsable
  * then Phprest throws a Not Acceptable exception
  
@@ -188,33 +190,32 @@ What does it mean?
 
 ## Routing
 
+For more information please visit [League/Route](https://github.com/thephpleague/route).
+
 ### Simple routing
 
 ```php
 <?php
-# ...
-$app->get('/{version:\d\.\d}/hello', function (Request $request, $version) { # You can leave the $request and the $version variable
+$app->get('/{version:\d\.\d}/hello', function (Request $request, $version) {
+	# You can leave the $request and the $version variable
     return new Response\Ok('Hello World!');
 });
-# ...
 ```
 
 * The [ApiVersion Middleware](src/Middleware/ApiVersion.php) manipulates the inner routing every time, so you have to care about the first part of your route as a version number.
-* This route is available in all versions (see the ```\d\.\d``` regular expression)
-* You can set a fix version number too e.g. ```'/3.6/hello'```
+* This route is available in all API versions (see the ```\d\.\d``` regular expression)
+* You can set a fix API version number too e.g. ```'/3.6/hello'```
 
 ### Routing with arguments
 
 ```php
 <?php
-# ...
 $app->get('/2.4/hello/{name:word}', function (Request $request, $name) {
     return new Response\Ok('Hello ' . $name);
 });
-# ...
 ```
 
-* This route is available only in version 2.4
+* This route is available only in API version 2.4
 
 ### Routing through a controller
 
@@ -222,9 +223,8 @@ $app->get('/2.4/hello/{name:word}', function (Request $request, $name) {
 <?php
 # index.php
 
-# ...
-$app->get('/{version:\d\.\d}/', '\Foo\Bar\HomeController::index'); # calls index method on HomeController class
-# ...
+# calls index method on HomeController class
+$app->get('/{version:\d\.\d}/', '\Foo\Bar\HomeController::index');
 ```
 
 ```php
@@ -247,13 +247,11 @@ class HomeController
 
 ```php
 <?php
-# ...
 $app['HomeController'] = function () {
     return new \Foo\Bar\HomeController();
 };
 
 $app->get('/{version:\d\.\d}/', 'HomeController::index');
-# ...
 ```
 
 ### Routing with annotations
@@ -290,8 +288,6 @@ class Home extends Controller
 * ```since``` tag is optional
 * ```until``` tag is optional
 
-For more information please visit [League/Route](https://github.com/thephpleague/route).
-
 ## Controller
 
 To create a Phprest Controller simply extends your class from ```\Phprest\Util\Controller```.
@@ -320,6 +316,8 @@ Except*:
 ### Serialization example
 
 Let's see a Temperature entity:
+
+*You do not have to use annotations! You can use configuration files! Browse in* [Jms\Serializer](http://jmsyst.com/libs/serializer) *and* [Willdurand\Hateoas](https://github.com/willdurand/Hateoas)
 
 ```php
 <?php namespace Foo\Entity;
@@ -371,20 +369,15 @@ class Temperature
 }
 ```
 
-**You do not have to use annotations! You can use configuration files! Browse in** [Jms\Serializer](http://jmsyst.com/libs/serializer) **and** [Willdurand\Hateoas](https://github.com/willdurand/Hateoas)
-
-
 The router:
 
 ```php
 <?php
-# ...
 $app->post('/{version:\d\.\d}/temperatures', function () use ($app, $version) {
     $temperature = new \Foo\Entity\Temperature(1, 32, new \DateTime());
     
     return new Response\Created('/temperatures/1', $temperature);
 });
-# ...
 ```
 
 Json response (Accept: application/vnd.vendor+json; version=1):
@@ -413,12 +406,12 @@ Xml response (Accept: application/vnd.vendor+xml; version=1):
 
 ### Deserialization example
 
-You have to use the Phprest\Service\Hateoas\Util trait in your controller to do deserialization.
+You have to use the [HATEOAS Util](src/Service/Hateoas/Util.php) trait in your controller to do deserialization.
 
 ```php
-...
+# ...
 use JMS\Serializer\Exception\RuntimeException;
-...
+# ...
     public function post(Request $request)
     {
         try {
@@ -428,34 +421,34 @@ use JMS\Serializer\Exception\RuntimeException;
             throw new Exception\UnprocessableEntity(0, [new Service\Validator\Entity\Error('', $e->getMessage())]);
         }
     }
-...
+# ...
 ```
 
 ## Pagination
 
 ```php
 <?php
-...
+# ...
 use Hateoas\Representation\PaginatedRepresentation;
 use Hateoas\Representation\CollectionRepresentation;
-...
+# ...
 $paginatedCollection = new PaginatedRepresentation(
     new CollectionRepresentation([$user1, $user2, ...]),
     '/users', # route
-    [], # route parameters, should be $request->query->all()
-    1, # page, should be (int)$request->query->get('page')
-    10, # limit, should be (int)$request->query->get('limit')
-    5, # total pages
-    'page', # page route parameter name, optional, defaults to 'page'
-    'limit', # limit route parameter name, optional, defaults to 'limit'
-    true, # absolute URIs
-    47 # total number of rows
+    [],       # route parameters, should be $request->query->all()
+    1,        # page, should be (int)$request->query->get('page')
+    10,       # limit, should be (int)$request->query->get('limit')
+    5,        # total pages
+    'page',   # page route parameter name, optional, defaults to 'page'
+    'limit',  # limit route parameter name, optional, defaults to 'limit'
+    true,     # absolute URIs
+    47        # total number of rows
 );
-...
+# ...
 return new Response\Ok($paginatedCollection);
 ```
 
-For more informations please visit the [Hateoas docs](https://github.com/willdurand/Hateoas#dealing-with-collections)
+For more informations please visit the [HATEOAS docs](https://github.com/willdurand/Hateoas#dealing-with-collections)
 
 ## Responses
 
@@ -537,7 +530,7 @@ There are a couple of services which help you to solve some general problems:
 
 See [Proton's doc](https://github.com/alexbilbie/Proton#dependency-injection-container) and for more information please visit [League/Container](https://github.com/thephpleague/container).
 
-## Cli
+## CLI
 
 You can use a helper script if you want after a composer install (```vendor/bin/phprest```).
 
@@ -547,7 +540,9 @@ You have to provide the (bootstrapped) app instance for the script. You have two
 * Put the path of the app instance in the ```paths.php``` file
  * You have to return with an array from the ```paths.php``` file with the app file path under the ```app``` array key
 
-## Exception handler
+## Error handler
+
+Phprest handles error with [League\BooBoo](https://github.com/thephpleague/booboo). The default formatter is [Json and Xml Formatter](src/ErrorHandler/Formatter/JsonXml.php).
 
 ### On a single exception
 
@@ -579,23 +574,6 @@ The response is content negotiationed (xml/json), the status code is 503.
 </result>
 ```
 
-### Fatal error handler
-
-Phprest can also handle the non recoverable errors:
-* E_ERROR
-* E_CORE_ERROR
-* E_CORE_WARNING
-* E_COMPILE_ERROR
-* E_COMPILE_WARNING
-* E_PARSE
-
-For a clear error message you should do something like this:
-
-```php
-<?php
-ini_set('display_errors', 'Off');
-```
-
 # Authentication
 
 ### Basic Authentication
@@ -615,7 +593,7 @@ $app = (new \Stack\Builder())
         ],
         'authenticator' => function ($username, $password) {
             if ('admin' === $username && 'admin' === $password) {
-                // Basic YWRtaW46YWRtaW4=
+                # Basic YWRtaW46YWRtaW4=
                 return 'success';
             }
         },
@@ -627,9 +605,9 @@ Stack\run($app);
 # ...
 ```
 
-# Api testing
+# API testing
 
-There are a couple of great tools out there for testing your Api.
+There are a couple of great tools out there for testing your API.
 
 * [Postman](http://www.getpostman.com/) and [Newman](https://github.com/a85/Newman)
  * Tip: Create collections in Postman and then run these in Newman
