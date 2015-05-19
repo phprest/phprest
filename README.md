@@ -10,7 +10,7 @@
 
 # Description
 
-PHP REST micro-framework.
+PHP REST-like micro-framework.
 
 It extends the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http://stackphp.com/) compatible) micro-framework.
 
