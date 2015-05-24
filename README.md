@@ -43,6 +43,7 @@ Phprest gives you only the very basics to build your own architecture within you
 
 * [Installation](https://github.com/phprest/phprest#installation)
 * [Usage](https://github.com/phprest/phprest#usage)
+   * [Services](https://github.com/phprest/phprest#services)
    * [Setup](https://github.com/phprest/phprest#setup)
       * [Configuration](https://github.com/phprest/phprest#configuration)
       * [Logging](https://github.com/phprest/phprest#logging)
@@ -66,7 +67,6 @@ Phprest gives you only the very basics to build your own architecture within you
       * [4xx, 5xx status codes](https://github.com/phprest/phprest#4xx-5xx-status-codes)
          * [Example](https://github.com/phprest/phprest#example-1)
          * [Types](https://github.com/phprest/phprest#types-1)
-   * [Services](https://github.com/phprest/phprest#services)
    * [Dependency Injection Container](https://github.com/phprest/phprest#dependency-injection-container)
    * [CLI](https://github.com/phprest/phprest#cli)
 * [Error handler](https://github.com/phprest/phprest#error-handler)
@@ -92,6 +92,15 @@ Install it through composer.
 page to choose a stable version to use, avoid the `@stable` meta constraint.
 
 # Usage
+
+## Services
+
+There are a couple of services which can help you to solve some general problems:
+* [Validator](https://github.com/phprest/phprest-service-validator)
+* [Request Filter](https://github.com/phprest/phprest-service-request-filter)
+* [Orm](https://github.com/phprest/phprest-service-orm)
+
+*These are separate repositories.*
 
 ## Setup
 
@@ -516,15 +525,6 @@ $app->get('/', function (Request $request) {
 |Unauthorized|
 |UnprocessableEntity|
 |UnsupportedMediaType|
-
-## Services
-
-There are a couple of services which help you to solve some general problems:
-* [Validator](https://github.com/phprest/phprest-service-validator)
-* [Request Filter](https://github.com/phprest/phprest-service-request-filter)
-* [Orm](https://github.com/phprest/phprest-service-orm)
-
-*These are separate repositories.*
 
 ## Dependency Injection Container
 
