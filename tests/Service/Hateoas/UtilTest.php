@@ -26,7 +26,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $this->container = new Container();
 
         $service = new Service();
-        $service->register($this->container, new Config());
+        $service->register($this->container, new Config(true));
     }
 
     public function testJsonSerialize()

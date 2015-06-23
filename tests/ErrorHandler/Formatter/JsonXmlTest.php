@@ -15,7 +15,7 @@ class JsonXmlTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->config = new Config('phprest', 1);
+        $this->config = new Config('phprest', 1, true);
         $this->setContainerElements($this->config);
     }
 
@@ -23,8 +23,8 @@ class JsonXmlTest extends \PHPUnit_Framework_TestCase
     {
         $jsonXmlFormatter = new JsonXml($this->config);
 
-        $this->assertEquals(
-            '{"code":9,"message":"test","details":[]}',
+        $this->assertContains(
+            '"code":9,"message":"test","details":[]',
             $jsonXmlFormatter->format(new \LogicException('test', 9))
         );
     }
@@ -33,8 +33,8 @@ class JsonXmlTest extends \PHPUnit_Framework_TestCase
     {
         $jsonXmlFormatter = new JsonXml($this->config);
 
-        $this->assertEquals(
-            '{"code":11,"message":"Bad Request","details":[1,2,3,["a","b"]]}',
+        $this->assertContains(
+            '"code":11,"message":"Bad Request","details":[1,2,3,["a","b"]]',
             $jsonXmlFormatter->format(new BadRequest(11, [1,2,3,['a','b']]))
         );
     }
@@ -46,8 +46,8 @@ class JsonXmlTest extends \PHPUnit_Framework_TestCase
 
         $jsonXmlFormatter = new JsonXml($this->config, $request);
 
-        $this->assertEquals(
-            '{"code":0,"message":"Not Acceptable","details":["yaml is not supported"]}',
+        $this->assertContains(
+            '"code":0,"message":"Not Acceptable","details":["yaml is not supported"]',
             $jsonXmlFormatter->format(new \Exception())
         );
     }

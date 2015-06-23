@@ -19,7 +19,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->config = new Config('phprest-test', 1);
+        $this->config = new Config('phprest-test', 1, true);
         $this->app = new Application($this->config);
     }
 
@@ -33,7 +33,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals('phprest-test', $this->app->getContainer()->get(Application::CNTRID_VENDOR));
         $this->assertEquals(1, $this->app->getContainer()->get(Application::CNTRID_API_VERSION));
-        $this->assertFalse($this->app->getContainer()->get(Application::CNTRID_DEBUG));
+        $this->assertTrue($this->app->getContainer()->get(Application::CNTRID_DEBUG));
         $this->assertInstanceOf('\Phprest\Router\RouteCollection', $this->app->getContainer()->get(Application::CNTRID_ROUTER));
     }
 

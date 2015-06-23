@@ -10,7 +10,7 @@ class GetTest extends \PHPUnit_Framework_TestCase
 {
     public function testDisplayedData()
     {
-        $phprestApp = new PhprestApp(new Config('phprest-test', '2.3'));
+        $phprestApp = new PhprestApp(new Config('phprest-test', '2.3', true));
         $phprestApp->get('/2.3/get-the-answer-of-everything', 'Phprest\Stub\Controller::getTheAnswerOfEverything');
         $phprestApp->get('/2.3/get-welcome-message', function() {
             return new Response('Welcome!');
