@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "453439273c5412c9e24a30ed19f7f341",
+    "hash": "9118d2398a87464e93711654453b2e54",
     "packages": [
         {
             "name": "alexbilbie/proton",

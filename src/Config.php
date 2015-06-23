@@ -101,6 +101,7 @@ class Config
         $this->setRouterStrategy(new RouterStrategy($this->getContainer()));
 
         $errorHandler = new Runner([new JsonXmlFormatter($this)]);
+        $errorHandler->silenceAllErrors(false);
         $errorHandler->treatErrorsAsExceptions(true);
 
         $this->setErrorHandler($errorHandler);
