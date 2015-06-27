@@ -32,7 +32,7 @@ abstract class Controller
     protected function registerRoutes()
     {
         $reader = new AnnotationReader();
-        $class = new \ReflectionClass($this);
+        $class  = new \ReflectionClass($this);
         /** @var RouteCollection $router */
         $router = $this->getContainer()->get(Application::CNTRID_ROUTER);
 
@@ -77,6 +77,7 @@ abstract class Controller
     {
         if (! is_null($docblock->version) && $docblock->path[0] === '/') {
             $docblock->path = '/' . $docblock->version . $docblock->path;
+
         } elseif (! is_null($docblock->version) && $docblock->path[0] !== '/') {
             $docblock->path = '/' . $docblock->version . '/' . $docblock->path;
         }

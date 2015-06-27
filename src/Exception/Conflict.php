@@ -11,10 +11,10 @@ class Conflict extends Exception
      * @param \Exception $previous
      */
     public function __construct(
-        $code = 0,
-        array $details = [],
-        $message = 'Conflict',
-        \Exception $previous = null
+        $code                   = 0,
+        array $details          = [],
+        $message                = 'Conflict',
+        \Exception $previous    = null
     ) {
         parent::__construct($message, $code, Response::HTTP_CONFLICT, $details, $previous);
     }

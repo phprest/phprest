@@ -32,14 +32,14 @@ class Config implements Configurable
      * @param callable|null $urlGenerator
      */
     public function __construct(
-        $debug = false,
-        $cacheDir = null,
-        $metadataDir = null,
-        $urlGenerator = null
+        $debug          = false,
+        $cacheDir       = null,
+        $metadataDir    = null,
+        $urlGenerator   = null
     ) {
-        $this->debug = $debug;
-        $this->cacheDir = $cacheDir;
-        $this->metadataDir = $metadataDir;
+        $this->debug        = $debug;
+        $this->cacheDir     = $cacheDir;
+        $this->metadataDir  = $metadataDir;
         $this->urlGenerator = $urlGenerator;
 
         if (is_null($cacheDir)) {
@@ -53,7 +53,7 @@ class Config implements Configurable
         if (is_null($urlGenerator)) {
             $this->urlGenerator = function ($route, array $parameters, $absolute) {
 
-                $queryParams = '';
+                $queryParams    = '';
                 $resourceParams = [];
 
                 foreach ($parameters as $paramName => $paramValue) {

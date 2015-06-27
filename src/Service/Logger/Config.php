@@ -20,7 +20,7 @@ class Config implements Configurable
      */
     public function __construct($name, array $handlers = [])
     {
-        $this->name = $name;
+        $this->name     = $name;
         $this->handlers = $handlers;
     }
 

@@ -28,8 +28,8 @@ class JsonXml extends AbstractFormatter
      */
     public function __construct(Config $config, Request $request = null)
     {
-        $this->config = $config;
-        $this->request = $request;
+        $this->config   = $config;
+        $this->request  = $request;
     }
 
     /**

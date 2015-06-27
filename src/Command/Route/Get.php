@@ -38,8 +38,8 @@ class Get extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $routes = [];
-        $routingTable = $this->app->getRouter()->getRoutingTable();
+        $routes         = [];
+        $routingTable   = $this->app->getRouter()->getRoutingTable();
 
         usort($routingTable, function ($a, $b) {
             return ($a['route'] < $b['route']) ? -1 : 1;

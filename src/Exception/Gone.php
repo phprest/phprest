@@ -11,10 +11,10 @@ class Gone extends Exception
      * @param \Exception $previous
      */
     public function __construct(
-        $code = 0,
-        array $details = [],
-        $message = 'Gone',
-        \Exception $previous = null
+        $code                   = 0,
+        array $details          = [],
+        $message                = 'Gone',
+        \Exception $previous    = null
     ) {
         parent::__construct($message, $code, Response::HTTP_GONE, $details, $previous);
     }

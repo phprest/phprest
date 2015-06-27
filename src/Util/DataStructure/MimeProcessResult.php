@@ -30,9 +30,9 @@ class MimeProcessResult
      */
     public function __construct($mime, $vendor, $apiVersion, $format)
     {
-        $this->mime = $mime;
-        $this->vendor = $vendor;
-        $this->apiVersion = $apiVersion;
-        $this->format = $format;
+        $this->mime         = $mime;
+        $this->vendor       = $vendor;
+        $this->apiVersion   = $apiVersion;
+        $this->format       = $format;
     }
 }

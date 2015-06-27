@@ -31,8 +31,8 @@ class DebugError extends Error
         parent::__construct($exception);
 
         $this->fileName = $exception->getFile();
-        $this->line = $exception->getLine();
-        $this->trace = $exception->getTraceAsString();
+        $this->line     = $exception->getLine();
+        $this->trace    = $exception->getTraceAsString();
     }
 
     /**

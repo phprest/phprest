@@ -32,8 +32,8 @@ class Error
      */
     public function __construct(\Exception $exception)
     {
-        $this->code = $exception->getCode();
-        $this->message = $exception->getMessage();
+        $this->code     = $exception->getCode();
+        $this->message  = $exception->getMessage();
 
         if ($exception instanceof Exception) {
             $this->details = $exception->getDetails();

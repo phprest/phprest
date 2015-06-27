@@ -33,7 +33,7 @@ class ApiVersion implements HttpKernelInterface
      */
     public function handle(BaseRequest $request, $type = self::MASTER_REQUEST, $catch = true)
     {
-        $request = new Request($request);
+        $request        = new Request($request);
         $mimeProcResult = $this->processMime(
             (new FormatNegotiator())->getBest($request->headers->get('Accept', '*/*'))->getValue()
         );
