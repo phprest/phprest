@@ -2,22 +2,22 @@
 
 use Phprest\Application;
 use Phprest\Annotation\Route;
-use League\Container\Container;
+use League\Container\ContainerInterface;
 use League\Route\RouteCollection;
 use Doctrine\Common\Annotations\AnnotationReader;
 
 abstract class Controller
 {
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
-     * @param Container $container
+     * @param ContainerInterface $container
      * @param boolean $registerRoutes
      */
-    public function __construct(Container $container, $registerRoutes = true)
+    public function __construct(ContainerInterface $container, $registerRoutes = true)
     {
         $this->container = $container;
 
@@ -83,7 +83,7 @@ abstract class Controller
     }
 
     /**
-     * @return Container
+     * @return ContainerInterface
      */
     protected function getContainer()
     {

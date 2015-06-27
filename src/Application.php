@@ -3,6 +3,7 @@
 use Phprest\Router\RouteCollection;
 use Phprest\Service;
 use Phprest\Entity;
+use League\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
@@ -24,7 +25,7 @@ class Application extends \Proton\Application
     protected $configuration;
 
     /**
-     * @var \League\Container\Container
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -136,7 +137,7 @@ class Application extends \Proton\Application
     }
 
     /**
-     * @return \League\Container\Container
+     * @return ContainerInterface
      */
     public function getContainer()
     {

@@ -4,7 +4,7 @@ use Phprest\HttpFoundation\Response;
 use Phprest\Service;
 use League\Route\Strategy\StrategyInterface;
 use League\Route\Strategy\AbstractStrategy;
-use League\Container\Container;
+use League\Container\ContainerInterface;
 use League\Route\Http\Exception as HttpException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,14 +13,14 @@ class Strategy extends AbstractStrategy implements StrategyInterface
     use Service\Hateoas\Util;
 
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
-     * @param Container $container
+     * @param ContainerInterface $container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
@@ -74,7 +74,7 @@ class Strategy extends AbstractStrategy implements StrategyInterface
     /**
      * Returns the DI container
      *
-     * @return \League\Container\Container
+     * @return \League\Container\ContainerInterface
      */
     public function getContainer()
     {

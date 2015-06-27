@@ -69,7 +69,7 @@ class JsonXml extends AbstractFormatter
     }
 
     /**
-     * @return \League\Container\Container
+     * @return \League\Container\ContainerInterface
      */
     protected function getContainer()
     {

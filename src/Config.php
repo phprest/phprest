@@ -8,8 +8,10 @@ use Phprest\Service\Logger\Config as LoggerConfig;
 use Phprest\Service\Logger\Service as LoggerService;
 use Phprest\ErrorHandler\Formatter\JsonXml as JsonXmlFormatter;
 use Phprest\ErrorHandler\Handler\Log as LogHandler;
+use League\Event\EmitterInterface as EventEmitterInterface;
 use League\Event\Emitter as EventEmitter;
 use League\Route\Strategy\StrategyInterface;
+use League\Container\ContainerInterface;
 use League\Container\Container;
 use League\BooBoo\Runner;
 
@@ -31,7 +33,7 @@ class Config
     protected $debug;
 
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -41,7 +43,7 @@ class Config
     protected $router;
 
     /**
-     * @var EventEmitter
+     * @var EventEmitterInterface
      */
     protected $eventEmitter;
 
@@ -132,15 +134,15 @@ class Config
     }
 
     /**
-     * @param Container $container
+     * @param ContainerInterface $container
      */
-    public function setContainer(Container $container)
+    public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
     /**
-     * @return Container
+     * @return ContainerInterface
      */
     public function getContainer()
     {
@@ -172,15 +174,15 @@ class Config
     }
 
     /**
-     * @param EventEmitter $eventEmitter
+     * @param EventEmitterInterface $eventEmitter
      */
-    public function setEventEmitter(EventEmitter $eventEmitter)
+    public function setEventEmitter(EventEmitterInterface $eventEmitter)
     {
         $this->eventEmitter = $eventEmitter;
     }
 
     /**
-     * @return EventEmitter
+     * @return EventEmitterInterface
      */
     public function getEventEmitter()
     {

@@ -2,19 +2,19 @@
 
 use Phprest\Service\Serviceable;
 use Phprest\Service\Configurable;
-use League\Container\Container;
+use League\Container\ContainerInterface;
 use Hateoas\HateoasBuilder;
 use Hateoas\UrlGenerator\CallableUrlGenerator;
 
 class Service implements Serviceable
 {
     /**
-     * @param Container $container
+     * @param ContainerInterface $container
      * @param Configurable $config
      *
      * @return void
      */
-    public function register(Container $container, Configurable $config)
+    public function register(ContainerInterface $container, Configurable $config)
     {
         if (! $config instanceof Config) {
             throw new \InvalidArgumentException('Wrong Config object');

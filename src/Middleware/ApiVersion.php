@@ -48,7 +48,7 @@ class ApiVersion implements HttpKernelInterface
     /**
      * Returns the DI container
      *
-     * @return \League\Container\Container
+     * @return \League\Container\ContainerInterface
      */
     protected function getContainer()
     {
