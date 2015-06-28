@@ -32,10 +32,10 @@ class Config implements Configurable
      * @param callable|null $urlGenerator
      */
     public function __construct(
-        $debug          = false,
-        $cacheDir       = null,
-        $metadataDir    = null,
-        $urlGenerator   = null
+        $debug = false,
+        $cacheDir = null,
+        $metadataDir = null,
+        $urlGenerator = null
     ) {
         $this->debug        = $debug;
         $this->cacheDir     = $cacheDir;
@@ -52,50 +52,51 @@ class Config implements Configurable
 
         if (is_null($urlGenerator)) {
             $this->urlGenerator = function ($route, array $parameters, $absolute) {
-				return $this->generateUrl($route, $parameters, $absolute);
+                return $this->generateUrl($route, $parameters, $absolute);
             };
         }
     }
 
-	/**
-	 * @param string $route
-	 * @param array $parameters
-	 * @param boolean $absolute
-	 *
-	 * @return string
-	 */
-	protected function generateUrl($route, array $parameters, $absolute) {
-		$queryParams    = '';
-		$resourceParams = [];
+    /**
+     * @param string $route
+     * @param array $parameters
+     * @param boolean $absolute
+     *
+     * @return string
+     */
+    protected function generateUrl($route, array $parameters, $absolute)
+    {
+        $queryParams    = '';
+        $resourceParams = [];
 
-		foreach ($parameters as $paramName => $paramValue) {
-			if (strpos(strtolower($paramName), 'id') !== false) {
-				$resourceParams[$paramName] = $paramValue;
-				continue;
-			}
+        foreach ($parameters as $paramName => $paramValue) {
+            if (strpos(strtolower($paramName), 'id') !== false) {
+                $resourceParams[$paramName] = $paramValue;
+                continue;
+            }
 
-			$queryParams .= $paramName . '=' . $paramValue . '&';
-		}
+            $queryParams .= $paramName . '=' . $paramValue . '&';
+        }
 
-		if ($queryParams !== '') {
-			$queryParams = '?' . substr($queryParams, 0, -1);
-		}
+        if ($queryParams !== '') {
+            $queryParams = '?' . substr($queryParams, 0, -1);
+        }
 
-		$resourceParams = implode('/', $resourceParams);
+        $resourceParams = implode('/', $resourceParams);
 
-		if (! empty($resourceParams)) {
-			$resourceParams = '/' . $resourceParams;
-		}
+        if (! empty($resourceParams)) {
+            $resourceParams = '/' . $resourceParams;
+        }
 
-		if ($absolute) {
-			return Request::createFromGlobals()->getSchemeAndHttpHost() .
-				$route .
-				$resourceParams .
-				$queryParams;
-		}
+        if ($absolute) {
+            return Request::createFromGlobals()->getSchemeAndHttpHost() .
+                $route .
+                $resourceParams .
+                $queryParams;
+        }
 
-		return $route . $resourceParams . $queryParams;
-	}
+        return $route . $resourceParams . $queryParams;
+    }
 
     /**
      * @return string

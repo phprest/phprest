@@ -11,10 +11,10 @@ class PreconditionFailed extends Exception
      * @param \Exception $previous
      */
     public function __construct(
-        $code                   = 0,
-        array $details          = [],
-        $message                = 'Precondition Failed',
-        \Exception $previous    = null
+        $code = 0,
+        array $details = [],
+        $message = 'Precondition Failed',
+        \Exception $previous = null
     ) {
         parent::__construct($message, $code, Response::HTTP_PRECONDITION_FAILED, $details, $previous);
     }

@@ -20,11 +20,11 @@ class Exception extends \Exception
      * @param \Exception $previous
      */
     public function __construct(
-        $message                = '',
-        $code                   = 0,
-        $statusCode             = 500,
-        array $details          = [],
-        \Exception $previous    = null
+        $message = '',
+        $code = 0,
+        $statusCode = 500,
+        array $details = [],
+        \Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
 

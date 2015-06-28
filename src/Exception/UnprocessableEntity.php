@@ -11,10 +11,10 @@ class UnprocessableEntity extends Exception
      * @param \Exception $previous
      */
     public function __construct(
-        $code                   = 0,
-        array $details          = [],
-        $message                = 'Unprocessable Entity',
-        \Exception $previous    = null
+        $code = 0,
+        array $details = [],
+        $message = 'Unprocessable Entity',
+        \Exception $previous = null
     ) {
         parent::__construct($message, $code, Response::HTTP_UNPROCESSABLE_ENTITY, $details, $previous);
     }

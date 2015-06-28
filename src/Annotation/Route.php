@@ -87,7 +87,7 @@ class Route
         $sinceVersion = str_pad($sinceVersion, 3, '.0');
         $untilVersion = str_pad($untilVersion, 3, '.0');
 
-        if ( ! ($sinceVersion < $untilVersion)) {
+        if (! ($sinceVersion < $untilVersion)) {
             throw new \LogicException('since must be lesser than until');
         }
 

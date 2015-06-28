@@ -11,10 +11,10 @@ class TooManyRequests extends Exception
      * @param \Exception $previous
      */
     public function __construct(
-        $code                   = 0,
-        array $details          = [],
-        $message                = 'Too Many Requests',
-        \Exception $previous    = null
+        $code = 0,
+        array $details = [],
+        $message = 'Too Many Requests',
+        \Exception $previous = null
     ) {
         parent::__construct($message, $code, Response::HTTP_TOO_MANY_REQUESTS, $details, $previous);
     }
