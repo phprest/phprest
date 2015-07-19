@@ -108,10 +108,10 @@ There are a couple of services which can help you to solve some general problems
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Phprest\Application;
 use Phprest\Config;
-use Symfony\Component\HttpFoundation\Request;
 use Phprest\Response;
+use Phprest\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 # vendor name, current API version, debug
 $config = new Config('vendor.name', '0.1', true);
@@ -127,7 +127,7 @@ $app->run();
 
 ### Configuration
 
-For the configuration you should check the [Config](src/Config.php) class.
+You should check the [Config](src/Config.php) class.
 
 ### Logging
 
@@ -412,6 +412,8 @@ Xml response (Accept: application/vnd.vendor+xml; version=1):
   <link rel="self" href="/temperatures/1"/>
 </result>
 ```
+
+Properties will be translated from camel-case to a lower-cased underscored name, e.g. camelCase -> camel_case by default. If you want to use a custom serialized name you have to use the **@SerializedName** option on your attribute.
 
 ### Deserialization example
 
