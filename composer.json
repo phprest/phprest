@@ -39,6 +39,11 @@
             "Phprest\\Stub\\": "stub/"
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
     "suggest": {
         "phprest/phprest-service-request-filter": "For filtering Entites.",
         "phprest/phprest-service-validator": "For validating Entities.",
