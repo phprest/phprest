@@ -43,7 +43,7 @@ class Strategy extends AbstractStrategy implements StrategyInterface
      */
     public function dispatch($controller, array $vars)
     {
-        $request = Request::createFromGlobals();
+        $request = $this->container->get('Symfony\Component\HttpFoundation\Request');
 
         $response = $this->invokeController($controller, array_merge(
             [$request],
