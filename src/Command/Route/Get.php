@@ -1,4 +1,6 @@
-<?php namespace Phprest\Command\Route;
+<?php
+
+namespace Phprest\Command\Route;
 
 use Phprest\Application;
 use Symfony\Component\Console\Command\Command;
@@ -26,8 +28,7 @@ class Get extends Command
     {
         $this
             ->setName('routes:get')
-            ->setDescription('Get registered routes.')
-        ;
+            ->setDescription('Get registered routes.');
     }
 
     /**
@@ -50,22 +51,21 @@ class Get extends Command
                 $routes[] = [
                     $routingTableRecord['method'],
                     $routingTableRecord['route'],
-                    'Closure'
+                    'Closure',
                 ];
             } else {
                 $routes[] = [
                     $routingTableRecord['method'],
                     $routingTableRecord['route'],
-                    $routingTableRecord['handler']
+                    $routingTableRecord['handler'],
                 ];
             }
         }
 
         $table = $this->getHelper('table');
         $table
-            ->setHeaders(array('Method', 'Route', 'Handler'))
-            ->setRows($routes)
-        ;
+            ->setHeaders(['Method', 'Route', 'Handler'])
+            ->setRows($routes);
         $table->render($output);
     }
 }

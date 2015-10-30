@@ -1,12 +1,12 @@
-<?php namespace Phprest\Router;
+<?php
 
+namespace Phprest\Router;
+
+use League\Container\ContainerInterface;
+use League\Route\Strategy\AbstractStrategy;
+use League\Route\Strategy\StrategyInterface;
 use Phprest\HttpFoundation\Response;
 use Phprest\Service;
-use League\Route\Strategy\StrategyInterface;
-use League\Route\Strategy\AbstractStrategy;
-use League\Container\ContainerInterface;
-use League\Route\Http\Exception as HttpException;
-use Symfony\Component\HttpFoundation\Request;
 
 class Strategy extends AbstractStrategy implements StrategyInterface
 {
@@ -28,7 +28,7 @@ class Strategy extends AbstractStrategy implements StrategyInterface
     /**
      * Dispatch the controller, the return value of this method will bubble out and be
      * returned by \League\Route\Dispatcher::dispatch, it does not require a response, however,
-     * beware that there is no output buffering by default in the router
+     * beware that there is no output buffering by default in the router.
      *
      * $controller can be one of three types but based on the type you can infer what the
      * controller actually is:
@@ -72,7 +72,7 @@ class Strategy extends AbstractStrategy implements StrategyInterface
     }
 
     /**
-     * Returns the DI container
+     * Returns the DI container.
      *
      * @return \League\Container\ContainerInterface
      */

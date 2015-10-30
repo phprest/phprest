@@ -1,4 +1,6 @@
-<?php namespace Phprest\Response;
+<?php
+
+namespace Phprest\Response;
 
 use Phprest\HttpFoundation\Response;
 
@@ -12,7 +14,7 @@ class Ok extends Response
      *
      * @api
      */
-    public function __construct($content = '', $headers = array())
+    public function __construct($content = '', $headers = [])
     {
         parent::__construct($content, Response::HTTP_OK, $headers);
     }

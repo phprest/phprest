@@ -1,13 +1,15 @@
-<?php namespace Phprest\Stub\Controller;
+<?php
+
+namespace Phprest\Stub\Controller;
 
 use Phprest\HttpFoundation\Response;
 
 class Simple
 {
     /**
-     * @return integer
+     * @return int
      */
-    static public function getTheAnswerOfEverything()
+    public static function getTheAnswerOfEverything()
     {
         return 42;
     }
@@ -15,7 +17,7 @@ class Simple
     /**
      * @return Response
      */
-    static public function getSampleResponse()
+    public static function getSampleResponse()
     {
         return new Response('sample');
     }

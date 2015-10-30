@@ -1,9 +1,11 @@
-<?php namespace Phprest\Service\Logger;
+<?php
 
-use Phprest\Service\Serviceable;
-use Phprest\Service\Configurable;
+namespace Phprest\Service\Logger;
+
 use League\Container\ContainerInterface;
 use Monolog\Logger;
+use Phprest\Service\Configurable;
+use Phprest\Service\Serviceable;
 
 class Service implements Serviceable
 {

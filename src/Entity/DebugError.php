@@ -1,7 +1,8 @@
-<?php namespace Phprest\Entity;
+<?php
+
+namespace Phprest\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
-use Hateoas\Configuration\Annotation as Hateoas;
 
 class DebugError extends Error
 {
@@ -12,7 +13,7 @@ class DebugError extends Error
     protected $fileName;
 
     /**
-     * @var integer
+     * @var int
      * @Serializer\Type("integer")
      */
     protected $line;
@@ -44,7 +45,7 @@ class DebugError extends Error
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getLine()
     {

@@ -1,10 +1,12 @@
-<?php namespace Phprest\Service\Hateoas;
+<?php
 
-use Phprest\Service\Serviceable;
-use Phprest\Service\Configurable;
-use League\Container\ContainerInterface;
+namespace Phprest\Service\Hateoas;
+
 use Hateoas\HateoasBuilder;
 use Hateoas\UrlGenerator\CallableUrlGenerator;
+use League\Container\ContainerInterface;
+use Phprest\Service\Configurable;
+use Phprest\Service\Serviceable;
 
 class Service implements Serviceable
 {

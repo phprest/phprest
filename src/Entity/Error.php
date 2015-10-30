@@ -1,7 +1,8 @@
-<?php namespace Phprest\Entity;
+<?php
+
+namespace Phprest\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
-use Hateoas\Configuration\Annotation as Hateoas;
 use Phprest\Exception\Exception;
 
 /**
@@ -10,7 +11,7 @@ use Phprest\Exception\Exception;
 class Error
 {
     /**
-     * @var integer
+     * @var int
      * @Serializer\Type("integer")
      */
     protected $code;
@@ -41,7 +42,7 @@ class Error
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getCode()
     {

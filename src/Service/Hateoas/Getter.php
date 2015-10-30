@@ -1,4 +1,6 @@
-<?php namespace Phprest\Service\Hateoas;
+<?php
+
+namespace Phprest\Service\Hateoas;
 
 trait Getter
 {
@@ -11,7 +13,7 @@ trait Getter
     }
 
     /**
-     * Returns the DI container
+     * Returns the DI container.
      *
      * @return \League\Container\ContainerInterface
      */

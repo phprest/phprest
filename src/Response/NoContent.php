@@ -1,4 +1,6 @@
-<?php namespace Phprest\Response;
+<?php
+
+namespace Phprest\Response;
 
 use Phprest\HttpFoundation\Response;
 
@@ -11,7 +13,7 @@ class NoContent extends Response
      *
      * @api
      */
-    public function __construct($headers = array())
+    public function __construct($headers = [])
     {
         parent::__construct('', Response::HTTP_NO_CONTENT, $headers);
     }
