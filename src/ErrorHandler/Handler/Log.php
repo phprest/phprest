@@ -1,9 +1,9 @@
-<?php namespace Phprest\ErrorHandler\Handler;
+<?php
 
-use Phprest\Service;
-use Phprest\Entity;
-use Phprest\Exception\Exception as PhprestException;
+namespace Phprest\ErrorHandler\Handler;
+
 use League\BooBoo\Handler\HandlerInterface;
+use Phprest\Exception\Exception as PhprestException;
 use Psr\Log\LoggerInterface;
 
 class Log implements HandlerInterface

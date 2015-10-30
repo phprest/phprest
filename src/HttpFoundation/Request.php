@@ -1,4 +1,6 @@
-<?php namespace Phprest\HttpFoundation;
+<?php
+
+namespace Phprest\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 
@@ -21,7 +23,7 @@ class Request extends BaseRequest
     }
 
     /**
-     * @param integer|string $version
+     * @param int|string $version
      */
     public function setApiVersion($version)
     {

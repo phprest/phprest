@@ -1,10 +1,12 @@
-<?php namespace Phprest\Util;
+<?php
 
-use Phprest\Application;
-use Phprest\Annotation\Route;
+namespace Phprest\Util;
+
+use Doctrine\Common\Annotations\AnnotationReader;
 use League\Container\ContainerInterface;
 use League\Route\RouteCollection;
-use Doctrine\Common\Annotations\AnnotationReader;
+use Phprest\Annotation\Route;
+use Phprest\Application;
 
 abstract class Controller
 {
@@ -15,7 +17,7 @@ abstract class Controller
 
     /**
      * @param ContainerInterface $container
-     * @param boolean $registerRoutes
+     * @param bool $registerRoutes
      */
     public function __construct(ContainerInterface $container, $registerRoutes = true)
     {
@@ -77,7 +79,6 @@ abstract class Controller
     {
         if (! is_null($docblock->version) && $docblock->path[0] === '/') {
             $docblock->path = '/' . $docblock->version . $docblock->path;
-
         } elseif (! is_null($docblock->version) && $docblock->path[0] !== '/') {
             $docblock->path = '/' . $docblock->version . '/' . $docblock->path;
         }

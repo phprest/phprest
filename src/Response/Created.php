@@ -1,4 +1,6 @@
-<?php namespace Phprest\Response;
+<?php
+
+namespace Phprest\Response;
 
 use Phprest\HttpFoundation\Response;
 
@@ -13,7 +15,7 @@ class Created extends Response
      *
      * @api
      */
-    public function __construct($location, $content = '', $headers = array())
+    public function __construct($location, $content = '', $headers = [])
     {
         parent::__construct($content, Response::HTTP_CREATED, $headers);
 

@@ -1,11 +1,13 @@
-<?php namespace Phprest\Middleware;
+<?php
 
+namespace Phprest\Middleware;
+
+use Negotiation\FormatNegotiator;
 use Phprest\Application;
 use Phprest\HttpFoundation\Request;
 use Phprest\Util;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
-use Negotiation\FormatNegotiator;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ApiVersion implements HttpKernelInterface
 {
@@ -46,7 +48,7 @@ class ApiVersion implements HttpKernelInterface
     }
 
     /**
-     * Returns the DI container
+     * Returns the DI container.
      *
      * @return \League\Container\ContainerInterface
      */

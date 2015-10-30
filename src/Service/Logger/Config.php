@@ -1,4 +1,6 @@
-<?php namespace Phprest\Service\Logger;
+<?php
+
+namespace Phprest\Service\Logger;
 
 use Phprest\Service\Configurable;
 

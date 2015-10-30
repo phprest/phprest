@@ -1,10 +1,12 @@
-<?php namespace Phprest\ErrorHandler\Formatter;
+<?php
 
-use Phprest\Config;
-use Phprest\Application;
-use Phprest\Service;
-use Phprest\Entity;
+namespace Phprest\ErrorHandler\Formatter;
+
 use League\BooBoo\Formatter\AbstractFormatter;
+use Phprest\Application;
+use Phprest\Config;
+use Phprest\Entity;
+use Phprest\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

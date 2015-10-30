@@ -1,7 +1,8 @@
-<?php namespace Phprest\Stub\Entity;
+<?php
+
+namespace Phprest\Stub\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
-use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @Serializer\XmlRoot("result")
@@ -9,13 +10,13 @@ use Hateoas\Configuration\Annotation as Hateoas;
 class Sample
 {
     /**
-     * @var integer
+     * @var int
      * @Serializer\Type("integer")
      */
     public $a;
 
     /**
-     * @var integer
+     * @var int
      * @Serializer\Type("integer")
      */
     public $b;

@@ -1,12 +1,14 @@
-<?php namespace Phprest\Service\Hateoas;
+<?php
 
-use Phprest\Util\Mime;
-use Phprest\Exception;
-use JMS\Serializer\SerializationContext;
+namespace Phprest\Service\Hateoas;
+
 use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\SerializationContext;
+use Negotiation\FormatNegotiator;
+use Phprest\Exception;
+use Phprest\Util\Mime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Negotiation\FormatNegotiator;
 
 trait Util
 {
@@ -17,9 +19,9 @@ trait Util
      * @param Request $request
      * @param Response $response
      *
-     * @return Response
-     *
      * @throws Exception\NotAcceptable
+     *
+     * @return Response
      */
     protected function serialize($value, Request $request, Response $response)
     {
@@ -54,9 +56,9 @@ trait Util
      * @param string $type
      * @param Request $request
      *
-     * @return mixed
-     *
      * @throws Exception\UnsupportedMediaType
+     *
+     * @return mixed
      */
     protected function deserialize($type, Request $request)
     {

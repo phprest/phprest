@@ -1,11 +1,13 @@
-<?php namespace Phprest\Exception;
+<?php
+
+namespace Phprest\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
 class Forbidden extends Exception
 {
     /**
-     * @param integer $code
+     * @param int $code
      * @param array $details
      * @param string $message
      * @param \Exception $previous

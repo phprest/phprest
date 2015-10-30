@@ -1,4 +1,6 @@
-<?php namespace Phprest\Service\Hateoas;
+<?php
+
+namespace Phprest\Service\Hateoas;
 
 use Phprest\Service\Configurable;
 use Symfony\Component\HttpFoundation\Request;
@@ -6,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 class Config implements Configurable
 {
     /**
-     * @var boolean
+     * @var bool
      */
     public $debug = false;
 
@@ -26,7 +28,7 @@ class Config implements Configurable
     public $urlGenerator;
 
     /**
-     * @param boolean $debug
+     * @param bool $debug
      * @param string|null $cacheDir
      * @param string|null $metadataDir
      * @param callable|null $urlGenerator
@@ -60,7 +62,7 @@ class Config implements Configurable
     /**
      * @param string $route
      * @param array $parameters
-     * @param boolean $absolute
+     * @param bool $absolute
      *
      * @return string
      */

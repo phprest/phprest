@@ -1,11 +1,11 @@
-<?php namespace Phprest;
+<?php
 
-use Phprest\Router\RouteCollection;
-use Phprest\Service;
-use Phprest\Entity;
-use League\Container\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
+namespace Phprest;
+
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use League\Container\ContainerInterface;
+use Phprest\Router\RouteCollection;
+use Symfony\Component\HttpFoundation\Request;
 
 class Application extends \Proton\Application
 {
@@ -80,7 +80,7 @@ class Application extends \Proton\Application
     }
 
     /**
-     * Run the application
+     * Run the application.
      *
      * @param Request $request
      *
@@ -103,7 +103,7 @@ class Application extends \Proton\Application
     }
 
     /**
-     * Add a HEAD route
+     * Add a HEAD route.
      *
      * @param string $route
      * @param mixed $action
@@ -116,7 +116,7 @@ class Application extends \Proton\Application
     }
 
     /**
-     * Add a OPTIONS route
+     * Add a OPTIONS route.
      *
      * @param string $route
      * @param mixed $action

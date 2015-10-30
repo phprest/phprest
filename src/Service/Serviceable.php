@@ -1,4 +1,6 @@
-<?php namespace Phprest\Service;
+<?php
+
+namespace Phprest\Service;
 
 use League\Container\ContainerInterface;
 

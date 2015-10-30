@@ -1,4 +1,6 @@
-<?php namespace Phprest\Router;
+<?php
+
+namespace Phprest\Router;
 
 use FastRoute\DataGenerator;
 use FastRoute\RouteParser;
@@ -28,7 +30,7 @@ class RouteCollection extends \League\Route\RouteCollection
     }
 
     /**
-     * Add a route to the collection
+     * Add a route to the collection.
      *
      * @param  string                                   $method
      * @param  string                                   $route
@@ -44,7 +46,7 @@ class RouteCollection extends \League\Route\RouteCollection
         $this->routingTable[] = [
             'method'    => $method,
             'route'     => $route,
-            'handler'   => $handler
+            'handler'   => $handler,
         ];
 
         return $this;

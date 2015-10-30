@@ -1,19 +1,21 @@
-<?php namespace Phprest;
+<?php
 
+namespace Phprest;
+
+use League\BooBoo\Runner;
+use League\Container\Container;
+use League\Container\ContainerInterface;
+use League\Event\Emitter as EventEmitter;
+use League\Event\EmitterInterface as EventEmitterInterface;
+use League\Route\Strategy\StrategyInterface;
+use Phprest\ErrorHandler\Formatter\JsonXml as JsonXmlFormatter;
+use Phprest\ErrorHandler\Handler\Log as LogHandler;
 use Phprest\Router\RouteCollection;
 use Phprest\Router\Strategy as RouterStrategy;
 use Phprest\Service\Hateoas\Config as HateoasConfig;
 use Phprest\Service\Hateoas\Service as HateoasService;
 use Phprest\Service\Logger\Config as LoggerConfig;
 use Phprest\Service\Logger\Service as LoggerService;
-use Phprest\ErrorHandler\Formatter\JsonXml as JsonXmlFormatter;
-use Phprest\ErrorHandler\Handler\Log as LogHandler;
-use League\Event\EmitterInterface as EventEmitterInterface;
-use League\Event\Emitter as EventEmitter;
-use League\Route\Strategy\StrategyInterface;
-use League\Container\ContainerInterface;
-use League\Container\Container;
-use League\BooBoo\Runner;
 
 class Config
 {
@@ -28,7 +30,7 @@ class Config
     protected $apiVersion;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $debug;
 
@@ -80,11 +82,11 @@ class Config
     /**
      * @param string $vendor
      * @param string $apiVersion
-     * @param boolean $debug
+     * @param bool $debug
      */
     public function __construct($vendor, $apiVersion, $debug = false)
     {
-        if (! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', (string)$apiVersion)) {
+        if (! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', (string) $apiVersion)) {
             throw new \InvalidArgumentException('Api version is not valid');
         }
 
@@ -126,7 +128,7 @@ class Config
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDebug()
     {

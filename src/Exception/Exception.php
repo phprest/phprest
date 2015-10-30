@@ -1,9 +1,11 @@
-<?php namespace Phprest\Exception;
+<?php
+
+namespace Phprest\Exception;
 
 class Exception extends \Exception
 {
     /**
-     * @var integer
+     * @var int
      */
     private $statusCode;
 
@@ -14,8 +16,8 @@ class Exception extends \Exception
 
     /**
      * @param string $message
-     * @param integer $code
-     * @param integer $statusCode
+     * @param int $code
+     * @param int $statusCode
      * @param array $details
      * @param \Exception $previous
      */
@@ -33,7 +35,7 @@ class Exception extends \Exception
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getStatusCode()
     {

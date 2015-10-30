@@ -1,4 +1,6 @@
-<?php namespace Phprest\HttpFoundation;
+<?php
+
+namespace Phprest\HttpFoundation;
 
 class Response extends \Symfony\Component\HttpFoundation\Response
 {

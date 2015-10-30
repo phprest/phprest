@@ -1,4 +1,6 @@
-<?php namespace Phprest\Util\DataStructure;
+<?php
+
+namespace Phprest\Util\DataStructure;
 
 class MimeProcessResult
 {
@@ -13,7 +15,7 @@ class MimeProcessResult
     public $vendor;
 
     /**
-     * @var integer|string
+     * @var int|string
      */
     public $apiVersion;
 
@@ -25,7 +27,7 @@ class MimeProcessResult
     /**
      * @param string $mime
      * @param string $vendor
-     * @param integer|string $apiVersion
+     * @param int|string $apiVersion
      * @param string $format
      */
     public function __construct($mime, $vendor, $apiVersion, $format)

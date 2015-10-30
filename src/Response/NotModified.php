@@ -1,4 +1,6 @@
-<?php namespace Phprest\Response;
+<?php
+
+namespace Phprest\Response;
 
 use Phprest\HttpFoundation\Response;
 
@@ -13,7 +15,7 @@ class NotModified extends Response
      *
      * @api
      */
-    public function __construct($contentLocation, $eTag, $headers = array())
+    public function __construct($contentLocation, $eTag, $headers = [])
     {
         parent::__construct('', Response::HTTP_NOT_MODIFIED, $headers);
 

@@ -1,4 +1,6 @@
-<?php namespace Phprest\Annotation;
+<?php
+
+namespace Phprest\Annotation;
 
 use Phprest\Application;
 
@@ -37,10 +39,8 @@ class Route
 
         if (isset($options['since']) && isset($options['until'])) {
             $version = $this->getSinceUntilRegExp($options['since'], $options['until']);
-
         } elseif (isset($options['since'])) {
             $version = $this->getSinceRegExp($options['since']);
-
         } elseif (isset($options['until'])) {
             $version = $this->getUntilRegExp($options['until']);
         }
@@ -59,17 +59,13 @@ class Route
     {
         if (! isset($options['method'])) {
             throw new \InvalidArgumentException('method property is missing');
-
         } elseif (! in_array($options['method'], ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE', 'HEAD'])) {
             throw new \InvalidArgumentException('method property is not valid');
-
         } elseif (! isset($options['path'])) {
             throw new \InvalidArgumentException('path property is missing');
-
         } elseif (isset($options['since'])
             && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['since'])) {
             throw new \InvalidArgumentException('since property is not valid');
-
         } elseif (isset($options['until'])
             && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['until'])) {
             throw new \InvalidArgumentException('until property is not valid');
