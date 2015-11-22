@@ -1,11 +1,12 @@
-<?php
+<?php namespace Phprest;
 
-namespace Phprest;
-
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use League\Container\ContainerInterface;
+use Stack;
 use Phprest\Router\RouteCollection;
+use Phprest\Service;
+use Phprest\Entity;
+use League\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\HttpFoundation\Response;
 
 class Application extends \Proton\Application
@@ -31,6 +32,11 @@ class Application extends \Proton\Application
     protected $container;
 
     /**
+     * @var Stack\Builder
+     */
+    protected $stackBuilder;
+
+    /**
      * @param Config $configuration
      */
     public function __construct(Config $configuration)
@@ -53,6 +59,8 @@ class Application extends \Proton\Application
         $this->container->add(self::CNTRID_ROUTER, function () {
             return $this->router;
         });
+
+        $this->stackBuilder = new Stack\Builder;
     }
 
     /**
@@ -81,21 +89,31 @@ class Application extends \Proton\Application
     }
 
     /**
-     * Run the application.
+     * @param string $classPath
+     * @param array $arguments
+     */
+    public function registerMiddleware($classPath, array $arguments = [])
+    {
+        call_user_func_array([$this->stackBuilder, 'push'], array_merge([$classPath], $arguments));
+    }
+
+    /**
+     * Run the application
      *
      * @param Request $request
+     * @param array $middleWares
      *
      * @return string
      */
-    public function run(Request $request = null)
+    public function run(Request $request = null, array $middleWares = [])
     {
-        $app = (new \Stack\Builder())
-            ->push('Phprest\Middleware\ApiVersion')
-            ->resolve($this);
-
         if (null === $request) {
             $request = Request::createFromGlobals();
         }
+
+        $this->registerMiddleware('Phprest\Middleware\ApiVersion');
+
+        $app = $this->stackBuilder->resolve($this);
 
         $response = $app->handle($request, self::MASTER_REQUEST, false);
         $response->send();
@@ -104,7 +122,7 @@ class Application extends \Proton\Application
     }
 
     /**
-     * Add a HEAD route.
+     * Add a HEAD route
      *
      * @param string $route
      * @param mixed $action
@@ -117,7 +135,7 @@ class Application extends \Proton\Application
     }
 
     /**
-     * Add a OPTIONS route.
+     * Add a OPTIONS route
      *
      * @param string $route
      * @param mixed $action
