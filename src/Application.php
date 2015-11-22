@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use League\Container\ContainerInterface;
 use Phprest\Router\RouteCollection;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Application extends \Proton\Application
 {
@@ -157,9 +158,17 @@ class Application extends \Proton\Application
      */
     protected function setErrorHandler()
     {
+        $app = $this;
+
         $this->configuration->getLogHandler()->setLogger($this->serviceLogger());
 
         $this->configuration->getErrorHandler()->pushHandler($this->configuration->getLogHandler());
         $this->configuration->getErrorHandler()->register();
+
+        $this->setExceptionDecorator(function (\Exception $e) use ($app) {
+            $formatter = new ErrorHandler\Formatter\JsonXml($app->configuration);
+
+            return new Response($formatter->format($e), http_response_code());
+        });
     }
 }
