@@ -73,6 +73,7 @@ Phprest gives you only the very basics to build your own architecture within you
    * [On a single exception](https://github.com/phprest/phprest#on-a-single-exception)
 * [Authentication](https://github.com/phprest/phprest#authentication)
    * [Basic Authentication](https://github.com/phprest/phprest#basic-authentication)
+   * [JWT Authentication](https://github.com/phprest/phprest#jwt-authentication)
 * [API testing](https://github.com/phprest/phprest#api-testing)
 * [API documentation](https://github.com/phprest/phprest#api-documentation)
 
@@ -147,17 +148,21 @@ $config->setLoggerService(new LoggerService());
 
 ### Usage with Stack
 
-You should push the ```Phprest\Middleware\ApiVersion``` Middleware as well.
+You can register middlewares trough the ```registerMiddleware```function.
 
 ```php
-<?php
-$app = (new \Stack\Builder())
-    ->push('Phprest\Middleware\ApiVersion')
-    ->push(...)
-    ->push(...)
-    ->resolve($app);
-
-\Stack\run($app);
+$app->registerMiddleware('Jsor\Stack\JWT', [
+    [
+        'firewall' => [
+	    ['path' => '/',         'anonymous' => false],
+	    ['path' => '/tokens',   'anonymous' => true]
+	],
+	'key_provider' => function() {
+	    return 'secret-key';
+	},
+	'realm' => 'The Glowing Territories'
+    ]
+]);
 ```
 
 ## API Versioning
@@ -580,31 +585,45 @@ The response is content negotiationed (xml/json), the status code is 503.
 
 ### Basic Authentication
 
-You'll need these components:
-* [Stackphp\Run](https://github.com/stackphp/run)
+You'll need this package:
 * [Dflydev\Dflydev-stack-basic-authentication](https://github.com/dflydev/dflydev-stack-basic-authentication)
 
 ```php
-# ...
-$app = (new \Stack\Builder())
-    ->push('Phprest\Middleware\ApiVersion') # you should push this too
-    ->push('Dflydev\Stack\BasicAuthentication', [
+$app->registerMiddleware('Dflydev\Stack\BasicAuthentication', [
+    [
         'firewall' => [
-            ['path' => '/', 'anonymous' => false],
+	    ['path' => '/', 'anonymous' => false],
             ['path' => '/temperatures', 'method' => 'GET', 'anonymous' => true]
-        ],
-        'authenticator' => function ($username, $password) {
+	],
+	'authenticator' => function ($username, $password) {
             if ('admin' === $username && 'admin' === $password) {
                 # Basic YWRtaW46YWRtaW4=
                 return 'success';
             }
         },
-        'realm' => 'The Glowing Territories',
-    ])
-    ->resolve($app);
-    
-Stack\run($app);
-# ...
+	'realm' => 'The Glowing Territories'
+    ]
+]);
+```
+
+### JWT Authentication
+
+You'll need this package:
+* [Jsor\Stack-jwt](https://github.com/jsor/stack-jwt)
+
+```php
+$app->registerMiddleware('Jsor\Stack\JWT', [
+    [
+        'firewall' => [
+	    ['path' => '/',         'anonymous' => false],
+	    ['path' => '/tokens',   'anonymous' => true]
+	],
+	'key_provider' => function() {
+	    return 'secret-key';
+	},
+	'realm' => 'The Glowing Territories'
+    ]
+]);
 ```
 
 # API testing
