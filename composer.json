@@ -19,7 +19,7 @@
         "willdurand/hateoas": "~2.3.0",
         "stack/builder": "~1.0.3",
         "monolog/monolog": "~1.12.0",
-        "symfony/console": "~2.6.4",
+        "symfony/console": "~2.8.11",
         "league/booboo": "~1.0.0"
     },
     "require-dev": {
