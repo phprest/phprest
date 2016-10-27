@@ -31,10 +31,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             $this->app->getContainer()->isSingleton(Service\Logger\Config::getServiceName())
         );
-        $this->assertEquals('phprest-test', $this->app->getContainer()->get(Application::CNTRID_VENDOR));
-        $this->assertEquals(1, $this->app->getContainer()->get(Application::CNTRID_API_VERSION));
-        $this->assertTrue($this->app->getContainer()->get(Application::CNTRID_DEBUG));
-        $this->assertInstanceOf('\Phprest\Router\RouteCollection', $this->app->getContainer()->get(Application::CNTRID_ROUTER));
+        $this->assertEquals('phprest-test', $this->app->getContainer()->get(Application::CONTAINER_ID_VENDOR));
+        $this->assertEquals(1, $this->app->getContainer()->get(Application::CONTAINER_ID_API_VERSION));
+        $this->assertTrue($this->app->getContainer()->get(Application::CONTAINER_ID_DEBUG));
+        $this->assertInstanceOf('\Phprest\Router\RouteCollection', $this->app->getContainer()->get(Application::CONTAINER_ID_ROUTER));
     }
 
     public function testRun()

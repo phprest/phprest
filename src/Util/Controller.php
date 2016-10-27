@@ -36,7 +36,7 @@ abstract class Controller
         $reader = new AnnotationReader();
         $class  = new \ReflectionClass($this);
         /** @var RouteCollection $router */
-        $router = $this->getContainer()->get(Application::CNTRID_ROUTER);
+        $router = $this->getContainer()->get(Application::CONTAINER_ID_ROUTER);
 
         /** @var \ReflectionMethod $method */
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {

@@ -78,7 +78,7 @@ class MimeTest extends \PHPUnit_Framework_TestCase
      */
     protected function setVendorInContainer($vendor)
     {
-        $this->container->add(Application::CNTRID_VENDOR, $vendor);
+        $this->container->add(Application::CONTAINER_ID_VENDOR, $vendor);
     }
 
     /**
@@ -86,7 +86,7 @@ class MimeTest extends \PHPUnit_Framework_TestCase
      */
     protected function setApiVersionInContainer($apiVersion)
     {
-        $this->container->add(Application::CNTRID_API_VERSION, $apiVersion);
+        $this->container->add(Application::CONTAINER_ID_API_VERSION, $apiVersion);
     }
 
     /**

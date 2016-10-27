@@ -57,8 +57,8 @@ class JsonXml extends AbstractFormatter
                 )
             );
 
-            $vendor = $this->getContainer()->get(Application::CNTRID_VENDOR);
-            $apiVersion = $this->getContainer()->get(Application::CNTRID_API_VERSION);
+            $vendor = $this->getContainer()->get(Application::CONTAINER_ID_VENDOR);
+            $apiVersion = $this->getContainer()->get(Application::CONTAINER_ID_API_VERSION);
 
             $response->headers->set('Content-Type', 'application/vnd.' . $vendor . '-v' . $apiVersion . '+json');
         }

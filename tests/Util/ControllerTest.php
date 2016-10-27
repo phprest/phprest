@@ -28,7 +28,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->router = new RouteCollection();
 
         $container = new Container();
-        $container->add(Application::CNTRID_ROUTER, $this->router);
+        $container->add(Application::CONTAINER_ID_ROUTER, $this->router);
 
         $this->controller = new RoutedController($container);
     }

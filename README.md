@@ -12,7 +12,7 @@
 
 REST-like PHP micro-framework.
 
-It extends the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http://stackphp.com/) compatible) micro-framework.
+It's based on the [Proton](https://github.com/alexbilbie/Proton) ([StackPhp](http://stackphp.com/) compatible) micro-framework.
 
 Phprest gives you only the very basics to build your own architecture within your own framework and assemble any folder structure you like. It is just a thin layer around your application with the help of some great libraries.
 

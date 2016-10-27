@@ -68,8 +68,8 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
      */
     protected function setRequestParameters($vendor, $apiVersion, $acceptHeader)
     {
-        $this->container->add(Application::CNTRID_VENDOR, $vendor);
-        $this->container->add(Application::CNTRID_API_VERSION, $apiVersion);
+        $this->container->add(Application::CONTAINER_ID_VENDOR, $vendor);
+        $this->container->add(Application::CONTAINER_ID_API_VERSION, $apiVersion);
 
         (new Service\Hateoas\Service())->
             register($this->container, new Service\Hateoas\Config(true));

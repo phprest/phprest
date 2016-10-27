@@ -33,9 +33,9 @@ class ApiVersionTest extends \PHPUnit_Framework_TestCase
         $app = \Mockery::mock('Phprest\Application');
 
         $config = new Config('test', '2.6');
-        $config->getContainer()->add(Application::CNTRID_VENDOR, $config->getVendor());
-        $config->getContainer()->add(Application::CNTRID_API_VERSION, $config->getApiVersion());
-        $config->getContainer()->add(Application::CNTRID_DEBUG, $config->isDebug());
+        $config->getContainer()->add(Application::CONTAINER_ID_VENDOR, $config->getVendor());
+        $config->getContainer()->add(Application::CONTAINER_ID_API_VERSION, $config->getApiVersion());
+        $config->getContainer()->add(Application::CONTAINER_ID_DEBUG, $config->isDebug());
 
         $app->shouldReceive('getConfiguration')->andReturn($config);
         $app->shouldReceive('getContainer')->andReturn($config->getContainer());

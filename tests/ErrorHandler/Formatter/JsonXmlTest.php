@@ -64,8 +64,8 @@ class JsonXmlTest extends \PHPUnit_Framework_TestCase
             $config->getHateoasConfig()
         );
 
-        $config->getContainer()->add(Application::CNTRID_VENDOR, $config->getVendor());
-        $config->getContainer()->add(Application::CNTRID_API_VERSION, $config->getApiVersion());
-        $config->getContainer()->add(Application::CNTRID_DEBUG, $config->isDebug());
+        $config->getContainer()->add(Application::CONTAINER_ID_VENDOR, $config->getVendor());
+        $config->getContainer()->add(Application::CONTAINER_ID_API_VERSION, $config->getApiVersion());
+        $config->getContainer()->add(Application::CONTAINER_ID_DEBUG, $config->isDebug());
     }
 }

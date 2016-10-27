@@ -77,8 +77,8 @@ EOD
 
     public function testJsonDeserialize()
     {
-        $this->container->add(Application::CNTRID_VENDOR, 'phprest');
-        $this->container->add(Application::CNTRID_API_VERSION, '3.2');
+        $this->container->add(Application::CONTAINER_ID_VENDOR, 'phprest');
+        $this->container->add(Application::CONTAINER_ID_API_VERSION, '3.2');
 
         $request = new Request([],[],[],[],[],[], '{"a":1,"b":2}');
         $request->headers->set('Content-Type', 'application/json', true);
@@ -95,8 +95,8 @@ EOD
      */
     public function testJsonDeserializeWithUnsopportedFormat()
     {
-        $this->container->add(Application::CNTRID_VENDOR, 'phprest');
-        $this->container->add(Application::CNTRID_API_VERSION, '3.2');
+        $this->container->add(Application::CONTAINER_ID_VENDOR, 'phprest');
+        $this->container->add(Application::CONTAINER_ID_API_VERSION, '3.2');
 
         $request = new Request([],[],[],[],[],[], '{"a":1,"b":2}');
         $request->headers->set('Content-Type', 'application/yaml', true);
@@ -113,8 +113,8 @@ EOD
      */
     protected function setRequestParameters($vendor, $apiVersion, $acceptHeader)
     {
-        $this->container->add(Application::CNTRID_VENDOR, $vendor);
-        $this->container->add(Application::CNTRID_API_VERSION, $apiVersion);
+        $this->container->add(Application::CONTAINER_ID_VENDOR, $vendor);
+        $this->container->add(Application::CONTAINER_ID_API_VERSION, $apiVersion);
 
         (new Service())->
         register($this->container, new Config(true));
