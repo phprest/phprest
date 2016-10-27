@@ -53,7 +53,6 @@ class Log implements HandlerInterface
     protected function handleErrorException(\ErrorException $exception)
     {
         switch ($exception->getSeverity()) {
-
             case E_ERROR:
             case E_RECOVERABLE_ERROR:
             case E_CORE_ERROR:
