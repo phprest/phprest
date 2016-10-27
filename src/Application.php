@@ -13,7 +13,11 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 
-class Application implements HttpKernelInterface, TerminableInterface, ContainerAwareInterface, ListenerAcceptorInterface
+class Application implements
+    HttpKernelInterface,
+    TerminableInterface,
+    ContainerAwareInterface,
+    ListenerAcceptorInterface
 {
     use EmitterTrait;
     use ContainerAwareTrait;
