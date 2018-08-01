@@ -8,6 +8,10 @@
 [![Packagist Version](https://img.shields.io/packagist/v/phprest/phprest.svg?style=flat-square)](https://packagist.org/packages/phprest/phprest)
 [![Total Downloads](https://img.shields.io/packagist/dt/phprest/phprest.svg?style=flat-square)](https://packagist.org/packages/phprest/phprest)
 
+# Game over
+
+This project is not maintained anymore!
+
 # Description
 
 REST-like PHP micro-framework.
