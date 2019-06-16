@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class NotAcceptableTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class NotAcceptableTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new NotAcceptable(9, [1,2,3]);
 

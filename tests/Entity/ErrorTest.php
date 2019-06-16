@@ -1,30 +1,31 @@
 <?php namespace Phprest\Entity;
 
 use Phprest\Exception\Exception;
+use PHPUnit\Framework\TestCase;
 
-class ErrorTest extends \PHPUnit_Framework_TestCase
+class ErrorTest extends TestCase
 {
     /**
      * @var Error
      */
-    protected $error = null;
+    protected $error;
 
     public function setUp()
     {
         $this->error = new Error(new \Exception('exception message', 101));
     }
 
-    public function testGetCode()
+    public function testGetCode(): void
     {
         $this->assertEquals(101, $this->error->getCode());
     }
 
-    public function testGetMessage()
+    public function testGetMessage(): void
     {
         $this->assertEquals('exception message', $this->error->getMessage());
     }
 
-    public function testGetDetails()
+    public function testGetDetails(): void
     {
         $error = new Error(new Exception('', 0, 500, ['details']));
 

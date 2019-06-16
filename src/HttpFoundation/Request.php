@@ -25,8 +25,9 @@ class Request extends BaseRequest
     /**
      * @param int|string $version
      */
-    public function setApiVersion($version)
+    public function setApiVersion($version): void
     {
-        $this->pathInfo = '/' . $version . $this->getPathInfo();
+        $originalPath = $this->getPathInfo() === '' ? '/' : $this->getPathInfo();
+        $this->pathInfo = '/' . $version . $originalPath;
     }
 }

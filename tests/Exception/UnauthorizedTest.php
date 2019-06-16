@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class UnauthorizedTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UnauthorizedTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new Unauthorized(9, [1,2,3]);
 

@@ -1,10 +1,11 @@
 <?php namespace Phprest\Response;
 
 use Phprest\HttpFoundation\Response;
+use PHPUnit\Framework\TestCase;
 
-class NoContentTest extends \PHPUnit_Framework_TestCase
+class NoContentTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $response = new NoContent(['Content-Type' => 'application/json']);
 

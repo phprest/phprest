@@ -1,10 +1,11 @@
 <?php namespace Phprest\Response;
 
 use Phprest\HttpFoundation\Response;
+use PHPUnit\Framework\TestCase;
 
-class OkTest extends \PHPUnit_Framework_TestCase
+class OkTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $response = new Ok('test content', ['Content-Type' => 'application/json']);
 

@@ -1,8 +1,10 @@
 <?php namespace Phprest\HttpFoundation;
 
-class ResponseTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ResponseTest extends TestCase
 {
-    public function testSetContent()
+    public function testSetContent(): void
     {
         $response = new Response('first');
         $response->setContent('second');

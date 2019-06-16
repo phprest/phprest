@@ -1,10 +1,11 @@
-<?php namespace Phprest\Response;
+<?php
+namespace Phprest\Response;
 
-use Phprest\HttpFoundation\Response;
+use PHPUnit\Framework\TestCase;
 
-class CreatedTest extends \PHPUnit_Framework_TestCase
+class CreatedTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $response = new Created('http://example-location', 'test content', ['Content-Type' => 'application/json']);
 

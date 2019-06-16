@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class BadRequestTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class BadRequestTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new BadRequest(9, [1,2,3]);
 

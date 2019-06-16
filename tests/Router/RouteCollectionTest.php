@@ -1,14 +1,19 @@
 <?php namespace Phprest\Router;
 
-class RouteCollectionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class RouteCollectionTest extends TestCase
 {
-    public function testGetRoutingTable()
+    public function testGetRoutingTable(): void
     {
         $routeCollection = new RouteCollection();
 
-        $routeCollection->addRoute('GET', '/temperatures', function(){});
-        $routeCollection->addRoute('GET', '/temperatures/1', function(){});
-        $routeCollection->addRoute('POST', '/camera', function(){});
+        $routeCollection->addRoute('GET', '/temperatures', function () {
+        });
+        $routeCollection->addRoute('GET', '/temperatures/1', function () {
+        });
+        $routeCollection->addRoute('POST', '/camera', function () {
+        });
 
         $this->assertCount(3, $routeCollection->getRoutingTable());
         $this->assertEquals('/temperatures', $routeCollection->getRoutingTable()[0]['route']);

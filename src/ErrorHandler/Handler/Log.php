@@ -34,7 +34,7 @@ class Log implements HandlerInterface
     /**
      * @param \Exception $exception
      */
-    public function handle(\Exception $exception)
+    public function handle($exception)
     {
         if ($exception instanceof \ErrorException) {
             $this->handleErrorException($exception);

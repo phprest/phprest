@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class UnprocessableEntityTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UnprocessableEntityTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new UnprocessableEntity(9, [1,2,3]);
 

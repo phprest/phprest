@@ -165,7 +165,6 @@ class Application implements
             $this->emit('response.created', $request, $response);
 
             return $response;
-
         } catch (\Exception $e) {
             if (!$catch) {
                 throw $e;

@@ -2,7 +2,7 @@
 
 namespace Phprest;
 
-use League\BooBoo\Runner;
+use League\BooBoo\BooBoo;
 use League\Container\Container;
 use League\Container\ContainerInterface;
 use League\Event\Emitter as EventEmitter;
@@ -50,7 +50,7 @@ class Config
     protected $eventEmitter;
 
     /**
-     * @var Runner
+     * @var BooBoo
      */
     protected $errorHandler;
 
@@ -104,7 +104,7 @@ class Config
         $this->setLogHandler(new LogHandler());
         $this->setRouterStrategy(new RouterStrategy($this->getContainer()));
 
-        $errorHandler = new Runner([new JsonXmlFormatter($this)]);
+        $errorHandler = new BooBoo([new JsonXmlFormatter($this)]);
         $errorHandler->silenceAllErrors(false);
         $errorHandler->treatErrorsAsExceptions(true);
 
@@ -192,15 +192,15 @@ class Config
     }
 
     /**
-     * @param Runner $errorHandler
+     * @param BooBoo $errorHandler
      */
-    public function setErrorHandler(Runner $errorHandler)
+    public function setErrorHandler(BooBoo $errorHandler)
     {
         $this->errorHandler = $errorHandler;
     }
 
     /**
-     * @return Runner
+     * @return BooBoo
      */
     public function getErrorHandler()
     {

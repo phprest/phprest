@@ -1,14 +1,13 @@
 <?php namespace Phprest\ErrorHandler\Handler;
 
+use ErrorException;
+use Exception;
 use Phprest\Exception\BadRequest;
-use Phprest\Application;
-use Phprest\Config;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Symfony\Component\HttpFoundation\Request;
+use PHPUnit\Framework\TestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 
-class LogTest extends \PHPUnit_Framework_TestCase
+class LogTest extends TestCase
 {
     /**
      * @var TestHandler
@@ -34,16 +33,16 @@ class LogTest extends \PHPUnit_Framework_TestCase
         $this->logHandler = new Log($this->monolog);
     }
 
-    public function testSimpleException()
+    public function testSimpleException(): void
     {
         $this->assertFalse($this->monologHandler->hasCriticalRecords());
 
-        $this->logHandler->handle(new \Exception('test exception'));
+        $this->logHandler->handle(new Exception('test exception'));
 
         $this->assertTrue($this->monologHandler->hasCriticalRecords());
     }
 
-    public function testPhprestException()
+    public function testPhprestException(): void
     {
         $this->assertFalse($this->monologHandler->hasCriticalRecords());
 
@@ -52,38 +51,38 @@ class LogTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->monologHandler->hasCriticalRecords());
     }
 
-    public function testErrorExceptionErrorLog()
+    public function testErrorExceptionErrorLog(): void
     {
         $this->assertFalse($this->monologHandler->hasErrorRecords());
 
-        $this->logHandler->handle(new \ErrorException('test exception', 0, E_ERROR));
+        $this->logHandler->handle(new ErrorException('test exception', 0, E_ERROR));
 
         $this->assertTrue($this->monologHandler->hasErrorRecords());
     }
 
-    public function testWarningExceptionErrorLog()
+    public function testWarningExceptionErrorLog(): void
     {
         $this->assertFalse($this->monologHandler->hasWarningRecords());
 
-        $this->logHandler->handle(new \ErrorException('test exception', 0, E_WARNING));
+        $this->logHandler->handle(new ErrorException('test exception', 0, E_WARNING));
 
         $this->assertTrue($this->monologHandler->hasWarningRecords());
     }
 
-    public function testNoticeExceptionErrorLog()
+    public function testNoticeExceptionErrorLog(): void
     {
         $this->assertFalse($this->monologHandler->hasNoticeRecords());
 
-        $this->logHandler->handle(new \ErrorException('test exception', 0, E_NOTICE));
+        $this->logHandler->handle(new ErrorException('test exception', 0, E_NOTICE));
 
         $this->assertTrue($this->monologHandler->hasNoticeRecords());
     }
 
-    public function testInfoExceptionErrorLog()
+    public function testInfoExceptionErrorLog(): void
     {
         $this->assertFalse($this->monologHandler->hasInfoRecords());
 
-        $this->logHandler->handle(new \ErrorException('test exception', 0, E_STRICT));
+        $this->logHandler->handle(new ErrorException('test exception', 0, E_STRICT));
 
         $this->assertTrue($this->monologHandler->hasInfoRecords());
     }

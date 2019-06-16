@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class PreconditionFailedTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class PreconditionFailedTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new PreconditionFailed(9, [1,2,3]);
 

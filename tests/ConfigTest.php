@@ -1,22 +1,34 @@
-<?php namespace Phprest;
+<?php
+namespace Phprest;
 
+use InvalidArgumentException;
+use League\BooBoo\BooBoo;
 use Phprest\Service\Logger\Config as LoggerConfig;
 use Phprest\Service\Logger\Service as LoggerService;
+use Phprest\Service\Hateoas;
+use League\Container\Container;
+use League\Route\RouteCollection;
+use League\Event\Emitter;
+use Phprest\ErrorHandler\Handler\Log;
+use PHPUnit\Framework\TestCase;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase {
+class ConfigTest extends TestCase
+{
 
     /**
      * @dataProvider correctApiVersionsDataProvider
      *
      * @param mixed $apiVersion
      */
-    public function testCorrectApiVersions($apiVersion) {
+    public function testCorrectApiVersions($apiVersion): void
+    {
         $config = new Config('phprest', $apiVersion, true);
 
         $this->assertEquals($apiVersion, $config->getApiVersion());
     }
 
-    public function correctApiVersionsDataProvider() {
+    public function correctApiVersionsDataProvider(): array
+    {
         return [
             [0], [1], [2], [3], [4], [5], [6], [7], [8], [9],
             ['0.0'], ['0.1'], ['0.2'], ['0.8'], ['0.9'],
@@ -35,17 +47,19 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider inCorrectApiVersionsDataProvider
      *
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      *
      * @param mixed $apiVersion
      */
-    public function testInCorrectApiVersions($apiVersion) {
+    public function testInCorrectApiVersions($apiVersion): void
+    {
         $config = new Config('phprest', $apiVersion, true);
 
         $this->assertEquals($apiVersion, $config->getApiVersion());
     }
 
-    public function inCorrectApiVersionsDataProvider() {
+    public function inCorrectApiVersionsDataProvider(): array
+    {
         return [
             [-2], [-1], [10], [11], [12],
             ['a'], [null],
@@ -56,28 +70,30 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
         ];
     }
 
-    public function testGetters() {
+    public function testGetters(): void
+    {
         $config = new Config('phprest', 1, true);
 
         $this->assertEquals('phprest', $config->getVendor());
         $this->assertEquals(1, $config->getApiVersion());
         $this->assertEquals(true, $config->isDebug());
-        $this->assertInstanceOf('\League\Container\Container', $config->getContainer());
-        $this->assertInstanceOf('\League\Route\RouteCollection', $config->getRouter());
-        $this->assertInstanceOf('\League\Event\Emitter', $config->getEventEmitter());
-        $this->assertInstanceOf('\Phprest\Service\Hateoas\Config', $config->getHateoasConfig());
-        $this->assertInstanceOf('\Phprest\Service\Hateoas\Service', $config->getHateoasService());
-        $this->assertInstanceOf('\League\BooBoo\Runner', $config->getErrorHandler());
-        $this->assertInstanceOf('\Phprest\ErrorHandler\Handler\Log', $config->getLogHandler());
+        $this->assertInstanceOf(Container::class, $config->getContainer());
+        $this->assertInstanceOf(RouteCollection::class, $config->getRouter());
+        $this->assertInstanceOf(Emitter::class, $config->getEventEmitter());
+        $this->assertInstanceOf(Hateoas\Config::class, $config->getHateoasConfig());
+        $this->assertInstanceOf(Hateoas\Service::class, $config->getHateoasService());
+        $this->assertInstanceOf(BooBoo::class, $config->getErrorHandler());
+        $this->assertInstanceOf(Log::class, $config->getLogHandler());
     }
 
-    public function testLoggerGetterSetter() {
+    public function testLoggerGetterSetter(): void
+    {
         $config = new Config('phprest', 1, true);
 
         $config->setLoggerConfig(new LoggerConfig('test'));
         $config->setLoggerService(new LoggerService());
 
-        $this->assertInstanceOf('\Phprest\Service\Logger\Config', $config->getLoggerConfig());
-        $this->assertInstanceOf('\Phprest\Service\Logger\Service', $config->getLoggerService());
+        $this->assertInstanceOf(LoggerConfig::class, $config->getLoggerConfig());
+        $this->assertInstanceOf(LoggerService::class, $config->getLoggerService());
     }
 }

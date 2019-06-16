@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class ForbiddenTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ForbiddenTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new Forbidden(9, [1,2,3]);
 

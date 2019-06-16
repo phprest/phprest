@@ -1,23 +1,26 @@
 <?php namespace Phprest\Middleware;
 
+use Mockery;
+use Mockery\MockInterface;
 use Phprest\Application;
 use Phprest\Config;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class ApiVersionTest extends \PHPUnit_Framework_TestCase
+class ApiVersionTest extends TestCase
 {
     /**
      * @dataProvider appProvider
      *
      * @param Application $app
      */
-    public function testHandle(Application $app)
+    public function testHandle(Application $app): void
     {
         $middleware = new ApiVersion($app);
 
-        /** @var \Mockery\MockInterface $app */
-        $app->shouldReceive('handle')->andReturnUsing(function($request) {
-            $this->assertInstanceOf('Phprest\HttpFoundation\Request', $request);
+        /** @var MockInterface $app */
+        $app->shouldReceive('handle')->andReturnUsing(function ($request) {
+            $this->assertInstanceOf(\Phprest\HttpFoundation\Request::class, $request);
 
             /** @var \Phprest\HttpFoundation\Request $request */
             $this->assertEquals('/2.6/temperatures', $request->getPathInfo());
@@ -28,9 +31,9 @@ class ApiVersionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function appProvider()
+    public function appProvider(): array
     {
-        $app = \Mockery::mock('Phprest\Application');
+        $app = Mockery::mock(Application::class);
 
         $config = new Config('test', '2.6');
         $config->getContainer()->add(Application::CONTAINER_ID_VENDOR, $config->getVendor());
@@ -45,6 +48,6 @@ class ApiVersionTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        \Mockery::close();
+        Mockery::close();
     }
 }

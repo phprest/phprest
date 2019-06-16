@@ -1,11 +1,17 @@
-<?php namespace Phprest;
+<?php
 
-use Phprest\Application;
-use Phprest\Config;
+namespace Phprest;
+
+use League\Route\Http\Exception\NotFoundException;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Phprest\Router\RouteCollection;
+use League\Container\ContainerInterface;
+use Phprest\Config;
+use Phprest\Stub\Controller\Simple;
 
-class ApplicationTest extends \PHPUnit_Framework_TestCase
+class ApplicationTest extends TestCase
 {
     /**
      * @var Config
@@ -23,7 +29,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->app = new Application($this->config);
     }
 
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $this->assertTrue(
             $this->app->getContainer()->isSingleton(Service\Hateoas\Config::getServiceName())
@@ -34,15 +40,18 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('phprest-test', $this->app->getContainer()->get(Application::CONTAINER_ID_VENDOR));
         $this->assertEquals(1, $this->app->getContainer()->get(Application::CONTAINER_ID_API_VERSION));
         $this->assertTrue($this->app->getContainer()->get(Application::CONTAINER_ID_DEBUG));
-        $this->assertInstanceOf('\Phprest\Router\RouteCollection', $this->app->getContainer()->get(Application::CONTAINER_ID_ROUTER));
+        $this->assertInstanceOf(
+            RouteCollection::class,
+            $this->app->getContainer()->get(Application::CONTAINER_ID_ROUTER)
+        );
     }
 
-    public function testRun()
+    public function testRun(): void
     {
         $request = Request::create('/welcome');
         $request->headers->set('Accept', '*/*');
 
-        $this->app->get('/1.0/welcome', function (Request $request) {
+        $this->app->get('/1.0/welcome', static function (Request $request) {
             return new Response('Hello Phprest World', 200);
         });
 
@@ -55,22 +64,22 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \League\Route\Http\Exception\NotFoundException
      */
-    public function testRunNotFound()
+    public function testRunNotFound(): void
     {
         $this->app->run();
     }
 
-    public function testRegisterController()
+    public function testRegisterController(): void
     {
-        $this->app->registerController('\Phprest\Stub\Controller\Simple');
+        $this->app->registerController(Simple::class);
 
         $this->assertInstanceOf(
-            '\Phprest\Stub\Controller\Simple',
-            $this->app->getContainer()->get('\Phprest\Stub\Controller\Simple')
+            Simple::class,
+            $this->app->getContainer()->get(Simple::class)
         );
     }
 
-    public function testHead()
+    public function testHead(): void
     {
         $this->app->head('/test-head', 'test-handler');
 
@@ -80,7 +89,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testOptions()
+    public function testOptions(): void
     {
         $this->app->options('/test-options', 'test-handler');
 
@@ -90,10 +99,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetters()
+    public function testGetters(): void
     {
-        $this->assertInstanceOf('\Phprest\Config', $this->app->getConfiguration());
-        $this->assertInstanceOf('\League\Container\ContainerInterface', $this->app->getContainer());
-        $this->assertInstanceOf('\Phprest\Router\RouteCollection', $this->app->getRouter());
+        $this->assertInstanceOf(Config::class, $this->app->getConfiguration());
+        $this->assertInstanceOf(ContainerInterface::class, $this->app->getContainer());
+        $this->assertInstanceOf(RouteCollection::class, $this->app->getRouter());
     }
 }
