@@ -1,5 +1,7 @@
 <?php namespace Phprest;
 
+use Exception;
+use LogicException;
 use Stack;
 use Phprest\Service;
 use League\Event\EmitterTrait;
@@ -12,11 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
+use Phprest\Middleware\ApiVersion;
 
 class Application implements
     HttpKernelInterface,
     TerminableInterface,
-    ContainerAwareInterface,
     ListenerAcceptorInterface
 {
     use EmitterTrait;
@@ -126,7 +128,7 @@ class Application implements
             $request = Request::createFromGlobals();
         }
 
-        $this->registerMiddleware('Phprest\Middleware\ApiVersion');
+        $this->registerMiddleware(ApiVersion::class);
 
         $app = $this->stackBuilder->resolve($this);
 
@@ -139,19 +141,19 @@ class Application implements
     /**
      * Handle the request.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param int $type
      * @param bool $catch
      *
-     * @throws \Exception
-     * @throws \LogicException
+     * @return Response
+     * @throws LogicException
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws Exception
      */
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
     {
         // Passes the request to the container
-        $this->getContainer()->add('Symfony\Component\HttpFoundation\Request', $request);
+        $this->getContainer()->add(Request::class, $request);
 
         try {
             $this->emit('request.received', $request);
@@ -165,14 +167,14 @@ class Application implements
             $this->emit('response.created', $request, $response);
 
             return $response;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if (!$catch) {
                 throw $e;
             }
 
             $response = call_user_func($this->exceptionDecorator, $e);
             if (!$response instanceof Response) {
-                throw new \LogicException(
+                throw new LogicException(
                     'Exception decorator did not return an instance of Symfony\Component\HttpFoundation\Response'
                 );
             }
@@ -191,7 +193,7 @@ class Application implements
      *
      * @return void
      */
-    public function head($route, $action)
+    public function head($route, $action): void
     {
         $this->router->addRoute('HEAD', $route, $action);
     }
@@ -204,7 +206,7 @@ class Application implements
      *
      * @return void
      */
-    public function options($route, $action)
+    public function options($route, $action): void
     {
         $this->router->addRoute('OPTIONS', $route, $action);
     }
@@ -217,7 +219,7 @@ class Application implements
      *
      * @return void
      */
-    public function get($route, $action)
+    public function get($route, $action): void
     {
         $this->getRouter()->addRoute('GET', $route, $action);
     }
@@ -230,7 +232,7 @@ class Application implements
      *
      * @return void
      */
-    public function post($route, $action)
+    public function post($route, $action): void
     {
         $this->getRouter()->addRoute('POST', $route, $action);
     }
@@ -256,7 +258,7 @@ class Application implements
      *
      * @return void
      */
-    public function delete($route, $action)
+    public function delete($route, $action): void
     {
         $this->getRouter()->addRoute('DELETE', $route, $action);
     }
@@ -269,7 +271,7 @@ class Application implements
      *
      * @return void
      */
-    public function patch($route, $action)
+    public function patch($route, $action): void
     {
         $this->getRouter()->addRoute('PATCH', $route, $action);
     }
@@ -303,8 +305,8 @@ class Application implements
     /**
      * Terminates a request/response cycle.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param Request $request
+     * @param Response $response
      *
      * @return void
      */
@@ -349,7 +351,7 @@ class Application implements
         $this->configuration->getErrorHandler()->pushHandler($this->configuration->getLogHandler());
         $this->configuration->getErrorHandler()->register();
 
-        $this->setExceptionDecorator(function (\Exception $e) use ($app) {
+        $this->setExceptionDecorator(function (Exception $e) use ($app) {
             $formatter = new ErrorHandler\Formatter\JsonXml($app->configuration);
 
             return new Response($formatter->format($e), http_response_code());

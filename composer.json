@@ -1,5 +1,5 @@
 {
-    "name": "phprest/phprest",
+    "name": "ayanozturk/phprest",
     "description": "PHP Rest Framework.",
     "keywords": ["phprest", "framework", "micro", "rest", "restful", "api"],
     "license": "MIT",
@@ -20,8 +20,8 @@
         "league/route": "^1.2",
         "monolog/monolog": "^1.12",
         "stack/builder": "^1.0",
-        "symfony/console": "^2.8",
-        "symfony/http-kernel": "^2.8",
+        "symfony/console": "^3.4",
+        "symfony/http-kernel": "^3.2",
         "willdurand/hateoas": "^2.3",
         "willdurand/negotiation": "^1.5"
     },
