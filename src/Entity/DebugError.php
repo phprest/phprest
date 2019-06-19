@@ -53,7 +53,7 @@ class DebugError extends Error
     }
 
     /**
-     * @return array
+     * @return string
      */
     public function getTrace()
     {

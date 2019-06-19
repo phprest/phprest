@@ -10,6 +10,12 @@
             "email": "baloghbh@gmail.com",
             "homepage": "http://code-chronicle.blogspot.com",
             "role": "Developer"
+        },
+        {
+            "name": "Ayan Ozturk",
+            "email": "ayanozturk@gmail.com",
+            "homepage": "https://ayanozturk.com",
+            "role": "Developer"
         }
     ],
     "require": {

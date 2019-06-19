@@ -54,9 +54,6 @@ class Application implements
      */
     protected $exceptionDecorator;
 
-    /**
-     * @param Config $configuration
-     */
     public function __construct(Config $configuration)
     {
         $this->configuration = $configuration;
@@ -81,23 +78,15 @@ class Application implements
         $this->stackBuilder = new Stack\Builder;
     }
 
-    /**
-     * @param Service\Serviceable $service
-     * @param Service\Configurable $config
-     *
-     * @return void
-     */
-    public function registerService(Service\Serviceable $service, Service\Configurable $config)
+    public function registerService(Service\Serviceable $service, Service\Configurable $config): void
     {
         $service->register($this->container, $config);
     }
 
     /**
      * @param string $class Namespaced class name
-     *
-     * @return void
      */
-    public function registerController(string $class)
+    public function registerController(string $class): void
     {
         $controller = new $class($this->container);
 
@@ -106,21 +95,13 @@ class Application implements
         });
     }
 
-    /**
-     * @param string $classPath
-     * @param array $arguments
-     */
-    public function registerMiddleware($classPath, array $arguments = [])
+    public function registerMiddleware(string $classPath, array $arguments = [])
     {
         call_user_func_array([$this->stackBuilder, 'push'], array_merge([$classPath], $arguments));
     }
 
     /**
      * Run the application
-     *
-     * @param Request $request
-     *
-     * @return string
      */
     public function run(Request $request = null)
     {
@@ -150,7 +131,7 @@ class Application implements
      *
      * @throws Exception
      */
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true): ?Response
     {
         // Passes the request to the container
         $this->getContainer()->add(Request::class, $request);
@@ -188,92 +169,85 @@ class Application implements
     /**
      * Add a HEAD route
      *
-     * @param string $route
      * @param mixed $action
-     *
-     * @return void
      */
-    public function head($route, $action): void
+    public function head(string $route, $action): self
     {
         $this->router->addRoute('HEAD', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a OPTIONS route
      *
-     * @param string $route
      * @param mixed $action
-     *
-     * @return void
      */
-    public function options($route, $action): void
+    public function options(string $route, $action): self
     {
         $this->router->addRoute('OPTIONS', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a GET route.
      *
-     * @param string $route
      * @param mixed $action
-     *
-     * @return void
      */
-    public function get($route, $action): void
+    public function get(string $route, $action): self
     {
         $this->getRouter()->addRoute('GET', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a POST route.
      *
-     * @param string $route
      * @param mixed $action
-     *
-     * @return void
      */
-    public function post($route, $action): void
+    public function post(string $route, $action): self
     {
         $this->getRouter()->addRoute('POST', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a PUT route.
      *
-     * @param string $route
      * @param mixed $action
-     *
-     * @return void
      */
-    public function put($route, $action): void
+    public function put(string $route, $action): self
     {
         $this->getRouter()->addRoute('PUT', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a DELETE route.
      *
-     * @param string $route
      * @param mixed $action
-     *
-     * @return void
      */
-    public function delete($route, $action): void
+    public function delete(string $route, $action): self
     {
         $this->getRouter()->addRoute('DELETE', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a PATCH route.
      *
-     * @param string $route
      * @param mixed $action
-     *
-     * @return void
      */
-    public function patch($route, $action): void
+    public function patch(string $route, $action): self
     {
         $this->getRouter()->addRoute('PATCH', $route, $action);
+
+        return $this;
     }
 
     /**
@@ -284,9 +258,6 @@ class Application implements
         return $this->configuration;
     }
 
-    /**
-     * @return RouteCollection
-     */
     public function getRouter(): RouteCollection
     {
         return $this->router;
@@ -294,8 +265,6 @@ class Application implements
 
     /**
      * Return the event emitter.
-     *
-     * @return EmitterInterface
      */
     public function getEventEmitter(): EmitterInterface
     {
@@ -324,20 +293,13 @@ class Application implements
 
     /**
      * Set the exception decorator.
-     *
-     * @param callable $func
-     *
-     * @return void
      */
     public function setExceptionDecorator(callable $func): void
     {
         $this->exceptionDecorator = $func;
     }
 
-    /**
-     * @return void
-     */
-    protected function setErrorHandler()
+    protected function setErrorHandler(): void
     {
         $app = $this;
 
