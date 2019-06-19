@@ -2,11 +2,13 @@
 
 namespace Phprest\Middleware;
 
+use League\Container\ContainerInterface;
 use Negotiation\FormatNegotiator;
 use Phprest\Application;
 use Phprest\HttpFoundation\Request;
 use Phprest\Util;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ApiVersion implements HttpKernelInterface
@@ -31,7 +33,7 @@ class ApiVersion implements HttpKernelInterface
      * @param int $type
      * @param bool $catch
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function handle(BaseRequest $request, $type = self::MASTER_REQUEST, $catch = true)
     {
@@ -47,12 +49,7 @@ class ApiVersion implements HttpKernelInterface
         return $this->app->handle($request, $type, $catch);
     }
 
-    /**
-     * Returns the DI container.
-     *
-     * @return \League\Container\ContainerInterface
-     */
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         return $this->app->getConfiguration()->getContainer();
     }

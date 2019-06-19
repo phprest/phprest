@@ -2,8 +2,10 @@
 
 namespace Phprest\Command\Route;
 
+use Closure;
 use Phprest\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,10 +23,7 @@ class Get extends Command
         parent::__construct();
     }
 
-    /**
-     * @return void
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('routes:get')
@@ -37,17 +36,17 @@ class Get extends Command
      *
      * @return void
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $routes         = [];
         $routingTable   = $this->app->getRouter()->getRoutingTable();
 
-        usort($routingTable, function ($a, $b) {
+        usort($routingTable, static function ($a, $b) {
             return ($a['route'] < $b['route']) ? -1 : 1;
         });
 
         foreach ($routingTable as $routingTableRecord) {
-            if ($routingTableRecord['handler'] instanceof \Closure) {
+            if ($routingTableRecord['handler'] instanceof Closure) {
                 $routes[] = [
                     $routingTableRecord['method'],
                     $routingTableRecord['route'],
@@ -62,10 +61,10 @@ class Get extends Command
             }
         }
 
-        $table = $this->getHelper('table');
+        $table = new Table($output);
         $table
             ->setHeaders(['Method', 'Route', 'Handler'])
             ->setRows($routes);
-        $table->render($output);
+        $table->render();
     }
 }

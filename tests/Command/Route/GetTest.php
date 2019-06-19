@@ -22,7 +22,7 @@ class GetTest extends TestCase
 
         $command = $cliApp->find('routes:get');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName()));
+        $commandTester->execute(['command' => $command->getName()]);
 
         $displayedData = $commandTester->getDisplay();
 
