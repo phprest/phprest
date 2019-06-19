@@ -1,12 +1,9 @@
 # Phprest
 
-[![Author](http://img.shields.io/badge/author-@adammbalogh-blue.svg?style=flat-square)](https://twitter.com/adammbalogh)
-[![Build Status](https://img.shields.io/travis/phprest/phprest/master.svg?style=flat-square)](https://travis-ci.org/phprest/phprest)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/phprest/phprest.svg?style=flat-square)](https://scrutinizer-ci.com/g/phprest/phprest/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/g/phprest/phprest.svg?style=flat-square)](https://scrutinizer-ci.com/g/phprest/phprest)
+[![Build Status](https://travis-ci.com/ayanozturk/phprest.svg?branch=master)](https://travis-ci.com/ayanozturk/phprest)
+[![Code Coverage](https://scrutinizer-ci.com/g/ayanozturk/phprest/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ayanozturk/phprest/?branch=master)
+[![Quality Score](https://scrutinizer-ci.com/g/ayanozturk/phprest/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ayanozturk/phprest/?branch=master)
 [![Software License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Packagist Version](https://img.shields.io/packagist/v/phprest/phprest.svg?style=flat-square)](https://packagist.org/packages/phprest/phprest)
-[![Total Downloads](https://img.shields.io/packagist/dt/phprest/phprest.svg?style=flat-square)](https://packagist.org/packages/phprest/phprest)
 
 # Description
 
