@@ -8,7 +8,6 @@ use League\Event\EmitterTrait;
 use Phprest\Router\RouteCollection;
 use League\Container\ContainerAwareTrait;
 use League\Event\ListenerAcceptorInterface;
-use League\Container\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\AnnotationRegistry;
