@@ -2,6 +2,7 @@
 
 namespace Phprest\Service\Logger;
 
+use InvalidArgumentException;
 use League\Container\ContainerInterface;
 use Monolog\Logger;
 use Phprest\Service\Configurable;
@@ -15,10 +16,10 @@ class Service implements Serviceable
      *
      * @return void
      */
-    public function register(ContainerInterface $container, Configurable $config)
+    public function register(ContainerInterface $container, Configurable $config): void
     {
         if (! $config instanceof Config) {
-            throw new \InvalidArgumentException('Wrong Config object');
+            throw new InvalidArgumentException('Wrong Config object');
         }
 
         $logger = new Logger($config->name, $config->handlers);

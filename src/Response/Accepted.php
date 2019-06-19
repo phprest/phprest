@@ -2,6 +2,7 @@
 
 namespace Phprest\Response;
 
+use InvalidArgumentException;
 use Phprest\HttpFoundation\Response;
 
 class Accepted extends Response
@@ -10,7 +11,7 @@ class Accepted extends Response
      * @param mixed $content The response content, see setContent()
      * @param array $headers An array of response headers
      *
-     * @throws \InvalidArgumentException When the HTTP status code is not valid
+     * @throws InvalidArgumentException When the HTTP status code is not valid
      *
      * @api
      */

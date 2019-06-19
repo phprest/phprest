@@ -16,7 +16,7 @@ class Service implements Serviceable
      *
      * @return void
      */
-    public function register(ContainerInterface $container, Configurable $config)
+    public function register(ContainerInterface $container, Configurable $config): void
     {
         if (! $config instanceof Config) {
             throw new \InvalidArgumentException('Wrong Config object');

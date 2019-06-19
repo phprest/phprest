@@ -2,11 +2,14 @@
 
 namespace Phprest\Router;
 
+use Closure;
+use Hateoas\Hateoas;
 use League\Container\ContainerInterface;
 use League\Route\Strategy\AbstractStrategy;
 use League\Route\Strategy\StrategyInterface;
 use Phprest\HttpFoundation\Response;
 use Phprest\Service;
+use Symfony\Component\HttpFoundation\Request;
 
 class Strategy extends AbstractStrategy implements StrategyInterface
 {
@@ -36,14 +39,14 @@ class Strategy extends AbstractStrategy implements StrategyInterface
      *     - array    (controller is a class method [0 => ClassName, 1 => MethodName])
      *     - \Closure (controller is an anonymous function)
      *
-     * @param  string|array|\Closure $controller
+     * @param  string|array|Closure $controller
      * @param  array $vars - named wildcard segments of the matched route
      *
      * @return mixed
      */
     public function dispatch($controller, array $vars)
     {
-        $request = $this->container->get('Symfony\Component\HttpFoundation\Request');
+        $request = $this->container->get(Request::class);
 
         $response = $this->invokeController($controller, array_merge(
             [$request],
@@ -62,22 +65,12 @@ class Strategy extends AbstractStrategy implements StrategyInterface
     }
 
     /**
-     * @return \Hateoas\Hateoas
+     * @return Hateoas
      *
      * @codeCoverageIgnore
      */
-    protected function serviceHateoas()
+    protected function serviceHateoas(): Hateoas
     {
         return $this->getContainer()->get(Service\Hateoas\Config::getServiceName());
-    }
-
-    /**
-     * Returns the DI container.
-     *
-     * @return \League\Container\ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
     }
 }

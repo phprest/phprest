@@ -2,6 +2,7 @@
 
 namespace Phprest\Util;
 
+use League\Container\Container;
 use Phprest\Application;
 use Phprest\Util\DataStructure\MimeProcessResult;
 
@@ -45,7 +46,7 @@ trait Mime
     /**
      * Returns the DI container.
      *
-     * @return \League\Container\Container
+     * @return Container
      */
     abstract protected function getContainer();
 }

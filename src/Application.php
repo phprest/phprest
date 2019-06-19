@@ -1,6 +1,7 @@
 <?php namespace Phprest;
 
 use Exception;
+use League\Event\EmitterInterface;
 use LogicException;
 use Stack;
 use Phprest\Service;
@@ -96,11 +97,11 @@ class Application implements
      *
      * @return void
      */
-    public function registerController($class)
+    public function registerController(string $class)
     {
         $controller = new $class($this->container);
 
-        $this->container->add($class, function () use ($controller) {
+        $this->container->add($class, static function () use ($controller) {
             return $controller;
         });
     }
@@ -244,7 +245,7 @@ class Application implements
      *
      * @return void
      */
-    public function put($route, $action)
+    public function put($route, $action): void
     {
         $this->getRouter()->addRoute('PUT', $route, $action);
     }
@@ -278,7 +279,7 @@ class Application implements
     /**
      * @return Config
      */
-    public function getConfiguration()
+    public function getConfiguration(): Config
     {
         return $this->configuration;
     }
@@ -286,7 +287,7 @@ class Application implements
     /**
      * @return RouteCollection
      */
-    public function getRouter()
+    public function getRouter(): RouteCollection
     {
         return $this->router;
     }
@@ -294,22 +295,17 @@ class Application implements
     /**
      * Return the event emitter.
      *
-     * @return \League\Event\EmitterInterface
+     * @return EmitterInterface
      */
-    public function getEventEmitter()
+    public function getEventEmitter(): EmitterInterface
     {
         return $this->getEmitter();
     }
 
     /**
      * Terminates a request/response cycle.
-     *
-     * @param Request $request
-     * @param Response $response
-     *
-     * @return void
      */
-    public function terminate(Request $request, Response $response)
+    public function terminate(Request $request, Response $response): void
     {
         $this->emit('response.sent', $request, $response);
     }
@@ -333,7 +329,7 @@ class Application implements
      *
      * @return void
      */
-    public function setExceptionDecorator(callable $func)
+    public function setExceptionDecorator(callable $func): void
     {
         $this->exceptionDecorator = $func;
     }
@@ -350,7 +346,7 @@ class Application implements
         $this->configuration->getErrorHandler()->pushHandler($this->configuration->getLogHandler());
         $this->configuration->getErrorHandler()->register();
 
-        $this->setExceptionDecorator(function (Exception $e) use ($app) {
+        $this->setExceptionDecorator(static function (Exception $e) use ($app) {
             $formatter = new ErrorHandler\Formatter\JsonXml($app->configuration);
 
             return new Response($formatter->format($e), http_response_code());

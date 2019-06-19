@@ -2,6 +2,7 @@
 
 namespace Phprest;
 
+use InvalidArgumentException;
 use League\BooBoo\BooBoo;
 use League\Container\Container;
 use League\Container\ContainerInterface;
@@ -32,7 +33,7 @@ class Config
     /**
      * @var bool
      */
-    protected $debug;
+    protected $debug = false;
 
     /**
      * @var ContainerInterface
@@ -87,7 +88,7 @@ class Config
     public function __construct($vendor, $apiVersion, $debug = false)
     {
         if (! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', (string) $apiVersion)) {
-            throw new \InvalidArgumentException('Api version is not valid');
+            throw new InvalidArgumentException('Api version is not valid');
         }
 
         $this->vendor       = $vendor;
@@ -111,178 +112,112 @@ class Config
         $this->setErrorHandler($errorHandler);
     }
 
-    /**
-     * @return string
-     */
-    public function getVendor()
+    public function getVendor(): string
     {
         return $this->vendor;
     }
 
-    /**
-     * @return string
-     */
-    public function getApiVersion()
+    public function getApiVersion(): string
     {
         return $this->apiVersion;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return $this->debug;
     }
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container)
+    public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }
 
-    /**
-     * @param RouteCollection $router
-     */
-    public function setRouter(RouteCollection $router)
+    public function setRouter(RouteCollection $router): void
     {
         $this->router = $router;
     }
 
-    /**
-     * @param StrategyInterface $strategy
-     */
-    public function setRouterStrategy(StrategyInterface $strategy)
+    public function setRouterStrategy(StrategyInterface $strategy): void
     {
         $this->router->setStrategy($strategy);
     }
 
-    /**
-     * @return RouteCollection
-     */
-    public function getRouter()
+    public function getRouter(): RouteCollection
     {
         return $this->router;
     }
 
-    /**
-     * @param EventEmitterInterface $eventEmitter
-     */
-    public function setEventEmitter(EventEmitterInterface $eventEmitter)
+    public function setEventEmitter(EventEmitterInterface $eventEmitter): void
     {
         $this->eventEmitter = $eventEmitter;
     }
 
-    /**
-     * @return EventEmitterInterface
-     */
-    public function getEventEmitter()
+    public function getEventEmitter(): EventEmitterInterface
     {
         return $this->eventEmitter;
     }
 
-    /**
-     * @param BooBoo $errorHandler
-     */
-    public function setErrorHandler(BooBoo $errorHandler)
+    public function setErrorHandler(BooBoo $errorHandler): void
     {
         $this->errorHandler = $errorHandler;
     }
 
-    /**
-     * @return BooBoo
-     */
-    public function getErrorHandler()
+    public function getErrorHandler(): BooBoo
     {
         return $this->errorHandler;
     }
 
-    /**
-     * @param HateoasConfig $config
-     */
-    public function setHateoasConfig(HateoasConfig $config)
+    public function setHateoasConfig(HateoasConfig $config): void
     {
         $this->hateoasConfig = $config;
     }
 
-    /**
-     * @return HateoasConfig
-     */
-    public function getHateoasConfig()
+    public function getHateoasConfig(): HateoasConfig
     {
         return $this->hateoasConfig;
     }
 
-    /**
-     * @param HateoasService $service
-     */
-    public function setHateoasService(HateoasService $service)
+    public function setHateoasService(HateoasService $service): void
     {
         $this->hateoasService = $service;
     }
 
-    /**
-     * @return HateoasService
-     */
-    public function getHateoasService()
+    public function getHateoasService(): HateoasService
     {
         return $this->hateoasService;
     }
 
-    /**
-     * @param LoggerConfig $config
-     */
-    public function setLoggerConfig(LoggerConfig $config)
+    public function setLoggerConfig(LoggerConfig $config): void
     {
         $this->loggerConfig = $config;
     }
 
-    /**
-     * @return LoggerConfig
-     */
-    public function getLoggerConfig()
+    public function getLoggerConfig(): LoggerConfig
     {
         return $this->loggerConfig;
     }
 
-    /**
-     * @param LoggerService $service
-     */
-    public function setLoggerService(LoggerService $service)
+    public function setLoggerService(LoggerService $service): void
     {
         $this->loggerService = $service;
     }
 
-    /**
-     * @return LoggerService
-     */
-    public function getLoggerService()
+    public function getLoggerService(): LoggerService
     {
         return $this->loggerService;
     }
 
-    /**
-     * @param LogHandler $logHandler
-     */
-    public function setLogHandler(LogHandler $logHandler)
+    public function setLogHandler(LogHandler $logHandler): void
     {
         $this->logHandler = $logHandler;
     }
 
-    /**
-     * @return LogHandler
-     */
-    public function getLogHandler()
+    public function getLogHandler(): LogHandler
     {
         return $this->logHandler;
     }
