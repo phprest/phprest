@@ -2,6 +2,8 @@
 
 namespace Phprest\ErrorHandler\Handler;
 
+use ErrorException;
+use Exception;
 use League\BooBoo\Handler\HandlerInterface;
 use Phprest\Exception\Exception as PhprestException;
 use Psr\Log\LoggerInterface;
@@ -13,30 +15,26 @@ class Log implements HandlerInterface
      */
     protected $logger;
 
-    /**
-     * @param LoggerInterface|null $logger
-     */
     public function __construct(LoggerInterface $logger = null)
     {
-        if (! is_null($logger)) {
+        if (null !== $logger) {
             $this->setLogger($logger);
         }
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): self
     {
         $this->logger = $logger;
+
+        return $this;
     }
 
     /**
-     * @param \Exception $exception
+     * @param Exception $exception
      */
-    public function handle($exception)
+    public function handle($exception): void
     {
-        if ($exception instanceof \ErrorException) {
+        if ($exception instanceof ErrorException) {
             $this->handleErrorException($exception);
 
             return;
@@ -45,12 +43,7 @@ class Log implements HandlerInterface
         $this->logger->critical($this->buildLogMessage($exception));
     }
 
-    /**
-     * @param \ErrorException $exception
-     *
-     * @return bool
-     */
-    protected function handleErrorException(\ErrorException $exception)
+    protected function handleErrorException(ErrorException $exception): bool
     {
         switch ($exception->getSeverity()) {
             case E_ERROR:
@@ -84,12 +77,7 @@ class Log implements HandlerInterface
         return true;
     }
 
-    /**
-     * @param \Exception $exception
-     *
-     * @return string
-     */
-    protected function buildLogMessage(\Exception $exception)
+    protected function buildLogMessage(Exception $exception): string
     {
         $message = $exception->getMessage() . "({$exception->getCode()})";
 

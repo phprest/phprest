@@ -127,9 +127,11 @@ class Config
         return $this->debug;
     }
 
-    public function setContainer(ContainerInterface $container): void
+    public function setContainer(ContainerInterface $container): self
     {
         $this->container = $container;
+
+        return $this;
     }
 
     public function getContainer(): ContainerInterface
@@ -137,14 +139,18 @@ class Config
         return $this->container;
     }
 
-    public function setRouter(RouteCollection $router): void
+    public function setRouter(RouteCollection $router): self
     {
         $this->router = $router;
+
+        return $this;
     }
 
-    public function setRouterStrategy(StrategyInterface $strategy): void
+    public function setRouterStrategy(StrategyInterface $strategy): self
     {
         $this->router->setStrategy($strategy);
+
+        return $this;
     }
 
     public function getRouter(): RouteCollection
@@ -152,9 +158,11 @@ class Config
         return $this->router;
     }
 
-    public function setEventEmitter(EventEmitterInterface $eventEmitter): void
+    public function setEventEmitter(EventEmitterInterface $eventEmitter): self
     {
         $this->eventEmitter = $eventEmitter;
+
+        return $this;
     }
 
     public function getEventEmitter(): EventEmitterInterface
@@ -162,9 +170,11 @@ class Config
         return $this->eventEmitter;
     }
 
-    public function setErrorHandler(BooBoo $errorHandler): void
+    public function setErrorHandler(BooBoo $errorHandler): self
     {
         $this->errorHandler = $errorHandler;
+
+        return $this;
     }
 
     public function getErrorHandler(): BooBoo
@@ -172,9 +182,11 @@ class Config
         return $this->errorHandler;
     }
 
-    public function setHateoasConfig(HateoasConfig $config): void
+    public function setHateoasConfig(HateoasConfig $config): self
     {
         $this->hateoasConfig = $config;
+
+        return $this;
     }
 
     public function getHateoasConfig(): HateoasConfig
@@ -182,9 +194,11 @@ class Config
         return $this->hateoasConfig;
     }
 
-    public function setHateoasService(HateoasService $service): void
+    public function setHateoasService(HateoasService $service): self
     {
         $this->hateoasService = $service;
+
+        return $this;
     }
 
     public function getHateoasService(): HateoasService
@@ -192,9 +206,11 @@ class Config
         return $this->hateoasService;
     }
 
-    public function setLoggerConfig(LoggerConfig $config): void
+    public function setLoggerConfig(LoggerConfig $config): self
     {
         $this->loggerConfig = $config;
+
+        return $this;
     }
 
     public function getLoggerConfig(): LoggerConfig
@@ -202,9 +218,11 @@ class Config
         return $this->loggerConfig;
     }
 
-    public function setLoggerService(LoggerService $service): void
+    public function setLoggerService(LoggerService $service): self
     {
         $this->loggerService = $service;
+
+        return $this;
     }
 
     public function getLoggerService(): LoggerService
@@ -212,9 +230,11 @@ class Config
         return $this->loggerService;
     }
 
-    public function setLogHandler(LogHandler $logHandler): void
+    public function setLogHandler(LogHandler $logHandler): self
     {
         $this->logHandler = $logHandler;
+
+        return $this;
     }
 
     public function getLogHandler(): LogHandler

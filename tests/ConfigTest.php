@@ -90,10 +90,13 @@ class ConfigTest extends TestCase
     {
         $config = new Config('phprest', 1, true);
 
-        $config->setLoggerConfig(new LoggerConfig('test'));
-        $config->setLoggerService(new LoggerService());
+        $loggerConfig = new LoggerConfig('test');
+        $loggerService = new LoggerService();
 
-        $this->assertInstanceOf(LoggerConfig::class, $config->getLoggerConfig());
-        $this->assertInstanceOf(LoggerService::class, $config->getLoggerService());
+        $config->setLoggerConfig($loggerConfig);
+        $config->setLoggerService($loggerService);
+
+        $this->assertSame($loggerConfig, $config->getLoggerConfig());
+        $this->assertSame($loggerService, $config->getLoggerService());
     }
 }
