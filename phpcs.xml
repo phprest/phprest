@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ruleset name="PHPRest">
+    <description>The coding standard for PHP Rest</description>
+
+    <file>./src</file>
+
+    <rule ref="PSR2" />
+</ruleset>

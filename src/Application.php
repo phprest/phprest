@@ -1,20 +1,22 @@
-<?php namespace Phprest;
+<?php
 
-use Exception;
-use League\Event\EmitterInterface;
-use LogicException;
-use Stack;
-use Phprest\Service;
-use League\Event\EmitterTrait;
-use Phprest\Router\RouteCollection;
+namespace Phprest;
+
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use League\Container\ContainerAwareTrait;
+use League\Event\EmitterInterface;
+use League\Event\EmitterTrait;
 use League\Event\ListenerAcceptorInterface;
+use Phprest\Middleware\ApiVersion;
+use Phprest\Router\RouteCollection;
+use Phprest\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
-use Phprest\Middleware\ApiVersion;
+use LogicException;
+use Exception;
+use Stack;
 
 class Application implements
     HttpKernelInterface,
@@ -45,7 +47,7 @@ class Application implements
     protected $stackBuilder;
 
     /**
-     * @var \League\Route\RouteCollection
+     * @var RouteCollection
      */
     protected $router;
 

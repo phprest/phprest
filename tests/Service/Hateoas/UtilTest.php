@@ -2,8 +2,6 @@
 
 use Phprest\Application;
 use League\Container\Container;
-use Phprest\Exception\NotAcceptable;
-use Phprest\Exception\UnsupportedMediaType;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,7 +85,7 @@ EOD
         $this->container->add(Application::CONTAINER_ID_API_VERSION, '3.2');
 
         $request = new Request([], [], [], [], [], [], '{"a":1,"b":2}');
-        $request->headers->set('Content-Type', 'application/json', true);
+        $request->headers->set('Content-Type', 'application/json');
 
         $sample = $this->deserialize(Sample::class, $request);
 
@@ -105,9 +103,9 @@ EOD
         $this->container->add(Application::CONTAINER_ID_API_VERSION, '3.2');
 
         $request = new Request([], [], [], [], [], [], '{"a":1,"b":2}');
-        $request->headers->set('Content-Type', 'application/yaml', true);
+        $request->headers->set('Content-Type', 'application/yaml');
 
-        $sample = $this->deserialize(Sample::class, $request);
+        $this->deserialize(Sample::class, $request);
     }
 
     /**
@@ -126,7 +124,7 @@ EOD
         register($this->container, new Config(true));
 
         $request = new Request();
-        $request->headers->set('Accept', $acceptHeader, true);
+        $request->headers->set('Accept', $acceptHeader);
 
         $this->container->add('Orno\Http\Request', $request);
 
