@@ -4,8 +4,5 @@ namespace Phprest\Service;
 
 interface Configurable
 {
-    /**
-     * @return string
-     */
-    public static function getServiceName();
+    public static function getServiceName(): string;
 }

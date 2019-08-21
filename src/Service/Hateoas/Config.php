@@ -44,15 +44,15 @@ class Config implements Configurable
         $this->metadataDir  = $metadataDir;
         $this->urlGenerator = $urlGenerator;
 
-        if (is_null($cacheDir)) {
+        if (null === $cacheDir) {
             $this->cacheDir = sys_get_temp_dir() . '/hateoas';
         }
 
-        if (is_null($metadataDir)) {
+        if (null === $metadataDir) {
             $this->metadataDir = sys_get_temp_dir() . '/hateoas';
         }
 
-        if (is_null($urlGenerator)) {
+        if (null === $urlGenerator) {
             $this->urlGenerator = function ($route, array $parameters, $absolute) {
                 return $this->generateUrl($route, $parameters, $absolute);
             };
@@ -100,10 +100,7 @@ class Config implements Configurable
         return $route . $resourceParams . $queryParams;
     }
 
-    /**
-     * @return string
-     */
-    public static function getServiceName()
+    public static function getServiceName(): string
     {
         return 'hateoas';
     }
