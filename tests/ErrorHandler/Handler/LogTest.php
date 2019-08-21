@@ -24,7 +24,7 @@ class LogTest extends TestCase
      */
     protected $logHandler;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->monologHandler = new TestHandler();
 

@@ -46,7 +46,7 @@ class ApiVersionTest extends TestCase
         return [[$app]];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Mockery::close();
     }

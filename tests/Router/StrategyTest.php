@@ -19,7 +19,7 @@ class StrategyTest extends TestCase
      */
     private $strategy;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new Container();
         $this->strategy = new Strategy($this->container);

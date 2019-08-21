@@ -2,13 +2,11 @@
 
 namespace Phprest;
 
-use League\Route\Http\Exception\NotFoundException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Phprest\Router\RouteCollection;
 use League\Container\ContainerInterface;
-use Phprest\Config;
 use Phprest\Stub\Controller\Simple;
 
 class ApplicationTest extends TestCase
@@ -23,7 +21,7 @@ class ApplicationTest extends TestCase
      */
     protected $app;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config('phprest-test', 1, true);
         $this->app = new Application($this->config);
@@ -61,11 +59,9 @@ class ApplicationTest extends TestCase
         $this->assertEquals('Hello Phprest World', ob_get_clean());
     }
 
-    /**
-     * @expectedException \League\Route\Http\Exception\NotFoundException
-     */
     public function testRunNotFound(): void
     {
+        $this->expectException(\League\Route\Http\Exception\NotFoundException::class);
         $this->app->run();
     }
 

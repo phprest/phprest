@@ -18,12 +18,12 @@ class UtilTest extends TestCase
      */
     private $container;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         AnnotationRegistry::registerLoader('class_exists');
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new Container();
 
@@ -69,11 +69,10 @@ EOD
         $this->assertEquals('{"a":1,"b":2}', $result->getContent());
     }
 
-    /**
-     * @expectedException \Phprest\Exception\NotAcceptable
-     */
     public function testNotAcceptableSerialize(): void
     {
+        $this->expectException(\Phprest\Exception\NotAcceptable::class);
+
         $request = $this->setRequestParameters('phprest', '2.4', 'yaml');
 
         $this->serialize(['a' => 1, 'b' => 2], $request, new Response());
@@ -94,11 +93,10 @@ EOD
         $this->assertEquals(2, $sample->b);
     }
 
-    /**
-     * @expectedException \Phprest\Exception\UnsupportedMediaType
-     */
     public function testJsonDeserializeWithUnsopportedFormat(): void
     {
+        $this->expectException(\Phprest\Exception\UnsupportedMediaType::class);
+
         $this->container->add(Application::CONTAINER_ID_VENDOR, 'phprest');
         $this->container->add(Application::CONTAINER_ID_API_VERSION, '3.2');
 

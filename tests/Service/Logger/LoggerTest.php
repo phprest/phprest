@@ -14,7 +14,7 @@ class LoggerTest extends TestCase
      */
     private $continer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->continer = new Container();
     }
@@ -29,11 +29,9 @@ class LoggerTest extends TestCase
         $this->assertEquals('sampleLoggerName', $loggerService->getName());
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testWithWrongConfig(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $service = new Service();
         $service->register($this->continer, new SampleConfig());
     }

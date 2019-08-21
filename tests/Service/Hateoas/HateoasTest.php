@@ -20,7 +20,7 @@ class HateoasTest extends TestCase
      */
     private $hateoasConfig;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container        = new Container();
         $this->hateoasConfig    = new Config(true);
@@ -64,11 +64,10 @@ class HateoasTest extends TestCase
         $this->assertEquals('http://:/foo/5?name=Adam', $url); # no host and port in CLI
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testWithWrongConfig(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $service = new Service();
         $service->register($this->container, new SampleConfig());
     }

@@ -10,7 +10,7 @@ class ErrorTest extends TestCase
      */
     protected $error;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->error = new Error(new \Exception('exception message', 101));
     }

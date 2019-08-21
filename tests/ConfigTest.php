@@ -47,12 +47,12 @@ class ConfigTest extends TestCase
     /**
      * @dataProvider inCorrectApiVersionsDataProvider
      *
-     * @expectedException InvalidArgumentException
-     *
      * @param mixed $apiVersion
      */
     public function testInCorrectApiVersions($apiVersion): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $config = new Config('phprest', $apiVersion, true);
 
         $this->assertEquals($apiVersion, $config->getApiVersion());

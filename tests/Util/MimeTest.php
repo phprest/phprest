@@ -14,7 +14,7 @@ class MimeTest extends TestCase
      */
     private $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new Container();
     }

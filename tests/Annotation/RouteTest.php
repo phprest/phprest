@@ -88,11 +88,10 @@ class RouteTest extends TestCase
         $this->assertEquals('{version:(?:2\.[3-7])}', $route->version);
     }
 
-    /**
-     * @expectedException LogicException
-     */
     public function testInvalidSinceAndUntil(): void
     {
+        $this->expectException(LogicException::class);
+
         new Route([
             'method' => 'GET',
             'path' => '/root',
@@ -101,43 +100,38 @@ class RouteTest extends TestCase
         ]);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testMethodMissingOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['path' => '/root']);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testMethodIsNotCorrectOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['method' => 'IronMan']);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testPathMissingOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['method' => 'POST']);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testInvalidSinceVersionOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['method' => 'DELETE', 'path' => '/', 'since' => '1.0.1.0']);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testInvalidUntilVersionOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['method' => 'DELETE', 'path' => '/', 'until' => '-5']);
     }
 }

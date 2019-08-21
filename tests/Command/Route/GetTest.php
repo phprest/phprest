@@ -26,11 +26,11 @@ class GetTest extends TestCase
 
         $displayedData = $commandTester->getDisplay();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '| GET    | /2.3/get-the-answer-of-everything | Phprest\Stub\Controller::getTheAnswerOfEverything |',
             $displayedData
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '| GET    | /2.3/get-welcome-message          | Closure                                           |',
             $displayedData
         );

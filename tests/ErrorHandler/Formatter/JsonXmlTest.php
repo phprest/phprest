@@ -16,7 +16,7 @@ class JsonXmlTest extends TestCase
      */
     protected $config;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config('phprest', 1, true);
         $this->setContainerElements($this->config);
@@ -26,7 +26,7 @@ class JsonXmlTest extends TestCase
     {
         $jsonXmlFormatter = new JsonXml($this->config);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '"code":9,"message":"test","details":[]',
             $jsonXmlFormatter->format(new LogicException('test', 9))
         );
@@ -36,7 +36,7 @@ class JsonXmlTest extends TestCase
     {
         $jsonXmlFormatter = new JsonXml($this->config);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '"code":11,"message":"Bad Request","details":[1,2,3,["a","b"]]',
             $jsonXmlFormatter->format(new BadRequest(11, [1,2,3,['a','b']]))
         );
@@ -49,7 +49,7 @@ class JsonXmlTest extends TestCase
 
         $jsonXmlFormatter = new JsonXml($this->config, $request);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '"code":0,"message":"Not Acceptable","details":["yaml is not supported"]',
             $jsonXmlFormatter->format(new Exception())
         );

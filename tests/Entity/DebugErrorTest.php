@@ -10,7 +10,7 @@ class DebugErrorTest extends TestCase
      */
     protected $debugError;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->debugError = new DebugError(new Exception('exception message', 101));
     }
