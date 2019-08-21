@@ -2,6 +2,7 @@
 
 namespace Phprest;
 
+use Closure;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use League\Container\ContainerAwareTrait;
 use League\Event\EmitterInterface;
@@ -171,7 +172,7 @@ class Application implements
     /**
      * Add a HEAD route
      *
-     * @param mixed $action
+     * @param string|Closure $action
      */
     public function head(string $route, $action): self
     {
@@ -183,7 +184,7 @@ class Application implements
     /**
      * Add a OPTIONS route
      *
-     * @param mixed $action
+     * @param string|Closure $action
      */
     public function options(string $route, $action): self
     {
@@ -195,7 +196,7 @@ class Application implements
     /**
      * Add a GET route.
      *
-     * @param mixed $action
+     * @param string|Closure $action
      */
     public function get(string $route, $action): self
     {
@@ -207,7 +208,7 @@ class Application implements
     /**
      * Add a POST route.
      *
-     * @param mixed $action
+     * @param string|Closure $action
      */
     public function post(string $route, $action): self
     {
@@ -219,7 +220,7 @@ class Application implements
     /**
      * Add a PUT route.
      *
-     * @param mixed $action
+     * @param string|Closure $action
      */
     public function put(string $route, $action): self
     {
@@ -231,7 +232,7 @@ class Application implements
     /**
      * Add a DELETE route.
      *
-     * @param mixed $action
+     * @param string|Closure $action
      */
     public function delete(string $route, $action): self
     {
@@ -243,7 +244,7 @@ class Application implements
     /**
      * Add a PATCH route.
      *
-     * @param mixed $action
+     * @param string|Closure $action
      */
     public function patch(string $route, $action): self
     {

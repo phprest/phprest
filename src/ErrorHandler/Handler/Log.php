@@ -40,7 +40,9 @@ class Log implements HandlerInterface
             return;
         }
 
-        $this->logger->critical($this->buildLogMessage($exception));
+        if ($this->logger) {
+            $this->logger->critical($this->buildLogMessage($exception));
+        }
     }
 
     protected function handleErrorException(ErrorException $exception): bool
