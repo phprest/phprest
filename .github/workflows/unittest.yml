@@ -1,0 +1,15 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: GitHub Action for Composer
+      uses: pxgamer/composer-action@v1.0.1
+      with:
+        command: install --optimize-autoloader --prefer-dist
