@@ -9,7 +9,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: GitHub Action for Composer
-      uses: pxgamer/composer-action@v1.0.1
+    - name: Install dependencies
+      uses: pxgamer/composer-action@master
       with:
         command: install --optimize-autoloader --prefer-dist
+    - name: Run unit tests
+      uses: pxgamer/phpunit-action@master
