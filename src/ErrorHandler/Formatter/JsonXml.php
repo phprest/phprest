@@ -39,7 +39,7 @@ class JsonXml extends AbstractFormatter
      *
      * @return string
      */
-    public function format(\Exception $exception)
+    public function format($exception)
     {
         $response = new Response();
 

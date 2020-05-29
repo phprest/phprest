@@ -1,9 +1,11 @@
 <?php namespace Phprest\Service\Logger;
 
+use InvalidArgumentException;
 use League\Container\Container;
 use Phprest\Stub\Service\SampleConfig;
+use PHPUnit\Framework\TestCase;
 
-class LoggerTest extends \PHPUnit_Framework_TestCase
+class LoggerTest extends TestCase
 {
     use Getter;
 
@@ -12,12 +14,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
      */
     private $continer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->continer = new Container();
     }
 
-    public function testInstansiation()
+    public function testInstansiation(): void
     {
         $service = new Service();
         $service->register($this->continer, new Config('sampleLoggerName'));
@@ -27,16 +29,14 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('sampleLoggerName', $loggerService->getName());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testWithWrongConfig()
+    public function testWithWrongConfig(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $service = new Service();
         $service->register($this->continer, new SampleConfig());
     }
 
-    public function testGetter()
+    public function testGetter(): void
     {
         $service = new Service();
         $service->register($this->continer, new Config('anotherLoggerName'));
@@ -44,7 +44,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('anotherLoggerName', $this->serviceLogger()->getName());
     }
 
-    protected function getContainer()
+    protected function getContainer(): Container
     {
         return $this->continer;
     }

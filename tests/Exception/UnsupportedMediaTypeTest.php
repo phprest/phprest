@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class UnsupportedMediaTypeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UnsupportedMediaTypeTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new UnsupportedMediaType(9, [1,2,3]);
 

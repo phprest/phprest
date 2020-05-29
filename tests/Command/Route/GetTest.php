@@ -2,17 +2,18 @@
 
 use Phprest\Application as PhprestApp;
 use Phprest\Config;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application as ConsoleApp;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetTest extends \PHPUnit_Framework_TestCase
+class GetTest extends TestCase
 {
-    public function testDisplayedData()
+    public function testDisplayedData(): void
     {
         $phprestApp = new PhprestApp(new Config('phprest-test', '2.3', true));
         $phprestApp->get('/2.3/get-the-answer-of-everything', 'Phprest\Stub\Controller::getTheAnswerOfEverything');
-        $phprestApp->get('/2.3/get-welcome-message', function() {
+        $phprestApp->get('/2.3/get-welcome-message', static function () {
             return new Response('Welcome!');
         });
 
@@ -21,15 +22,15 @@ class GetTest extends \PHPUnit_Framework_TestCase
 
         $command = $cliApp->find('routes:get');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName()));
+        $commandTester->execute(['command' => $command->getName()]);
 
         $displayedData = $commandTester->getDisplay();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '| GET    | /2.3/get-the-answer-of-everything | Phprest\Stub\Controller::getTheAnswerOfEverything |',
             $displayedData
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '| GET    | /2.3/get-welcome-message          | Closure                                           |',
             $displayedData
         );

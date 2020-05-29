@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class MethodNotAllowedTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class MethodNotAllowedTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new MethodNotAllowed(9, [1,2,3]);
 

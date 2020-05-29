@@ -2,12 +2,14 @@
 
 namespace Phprest\Service\Logger;
 
+use League\Container\Container;
+use League\Container\ContainerInterface;
+use Monolog\Logger;
+
 trait Getter
 {
-    /**
-     * @return \Monolog\Logger
-     */
-    protected function serviceLogger()
+
+    protected function serviceLogger(): Logger
     {
         return $this->getContainer()->get(Config::getServiceName());
     }
@@ -15,7 +17,7 @@ trait Getter
     /**
      * Returns the DI container.
      *
-     * @return \League\Container\ContainerInterface
+     * @return Container|ContainerInterface
      */
     abstract protected function getContainer();
 }

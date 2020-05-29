@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class InternalServerErrorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class InternalServerErrorTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new InternalServerError(9, [1,2,3]);
 

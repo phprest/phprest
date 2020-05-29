@@ -1,22 +1,27 @@
-<?php namespace Phprest;
+<?php
 
-use Stack;
-use Phprest\Service;
-use League\Event\EmitterTrait;
-use Phprest\Router\RouteCollection;
+namespace Phprest;
+
+use Closure;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use League\Container\ContainerAwareTrait;
+use League\Event\EmitterInterface;
+use League\Event\EmitterTrait;
 use League\Event\ListenerAcceptorInterface;
-use League\Container\ContainerAwareInterface;
+use Phprest\Middleware\ApiVersion;
+use Phprest\Router\RouteCollection;
+use Phprest\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
+use LogicException;
+use Exception;
+use Stack;
 
 class Application implements
     HttpKernelInterface,
     TerminableInterface,
-    ContainerAwareInterface,
     ListenerAcceptorInterface
 {
     use EmitterTrait;
@@ -43,7 +48,7 @@ class Application implements
     protected $stackBuilder;
 
     /**
-     * @var \League\Route\RouteCollection
+     * @var RouteCollection
      */
     protected $router;
 
@@ -52,9 +57,6 @@ class Application implements
      */
     protected $exceptionDecorator;
 
-    /**
-     * @param Config $configuration
-     */
     public function __construct(Config $configuration)
     {
         $this->configuration = $configuration;
@@ -79,46 +81,30 @@ class Application implements
         $this->stackBuilder = new Stack\Builder;
     }
 
-    /**
-     * @param Service\Serviceable $service
-     * @param Service\Configurable $config
-     *
-     * @return void
-     */
-    public function registerService(Service\Serviceable $service, Service\Configurable $config)
+    public function registerService(Service\Serviceable $service, Service\Configurable $config): void
     {
         $service->register($this->container, $config);
     }
 
     /**
      * @param string $class Namespaced class name
-     *
-     * @return void
      */
-    public function registerController($class)
+    public function registerController(string $class): void
     {
         $controller = new $class($this->container);
 
-        $this->container->add($class, function () use ($controller) {
+        $this->container->add($class, static function () use ($controller) {
             return $controller;
         });
     }
 
-    /**
-     * @param string $classPath
-     * @param array $arguments
-     */
-    public function registerMiddleware($classPath, array $arguments = [])
+    public function registerMiddleware(string $classPath, array $arguments = [])
     {
         call_user_func_array([$this->stackBuilder, 'push'], array_merge([$classPath], $arguments));
     }
 
     /**
      * Run the application
-     *
-     * @param Request $request
-     *
-     * @return string
      */
     public function run(Request $request = null)
     {
@@ -126,7 +112,7 @@ class Application implements
             $request = Request::createFromGlobals();
         }
 
-        $this->registerMiddleware('Phprest\Middleware\ApiVersion');
+        $this->registerMiddleware(ApiVersion::class);
 
         $app = $this->stackBuilder->resolve($this);
 
@@ -139,19 +125,19 @@ class Application implements
     /**
      * Handle the request.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param int $type
      * @param bool $catch
      *
-     * @throws \Exception
-     * @throws \LogicException
+     * @return Response
+     * @throws LogicException
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws Exception
      */
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true): ?Response
     {
         // Passes the request to the container
-        $this->getContainer()->add('Symfony\Component\HttpFoundation\Request', $request);
+        $this->getContainer()->add(Request::class, $request);
 
         try {
             $this->emit('request.received', $request);
@@ -165,15 +151,14 @@ class Application implements
             $this->emit('response.created', $request, $response);
 
             return $response;
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if (!$catch) {
                 throw $e;
             }
 
             $response = call_user_func($this->exceptionDecorator, $e);
             if (!$response instanceof Response) {
-                throw new \LogicException(
+                throw new LogicException(
                     'Exception decorator did not return an instance of Symfony\Component\HttpFoundation\Response'
                 );
             }
@@ -187,129 +172,112 @@ class Application implements
     /**
      * Add a HEAD route
      *
-     * @param string $route
-     * @param mixed $action
-     *
-     * @return void
+     * @param string|Closure $action
      */
-    public function head($route, $action)
+    public function head(string $route, $action): self
     {
         $this->router->addRoute('HEAD', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a OPTIONS route
      *
-     * @param string $route
-     * @param mixed $action
-     *
-     * @return void
+     * @param string|Closure $action
      */
-    public function options($route, $action)
+    public function options(string $route, $action): self
     {
         $this->router->addRoute('OPTIONS', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a GET route.
      *
-     * @param string $route
-     * @param mixed $action
-     *
-     * @return void
+     * @param string|Closure $action
      */
-    public function get($route, $action)
+    public function get(string $route, $action): self
     {
         $this->getRouter()->addRoute('GET', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a POST route.
      *
-     * @param string $route
-     * @param mixed $action
-     *
-     * @return void
+     * @param string|Closure $action
      */
-    public function post($route, $action)
+    public function post(string $route, $action): self
     {
         $this->getRouter()->addRoute('POST', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a PUT route.
      *
-     * @param string $route
-     * @param mixed $action
-     *
-     * @return void
+     * @param string|Closure $action
      */
-    public function put($route, $action)
+    public function put(string $route, $action): self
     {
         $this->getRouter()->addRoute('PUT', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a DELETE route.
      *
-     * @param string $route
-     * @param mixed $action
-     *
-     * @return void
+     * @param string|Closure $action
      */
-    public function delete($route, $action)
+    public function delete(string $route, $action): self
     {
         $this->getRouter()->addRoute('DELETE', $route, $action);
+
+        return $this;
     }
 
     /**
      * Add a PATCH route.
      *
-     * @param string $route
-     * @param mixed $action
-     *
-     * @return void
+     * @param string|Closure $action
      */
-    public function patch($route, $action)
+    public function patch(string $route, $action): self
     {
         $this->getRouter()->addRoute('PATCH', $route, $action);
+
+        return $this;
     }
 
     /**
      * @return Config
      */
-    public function getConfiguration()
+    public function getConfiguration(): Config
     {
         return $this->configuration;
     }
 
-    /**
-     * @return RouteCollection
-     */
-    public function getRouter()
+    public function getRouter(): RouteCollection
     {
         return $this->router;
     }
 
     /**
      * Return the event emitter.
-     *
-     * @return \League\Event\EmitterInterface
      */
-    public function getEventEmitter()
+    public function getEventEmitter(): EmitterInterface
     {
         return $this->getEmitter();
     }
 
     /**
      * Terminates a request/response cycle.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     *
-     * @return void
      */
-    public function terminate(Request $request, Response $response)
+    public function terminate(Request $request, Response $response): void
     {
         $this->emit('response.sent', $request, $response);
     }
@@ -328,20 +296,13 @@ class Application implements
 
     /**
      * Set the exception decorator.
-     *
-     * @param callable $func
-     *
-     * @return void
      */
-    public function setExceptionDecorator(callable $func)
+    public function setExceptionDecorator(callable $func): void
     {
         $this->exceptionDecorator = $func;
     }
 
-    /**
-     * @return void
-     */
-    protected function setErrorHandler()
+    protected function setErrorHandler(): void
     {
         $app = $this;
 
@@ -350,7 +311,7 @@ class Application implements
         $this->configuration->getErrorHandler()->pushHandler($this->configuration->getLogHandler());
         $this->configuration->getErrorHandler()->register();
 
-        $this->setExceptionDecorator(function (\Exception $e) use ($app) {
+        $this->setExceptionDecorator(static function (Exception $e) use ($app) {
             $formatter = new ErrorHandler\Formatter\JsonXml($app->configuration);
 
             return new Response($formatter->format($e), http_response_code());

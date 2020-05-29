@@ -2,6 +2,7 @@
 
 namespace Phprest\Service\Logger;
 
+use Monolog\Handler\HandlerInterface;
 use Phprest\Service\Configurable;
 
 class Config implements Configurable
@@ -12,13 +13,13 @@ class Config implements Configurable
     public $name;
 
     /**
-     * @var \Monolog\Handler\HandlerInterface[]
+     * @var HandlerInterface[]
      */
     public $handlers;
 
     /**
      * @param string $name
-     * @param \Monolog\Handler\HandlerInterface[] $handlers
+     * @param HandlerInterface[] $handlers
      */
     public function __construct($name, array $handlers = [])
     {
@@ -26,10 +27,7 @@ class Config implements Configurable
         $this->handlers = $handlers;
     }
 
-    /**
-     * @return string
-     */
-    public static function getServiceName()
+    public static function getServiceName(): string
     {
         return 'logger';
     }

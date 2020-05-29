@@ -2,8 +2,10 @@
 
 use Phprest\Application;
 use League\Container\Container;
+use Phprest\Util\DataStructure\MimeProcessResult;
+use PHPUnit\Framework\TestCase;
 
-class MimeTest extends \PHPUnit_Framework_TestCase
+class MimeTest extends TestCase
 {
     use Mime;
 
@@ -12,19 +14,19 @@ class MimeTest extends \PHPUnit_Framework_TestCase
      */
     private $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new Container();
     }
 
-    public function testSimpleAcceptJsonMime()
+    public function testSimpleAcceptJsonMime(): void
     {
         $this->setVendorInContainer('phprest-test');
         $this->setApiVersionInContainer('1.5');
 
         $result = $this->processMime('application/json');
 
-        $this->assertInstanceOf('Phprest\Util\DataStructure\MimeProcessResult', $result);
+        $this->assertInstanceOf(MimeProcessResult::class, $result);
 
         $this->assertEquals('application/vnd.phprest-test-v1.5+json', $result->mime);
         $this->assertEquals('phprest-test', $result->vendor);
@@ -32,41 +34,41 @@ class MimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('json', $result->format);
     }
 
-    public function testSimpleAcceptXmlMime()
+    public function testSimpleAcceptXmlMime(): void
     {
         $this->setVendorInContainer('phprest-test');
         $this->setApiVersionInContainer('1.5');
 
         $result = $this->processMime('application/xml');
 
-        $this->assertInstanceOf('Phprest\Util\DataStructure\MimeProcessResult', $result);
+        $this->assertInstanceOf(MimeProcessResult::class, $result);
 
         $this->assertEquals('application/vnd.phprest-test-v1.5+xml', $result->mime);
         $this->assertEquals('xml', $result->format);
     }
 
-    public function testComplexVersionFormatAcceptJsonMime()
+    public function testComplexVersionFormatAcceptJsonMime(): void
     {
         $this->setVendorInContainer('phprest-test');
         $this->setApiVersionInContainer('2.7');
 
         $result = $this->processMime('application/vnd.phprest-test-v2.7+json');
 
-        $this->assertInstanceOf('Phprest\Util\DataStructure\MimeProcessResult', $result);
+        $this->assertInstanceOf(MimeProcessResult::class, $result);
 
         $this->assertEquals('application/vnd.phprest-test-v2.7+json', $result->mime);
         $this->assertEquals('2.7', $result->apiVersion);
         $this->assertEquals('json', $result->format);
     }
 
-    public function testComplexVersionFormatAcceptXmlMime()
+    public function testComplexVersionFormatAcceptXmlMime(): void
     {
         $this->setVendorInContainer('phprest-test');
         $this->setApiVersionInContainer(3);
 
         $result = $this->processMime('application/vnd.phprest-test+xml; version=3');
 
-        $this->assertInstanceOf('Phprest\Util\DataStructure\MimeProcessResult', $result);
+        $this->assertInstanceOf(MimeProcessResult::class, $result);
 
         $this->assertEquals('application/vnd.phprest-test+xml; version=3', $result->mime);
         $this->assertEquals(3, $result->apiVersion);
@@ -76,7 +78,7 @@ class MimeTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $vendor
      */
-    protected function setVendorInContainer($vendor)
+    protected function setVendorInContainer($vendor): void
     {
         $this->container->add(Application::CONTAINER_ID_VENDOR, $vendor);
     }
@@ -84,7 +86,7 @@ class MimeTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string|integer $apiVersion
      */
-    protected function setApiVersionInContainer($apiVersion)
+    protected function setApiVersionInContainer($apiVersion): void
     {
         $this->container->add(Application::CONTAINER_ID_API_VERSION, $apiVersion);
     }
@@ -92,9 +94,9 @@ class MimeTest extends \PHPUnit_Framework_TestCase
     /**
      * Returns the DI container
      *
-     * @return \League\Container\Container
+     * @return Container
      */
-    protected function getContainer()
+    protected function getContainer(): Container
     {
         return $this->container;
     }

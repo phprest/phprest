@@ -3,9 +3,11 @@
 use Phprest\Application;
 use Phprest\Service;
 use League\Container\Container;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Phprest\HttpFoundation\Response;
 
-class StrategyTest extends \PHPUnit_Framework_TestCase
+class StrategyTest extends TestCase
 {
     /**
      * @var Container
@@ -17,17 +19,16 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
      */
     private $strategy;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new Container();
         $this->strategy = new Strategy($this->container);
     }
 
-    public function testDispatchWithClosure()
+    public function testDispatchWithClosure(): void
     {
         $result = $this->strategy->dispatch(
-            function()
-            {
+            static function () {
                 return 42;
             },
             []
@@ -36,7 +37,7 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(42, $result);
     }
 
-    public function testDispatchWithClassAndMethod()
+    public function testDispatchWithClassAndMethod(): void
     {
         $result = $this->strategy->dispatch(
             'Phprest\Stub\Controller\Simple::getTheAnswerOfEverything',
@@ -46,7 +47,7 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(42, $result);
     }
 
-    public function testDispatchWithClassAndMethodAndResponseObject()
+    public function testDispatchWithClassAndMethodAndResponseObject(): void
     {
         $this->setRequestParameters('phprest-test', 1, '*/*');
 
@@ -55,8 +56,8 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
             []
         );
 
-        $this->assertInstanceOf('Phprest\HttpFoundation\Response', $result);
-        if ($result instanceof \Phprest\HttpFoundation\Response) {
+        $this->assertInstanceOf(Response::class, $result);
+        if ($result instanceof Response) {
             $this->assertEquals(json_encode('sample'), $result->getContent());
         }
     }
@@ -66,7 +67,7 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
      * @param string|integer $apiVersion
      * @param string $acceptHeader
      */
-    protected function setRequestParameters($vendor, $apiVersion, $acceptHeader)
+    protected function setRequestParameters($vendor, $apiVersion, $acceptHeader): void
     {
         $this->container->add(Application::CONTAINER_ID_VENDOR, $vendor);
         $this->container->add(Application::CONTAINER_ID_API_VERSION, $apiVersion);
@@ -77,6 +78,6 @@ class StrategyTest extends \PHPUnit_Framework_TestCase
         $request = new Request();
         $request->headers->set('Accept', $acceptHeader, true);
 
-        $this->container->add('Symfony\Component\HttpFoundation\Request', $request);
+        $this->container->add(Request::class, $request);
     }
 }

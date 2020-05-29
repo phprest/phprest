@@ -1,8 +1,10 @@
 <?php namespace Phprest\Exception;
 
-class ExceptionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ExceptionTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $exception = new Exception('test message', 9, 201, [1,2,3]);
 

@@ -6,7 +6,7 @@ use Phprest\Service\Configurable;
 
 class SampleConfig implements Configurable
 {
-    public static function getServiceName()
+    public static function getServiceName(): string
     {
         return 'sample';
     }

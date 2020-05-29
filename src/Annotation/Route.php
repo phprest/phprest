@@ -2,6 +2,7 @@
 
 namespace Phprest\Annotation;
 
+use InvalidArgumentException;
 use Phprest\Application;
 
 /**
@@ -29,7 +30,7 @@ class Route
     /**
      * @param mixed $options
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct($options)
     {
@@ -47,7 +48,7 @@ class Route
 
         $this->method   = $options['method'];
         $this->path     = $options['path'];
-        $this->version  = ! is_null($version) ? '{version:' . $version . '}' : '{version:any}';
+        $this->version  = null !== $version ? '{version:' . $version . '}' : '{version:any}';
     }
 
     /**
@@ -55,20 +56,20 @@ class Route
      *
      * @return void
      */
-    protected function validate(array $options)
+    protected function validate(array $options): void
     {
         if (! isset($options['method'])) {
-            throw new \InvalidArgumentException('method property is missing');
+            throw new InvalidArgumentException('method property is missing');
         } elseif (! in_array($options['method'], ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE', 'HEAD'])) {
-            throw new \InvalidArgumentException('method property is not valid');
+            throw new InvalidArgumentException('method property is not valid');
         } elseif (! isset($options['path'])) {
-            throw new \InvalidArgumentException('path property is missing');
+            throw new InvalidArgumentException('path property is missing');
         } elseif (isset($options['since'])
             && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['since'])) {
-            throw new \InvalidArgumentException('since property is not valid');
+            throw new InvalidArgumentException('since property is not valid');
         } elseif (isset($options['until'])
             && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['until'])) {
-            throw new \InvalidArgumentException('until property is not valid');
+            throw new InvalidArgumentException('until property is not valid');
         }
     }
 
@@ -120,7 +121,7 @@ class Route
      *
      * @return string
      */
-    protected function getSinceRegExp($version)
+    protected function getSinceRegExp($version): string
     {
         $version = str_pad($version, 3, '.0');
 
@@ -137,7 +138,7 @@ class Route
      *
      * @return string
      */
-    protected function getUntilRegExp($version)
+    protected function getUntilRegExp($version): string
     {
         $version = str_pad($version, 3, '.0');
 

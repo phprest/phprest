@@ -1,13 +1,18 @@
-<?php namespace Phprest\Annotation;
+<?php
+namespace Phprest\Annotation;
 
-class RouteTest extends \PHPUnit_Framework_TestCase
+use InvalidArgumentException;
+use LogicException;
+use PHPUnit\Framework\TestCase;
+
+class RouteTest extends TestCase
 {
     /**
      * @param string $method
      *
      * @dataProvider methodProvider
      */
-    public function testSuccessValidation($method)
+    public function testSuccessValidation($method): void
     {
         $route = new Route([
             'method' => $method,
@@ -18,14 +23,14 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/root', $route->path);
     }
 
-    public function methodProvider()
+    public function methodProvider(): array
     {
         return [
             ['GET'], ['POST'], ['PUT'], ['PATCH'], ['OPTIONS'], ['DELETE'], ['HEAD']
         ];
     }
 
-    public function testSince()
+    public function testSince(): void
     {
         $route = new Route([
             'method' => 'GET',
@@ -36,7 +41,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{version:(?:[2-9]\.[3-9])|(?:[3-9]\.\d)}', $route->version);
     }
 
-    public function testUntil()
+    public function testUntil(): void
     {
         $route = new Route([
             'method' => 'GET',
@@ -47,7 +52,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{version:(?:[0-3]\.[0-2])|(?:[0-2]\.\d)}', $route->version);
     }
 
-    public function testSinceAndUntilWithOneVersionNumDiff()
+    public function testSinceAndUntilWithOneVersionNumDiff(): void
     {
         $route = new Route([
             'method' => 'GET',
@@ -59,7 +64,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{version:(?:2\.[3-9])|(?:3\.[0-2])}', $route->version);
     }
 
-    public function testSinceAndUntilWithMoreThanOneVersionNumDiff()
+    public function testSinceAndUntilWithMoreThanOneVersionNumDiff(): void
     {
         $route = new Route([
             'method' => 'GET',
@@ -71,7 +76,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{version:(?:2\.[3-9])|(?:5\.[0-2])|(?:[3-4]\.\d)}', $route->version);
     }
 
-    public function testSinceAndUntilWithEqualFirstNum()
+    public function testSinceAndUntilWithEqualFirstNum(): void
     {
         $route = new Route([
             'method' => 'GET',
@@ -83,11 +88,10 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{version:(?:2\.[3-7])}', $route->version);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
-    public function testInvalidSinceAndUntil()
+    public function testInvalidSinceAndUntil(): void
     {
+        $this->expectException(LogicException::class);
+
         new Route([
             'method' => 'GET',
             'path' => '/root',
@@ -96,43 +100,38 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testMethodMissingOnValidation()
+    public function testMethodMissingOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['path' => '/root']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testMethodIsNotCorrectOnValidation()
+    public function testMethodIsNotCorrectOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['method' => 'IronMan']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testPathMissingOnValidation()
+    public function testPathMissingOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['method' => 'POST']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testInvalidSinceVersionOnValidation()
+    public function testInvalidSinceVersionOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['method' => 'DELETE', 'path' => '/', 'since' => '1.0.1.0']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testInvalidUntilVersionOnValidation()
+    public function testInvalidUntilVersionOnValidation(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Route(['method' => 'DELETE', 'path' => '/', 'until' => '-5']);
     }
 }

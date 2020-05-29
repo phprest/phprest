@@ -5,8 +5,9 @@ use Phprest\Stub\Controller\Routed as RoutedController;
 use Phprest\Router\RouteCollection;
 use League\Container\Container;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use PHPUnit\Framework\TestCase;
 
-class ControllerTest extends \PHPUnit_Framework_TestCase
+class ControllerTest extends TestCase
 {
     /**
      * @var RoutedController
@@ -18,12 +19,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
      */
     private $router;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         AnnotationRegistry::registerLoader('class_exists');
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->router = new RouteCollection();
 
@@ -33,7 +34,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->controller = new RoutedController($container);
     }
 
-    public function testRoutingTable()
+    public function testRoutingTable(): void
     {
         $routingTable = $this->router->getRoutingTable();
 
