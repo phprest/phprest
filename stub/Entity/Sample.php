@@ -10,14 +10,12 @@ use JMS\Serializer\Annotation as Serializer;
 class Sample
 {
     /**
-     * @var int
      * @Serializer\Type("integer")
      */
-    public $a;
+    public int $a;
 
     /**
-     * @var int
      * @Serializer\Type("integer")
      */
-    public $b;
+    public int $b;
 }

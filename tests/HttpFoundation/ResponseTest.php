@@ -1,5 +1,8 @@
-<?php namespace Phprest\HttpFoundation;
+<?php
 
+namespace Phprest\Test\HttpFoundation;
+
+use Phprest\HttpFoundation\Response;
 use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase

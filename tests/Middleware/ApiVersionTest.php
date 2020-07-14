@@ -1,9 +1,12 @@
-<?php namespace Phprest\Middleware;
+<?php
+
+namespace Phprest\Test\Middleware;
 
 use Mockery;
 use Mockery\MockInterface;
 use Phprest\Application;
 use Phprest\Config;
+use Phprest\Middleware\ApiVersion;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 

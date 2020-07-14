@@ -1,7 +1,15 @@
-<?php namespace Phprest\Service\Hateoas;
+<?php
+
+namespace Phprest\Test\Service\Hateoas;
 
 use Phprest\Application;
 use League\Container\Container;
+use Phprest\Exception\NotAcceptable;
+use Phprest\Exception\UnsupportedMediaType;
+use Phprest\Service\Hateoas\Config;
+use Phprest\Service\Hateoas\Getter;
+use Phprest\Service\Hateoas\Service;
+use Phprest\Service\Hateoas\Util;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +21,7 @@ class UtilTest extends TestCase
     use Getter;
     use Util;
 
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
     public static function setUpBeforeClass(): void
     {
@@ -71,7 +76,7 @@ EOD
 
     public function testNotAcceptableSerialize(): void
     {
-        $this->expectException(\Phprest\Exception\NotAcceptable::class);
+        $this->expectException(NotAcceptable::class);
 
         $request = $this->setRequestParameters('phprest', '2.4', 'yaml');
 
@@ -95,7 +100,7 @@ EOD
 
     public function testJsonDeserializeWithUnsopportedFormat(): void
     {
-        $this->expectException(\Phprest\Exception\UnsupportedMediaType::class);
+        $this->expectException(UnsupportedMediaType::class);
 
         $this->container->add(Application::CONTAINER_ID_VENDOR, 'phprest');
         $this->container->add(Application::CONTAINER_ID_API_VERSION, '3.2');
@@ -129,7 +134,7 @@ EOD
         return $request;
     }
 
-    protected function getContainer(): Container
+    public function getContainer(): Container
     {
         return $this->container;
     }

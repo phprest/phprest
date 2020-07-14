@@ -1,6 +1,8 @@
-<?php namespace Phprest\Response;
+<?php
 
-use Phprest\HttpFoundation\Response;
+namespace Phprest\Test\Response;
+
+use Phprest\Response\NoContent;
 use PHPUnit\Framework\TestCase;
 
 class NoContentTest extends TestCase

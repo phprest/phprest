@@ -22,8 +22,8 @@ class RouteCollection extends \League\Route\RouteCollection
      */
     public function __construct(
         ContainerInterface $container = null,
-        RouteParser        $parser = null,
-        DataGenerator      $generator = null
+        RouteParser $parser = null,
+        DataGenerator $generator = null
     ) {
         parent::__construct($container, $parser, $generator);
 

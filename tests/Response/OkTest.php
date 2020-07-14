@@ -1,6 +1,8 @@
-<?php namespace Phprest\Response;
+<?php
 
-use Phprest\HttpFoundation\Response;
+namespace Phprest\Test\Response;
+
+use Phprest\Response\Ok;
 use PHPUnit\Framework\TestCase;
 
 class OkTest extends TestCase

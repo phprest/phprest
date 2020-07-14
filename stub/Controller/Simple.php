@@ -6,18 +6,12 @@ use Phprest\HttpFoundation\Response;
 
 class Simple
 {
-    /**
-     * @return int
-     */
-    public static function getTheAnswerOfEverything()
+    public static function getTheAnswerOfEverything(): int
     {
         return 42;
     }
 
-    /**
-     * @return Response
-     */
-    public static function getSampleResponse()
+    public static function getSampleResponse(): Response
     {
         return new Response('sample');
     }

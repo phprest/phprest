@@ -43,7 +43,10 @@ class ApiVersion implements HttpKernelInterface
         return $this->app->handle($request, $type, $catch);
     }
 
-    public function getContainer(): ContainerInterface
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
     {
         return $this->app->getConfiguration()->getContainer();
     }

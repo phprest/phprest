@@ -2,6 +2,7 @@
 
 namespace Phprest\Service\Hateoas;
 
+use Hateoas\Hateoas;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Negotiation\FormatNegotiator;
@@ -77,7 +78,7 @@ trait Util
     }
 
     /**
-     * @return \Hateoas\Hateoas
+     * @return Hateoas
      */
     abstract protected function serviceHateoas();
 }

@@ -2,12 +2,12 @@
 
 namespace Phprest\Service\Hateoas;
 
+use Hateoas\Hateoas;
+use League\Container\ContainerInterface;
+
 trait Getter
 {
-    /**
-     * @return \Hateoas\Hateoas
-     */
-    protected function serviceHateoas()
+    protected function serviceHateoas(): Hateoas
     {
         return $this->getContainer()->get(Config::getServiceName());
     }
@@ -15,7 +15,7 @@ trait Getter
     /**
      * Returns the DI container.
      *
-     * @return \League\Container\ContainerInterface
+     * @return ContainerInterface
      */
     abstract protected function getContainer();
 }

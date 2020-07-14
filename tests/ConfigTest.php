@@ -1,8 +1,10 @@
 <?php
-namespace Phprest;
+
+namespace Phprest\Test;
 
 use InvalidArgumentException;
 use League\BooBoo\BooBoo;
+use Phprest\Config;
 use Phprest\Service\Logger\Config as LoggerConfig;
 use Phprest\Service\Logger\Service as LoggerService;
 use Phprest\Service\Hateoas;
@@ -62,7 +64,7 @@ class ConfigTest extends TestCase
     {
         return [
             [-2], [-1], [10], [11], [12],
-            ['a'], [null],
+            ['a'], ['b'],
             ['1.0.0'],
             ['1.2.3.4'],
             ['10.1'],

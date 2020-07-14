@@ -34,18 +34,12 @@ class Exception extends \Exception
         $this->details      = $details;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
-    /**
-     * @return array
-     */
-    public function getDetails()
+    public function getDetails(): array
     {
         return $this->details;
     }

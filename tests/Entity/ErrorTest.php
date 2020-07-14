@@ -1,14 +1,14 @@
-<?php namespace Phprest\Entity;
+<?php
 
+namespace Phprest\Test\Entity;
+
+use Phprest\Entity\Error;
 use Phprest\Exception\Exception;
 use PHPUnit\Framework\TestCase;
 
 class ErrorTest extends TestCase
 {
-    /**
-     * @var Error
-     */
-    protected $error;
+    protected Error $error;
 
     public function setUp(): void
     {

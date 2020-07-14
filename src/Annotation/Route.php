@@ -3,6 +3,7 @@
 namespace Phprest\Annotation;
 
 use InvalidArgumentException;
+use LogicException;
 use Phprest\Application;
 
 /**
@@ -64,11 +65,15 @@ class Route
             throw new InvalidArgumentException('method property is not valid');
         } elseif (! isset($options['path'])) {
             throw new InvalidArgumentException('path property is missing');
-        } elseif (isset($options['since'])
-            && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['since'])) {
+        } elseif (
+            isset($options['since'])
+            && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['since'])
+        ) {
             throw new InvalidArgumentException('since property is not valid');
-        } elseif (isset($options['until'])
-            && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['until'])) {
+        } elseif (
+            isset($options['until'])
+            && ! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $options['until'])
+        ) {
             throw new InvalidArgumentException('until property is not valid');
         }
     }
@@ -85,7 +90,7 @@ class Route
         $untilVersion = str_pad($untilVersion, 3, '.0');
 
         if (! ($sinceVersion < $untilVersion)) {
-            throw new \LogicException('since must be lesser than until');
+            throw new LogicException('since must be lesser than until');
         }
 
         if ($sinceVersion[0] === $untilVersion[0]) {

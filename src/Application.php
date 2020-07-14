@@ -31,26 +31,15 @@ class Application implements
     const CONTAINER_ID_VENDOR = 'vendor';
     const CONTAINER_ID_API_VERSION = 'api-version';
     const CONTAINER_ID_ROUTER = 'router';
-
     const API_VERSION_REG_EXP = '((?:[0-9](?:\.[0-9])?){1})';
 
-    use Service\Hateoas\Getter, Service\Hateoas\Util;
+    use Service\Hateoas\Getter;
+    use Service\Hateoas\Util;
     use Service\Logger\Getter;
 
-    /**
-     * @var Config
-     */
-    protected $configuration;
-
-    /**
-     * @var Stack\Builder
-     */
-    protected $stackBuilder;
-
-    /**
-     * @var RouteCollection
-     */
-    protected $router;
+    protected Config $configuration;
+    protected Stack\Builder $stackBuilder;
+    protected RouteCollection $router;
 
     /**
      * @var callable
@@ -78,7 +67,7 @@ class Application implements
             return $this->router;
         });
 
-        $this->stackBuilder = new Stack\Builder;
+        $this->stackBuilder = new Stack\Builder();
     }
 
     public function registerService(Service\Serviceable $service, Service\Configurable $config): void
@@ -98,7 +87,7 @@ class Application implements
         });
     }
 
-    public function registerMiddleware(string $classPath, array $arguments = [])
+    public function registerMiddleware(string $classPath, array $arguments = []): void
     {
         call_user_func_array([$this->stackBuilder, 'push'], array_merge([$classPath], $arguments));
     }
@@ -106,7 +95,7 @@ class Application implements
     /**
      * Run the application
      */
-    public function run(Request $request = null)
+    public function run(Request $request = null): void
     {
         if (null === $request) {
             $request = Request::createFromGlobals();
@@ -253,9 +242,6 @@ class Application implements
         return $this;
     }
 
-    /**
-     * @return Config
-     */
     public function getConfiguration(): Config
     {
         return $this->configuration;

@@ -48,9 +48,6 @@ abstract class Controller
     }
 
     /**
-     * @param RouteCollection $router
-     * @param ReflectionClass $class
-     * @param ReflectionMethod $method
      * @param mixed $docblock
      */
     protected function registerRoute(
@@ -58,7 +55,7 @@ abstract class Controller
         ReflectionClass $class,
         ReflectionMethod $method,
         $docblock
-    ) {
+    ): void {
         if ($docblock instanceof Route) {
             $this->addVersionToRoute($docblock);
 

@@ -1,6 +1,9 @@
-<?php namespace Phprest\Router;
+<?php
+
+namespace Phprest\Test\Router;
 
 use Phprest\Application;
+use Phprest\Router\Strategy;
 use Phprest\Service;
 use League\Container\Container;
 use PHPUnit\Framework\TestCase;
@@ -9,15 +12,8 @@ use Phprest\HttpFoundation\Response;
 
 class StrategyTest extends TestCase
 {
-    /**
-     * @var Container
-     */
-    private $container;
-
-    /**
-     * @var Strategy
-     */
-    private $strategy;
+    private Container $container;
+    private Strategy $strategy;
 
     public function setUp(): void
     {
@@ -73,7 +69,7 @@ class StrategyTest extends TestCase
         $this->container->add(Application::CONTAINER_ID_API_VERSION, $apiVersion);
 
         (new Service\Hateoas\Service())->
-            register($this->container, new Service\Hateoas\Config(true));
+        register($this->container, new Service\Hateoas\Config(true));
 
         $request = new Request();
         $request->headers->set('Accept', $acceptHeader, true);

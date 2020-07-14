@@ -10,10 +10,7 @@ use Psr\Log\LoggerInterface;
 
 class Log implements HandlerInterface
 {
-    /**
-     * @var LoggerInterface|null
-     */
-    protected $logger;
+    protected ?LoggerInterface $logger;
 
     public function __construct(LoggerInterface $logger = null)
     {
