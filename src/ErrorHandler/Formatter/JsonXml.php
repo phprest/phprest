@@ -14,15 +14,8 @@ class JsonXml extends AbstractFormatter
 {
     use Service\Hateoas\Getter, Service\Hateoas\Util;
 
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var null|Request
-     */
-    protected $request;
+    protected Config $config;
+    protected ?Request $request;
 
     /**
      * @param Config $config
@@ -73,7 +66,7 @@ class JsonXml extends AbstractFormatter
     /**
      * @return \League\Container\ContainerInterface
      */
-    protected function getContainer()
+    public function getContainer()
     {
         return $this->config->getContainer();
     }

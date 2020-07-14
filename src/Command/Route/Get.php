@@ -11,10 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Get extends Command
 {
-    /**
-     * @var Application
-     */
-    protected $app;
+    protected Application $app;
 
     public function __construct(Application $app)
     {

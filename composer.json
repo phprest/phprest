@@ -1,5 +1,5 @@
 {
-    "name": "ayanozturk/phprest",
+    "name": "phprest/phprest",
     "description": "PHP Rest Framework.",
     "keywords": ["phprest", "framework", "micro", "rest", "restful", "api"],
     "license": "MIT",
@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "league/booboo": "^1.1",
         "league/container": "^1.3",
         "league/event": "^2.2",

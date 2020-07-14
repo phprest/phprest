@@ -38,7 +38,7 @@ class Route
 
         $version = null;
 
-        if (isset($options['since']) && isset($options['until'])) {
+        if (isset($options['since'], $options['until'])) {
             $version = $this->getSinceUntilRegExp($options['since'], $options['until']);
         } elseif (isset($options['since'])) {
             $version = $this->getSinceRegExp($options['since']);
