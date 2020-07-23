@@ -112,13 +112,12 @@ EOD
     }
 
     /**
-     * @param string $vendor
      * @param string|integer $apiVersion
      * @param string $acceptHeader
      *
      * @return Request
      */
-    protected function setRequestParameters($vendor, $apiVersion, $acceptHeader): Request
+    protected function setRequestParameters(string $vendor, $apiVersion, $acceptHeader): Request
     {
         $this->container->add(Application::CONTAINER_ID_VENDOR, $vendor);
         $this->container->add(Application::CONTAINER_ID_API_VERSION, $apiVersion);

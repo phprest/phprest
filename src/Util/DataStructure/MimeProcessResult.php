@@ -13,14 +13,14 @@ class MimeProcessResult
     public $apiVersion;
 
     /**
-     * json|xml
+     * json|xml|null
      */
-    public string $format;
+    public ?string $format;
 
     /**
      * @param int|string $apiVersion
      */
-    public function __construct(string $mime, string $vendor, $apiVersion, string $format)
+    public function __construct(string $mime, string $vendor, $apiVersion, ?string $format)
     {
         $this->mime         = $mime;
         $this->vendor       = $vendor;
