@@ -13,7 +13,7 @@ class RouteCollection extends \League\Route\RouteCollection
     /**
      * @var array keys: method, route, handler
      */
-    protected $routingTable = [];
+    protected array $routingTable = [];
 
     /**
      * @param ContainerInterface $container

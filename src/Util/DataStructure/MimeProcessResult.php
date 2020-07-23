@@ -4,15 +4,8 @@ namespace Phprest\Util\DataStructure;
 
 class MimeProcessResult
 {
-    /**
-     * @var string
-     */
-    public $mime;
-
-    /**
-     * @var string
-     */
-    public $vendor;
+    public string $mime;
+    public string $vendor;
 
     /**
      * @var int|string
@@ -20,17 +13,14 @@ class MimeProcessResult
     public $apiVersion;
 
     /**
-     * @var string json|xml
+     * json|xml
      */
-    public $format;
+    public string $format;
 
     /**
-     * @param string $mime
-     * @param string $vendor
      * @param int|string $apiVersion
-     * @param string $format
      */
-    public function __construct($mime, $vendor, $apiVersion, $format)
+    public function __construct(string $mime, string $vendor, $apiVersion, string $format)
     {
         $this->mime         = $mime;
         $this->vendor       = $vendor;
