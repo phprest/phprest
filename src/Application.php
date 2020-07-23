@@ -26,16 +26,15 @@ class Application implements
 {
     use EmitterTrait;
     use ContainerAwareTrait;
-
-    const CONTAINER_ID_DEBUG = 'debug';
-    const CONTAINER_ID_VENDOR = 'vendor';
-    const CONTAINER_ID_API_VERSION = 'api-version';
-    const CONTAINER_ID_ROUTER = 'router';
-    const API_VERSION_REG_EXP = '((?:[0-9](?:\.[0-9])?){1})';
-
     use Service\Hateoas\Getter;
     use Service\Hateoas\Util;
     use Service\Logger\Getter;
+
+    public const CONTAINER_ID_DEBUG = 'debug';
+    public const CONTAINER_ID_VENDOR = 'vendor';
+    public const CONTAINER_ID_API_VERSION = 'api-version';
+    public const CONTAINER_ID_ROUTER = 'router';
+    public const API_VERSION_REG_EXP = '((?:[0-9](?:\.[0-9])?){1})';
 
     protected Config $configuration;
     protected Stack\Builder $stackBuilder;

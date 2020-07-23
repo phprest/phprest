@@ -2,7 +2,6 @@
 
 namespace Phprest\Util;
 
-use League\Container\Container;
 use Phprest\Application;
 use Phprest\Util\DataStructure\MimeProcessResult;
 
@@ -16,18 +15,20 @@ trait Mime
         $apiVersionRegExp = Application::API_VERSION_REG_EXP;
         $format = null;
 
-        if (preg_match(
-            '#application/vnd\.' . $vendor . '-v' . $apiVersionRegExp . '\+(xml|json)#',
-            $mime,
-            $matches
-        )
+        if (
+            preg_match(
+                '#application/vnd\.' . $vendor . '-v' . $apiVersionRegExp . '\+(xml|json)#',
+                $mime,
+                $matches
+            )
         ) {
             [$mime, $apiVersion, $format] = $matches;
-        } elseif (preg_match(
-            '#application/vnd\.' . $vendor . '\+(xml|json).*?version=' . $apiVersionRegExp . '#',
-            $mime,
-            $matches
-        )
+        } elseif (
+            preg_match(
+                '#application/vnd\.' . $vendor . '\+(xml|json).*?version=' . $apiVersionRegExp . '#',
+                $mime,
+                $matches
+            )
         ) {
             [$mime, $format, $apiVersion] = $matches;
         } elseif ('application/json' === $mime) {
