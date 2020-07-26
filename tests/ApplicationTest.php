@@ -2,6 +2,7 @@
 
 namespace Phprest\Test;
 
+use League\Event\EmitterInterface;
 use League\Route\Http\Exception\NotFoundException;
 use Phprest\Application;
 use Phprest\Config;
@@ -97,5 +98,6 @@ class ApplicationTest extends TestCase
         $this->assertInstanceOf(Config::class, $this->app->getConfiguration());
         $this->assertInstanceOf(ContainerInterface::class, $this->app->getContainer());
         $this->assertInstanceOf(RouteCollection::class, $this->app->getRouter());
+        $this->assertInstanceOf(EmitterInterface::class, $this->app->getEventEmitter());
     }
 }

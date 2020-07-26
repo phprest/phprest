@@ -274,7 +274,7 @@ class Application implements
      * @param callable $listener
      * @param int $priority
      */
-    public function subscribe($event, $listener, $priority = ListenerAcceptorInterface::P_NORMAL)
+    public function subscribe($event, $listener, $priority = ListenerAcceptorInterface::P_NORMAL): void
     {
         $this->addListener($event, $listener, $priority);
     }
