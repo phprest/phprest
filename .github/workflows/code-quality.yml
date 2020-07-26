@@ -18,3 +18,7 @@ jobs:
       run: composer install
     - name: Run unit tests
       run: vendor/bin/phpunit
+    - name: Run PHPCS check
+      run: vendor/bin/phpcs --report-full --standard=PSR12 src
+    - name: Run phpstan check
+      run: vendor/bin/phpstan analyse src tests --level 1
