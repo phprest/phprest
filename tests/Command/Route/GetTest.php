@@ -1,6 +1,9 @@
-<?php namespace Phprest\Command\Route;
+<?php
+
+namespace Phprest\Test\Command\Route;
 
 use Phprest\Application as PhprestApp;
+use Phprest\Command\Route\Get;
 use Phprest\Config;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application as ConsoleApp;

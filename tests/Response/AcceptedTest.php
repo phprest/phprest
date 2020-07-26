@@ -1,5 +1,8 @@
-<?php namespace Phprest\Response;
+<?php
 
+namespace Phprest\Test\Response;
+
+use Phprest\Response\Accepted;
 use PHPUnit\Framework\TestCase;
 
 class AcceptedTest extends TestCase

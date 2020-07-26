@@ -1,14 +1,14 @@
-<?php namespace Phprest\Entity;
+<?php
+
+namespace Phprest\Test\Entity;
 
 use Exception;
+use Phprest\Entity\DebugError;
 use PHPUnit\Framework\TestCase;
 
 class DebugErrorTest extends TestCase
 {
-    /**
-     * @var DebugError
-     */
-    protected $debugError;
+    protected DebugError $debugError;
 
     public function setUp(): void
     {

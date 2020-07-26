@@ -15,14 +15,8 @@ class ApiVersion implements HttpKernelInterface
 {
     use Util\Mime;
 
-    /**
-     * @var Application
-     */
-    protected $app;
+    protected Application $app;
 
-    /**
-     * @param Application $app
-     */
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -49,7 +43,10 @@ class ApiVersion implements HttpKernelInterface
         return $this->app->handle($request, $type, $catch);
     }
 
-    protected function getContainer(): ContainerInterface
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
     {
         return $this->app->getConfiguration()->getContainer();
     }

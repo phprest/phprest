@@ -1,8 +1,10 @@
 <?php
-namespace Phprest\Annotation;
+
+namespace Phprest\Test\Annotation;
 
 use InvalidArgumentException;
 use LogicException;
+use Phprest\Annotation\Route;
 use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase

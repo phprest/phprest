@@ -1,4 +1,6 @@
-<?php namespace Phprest\Util;
+<?php
+
+namespace Phprest\Test\Util;
 
 use Phprest\Application;
 use Phprest\Stub\Controller\Routed as RoutedController;
@@ -9,15 +11,8 @@ use PHPUnit\Framework\TestCase;
 
 class ControllerTest extends TestCase
 {
-    /**
-     * @var RoutedController
-     */
-    private $controller;
-
-    /**
-     * @var RouteCollection
-     */
-    private $router;
+    private RoutedController $controller;
+    private RouteCollection $router;
 
     public static function setUpBeforeClass(): void
     {

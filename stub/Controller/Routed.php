@@ -3,7 +3,8 @@
 namespace Phprest\Stub\Controller;
 
 use Phprest\Annotation as Phprest;
-use Phprest\Response;
+use Phprest\Response\Created;
+use Phprest\Response\Ok;
 use Phprest\Util\Controller as BaseController;
 
 class Routed extends BaseController
@@ -11,16 +12,16 @@ class Routed extends BaseController
     /**
      * @Phprest\Route(method="GET", path="/foos/{id}", since=1.2, until=2.8)
      */
-    public static function getFoo()
+    public static function getFoo(): Ok
     {
-        return new Response\Ok('Hello World!');
+        return new Ok('Hello World!');
     }
 
     /**
      * @Phprest\Route(method="POST", path="bars", since=0.5, until=0.7)
      */
-    public static function postBar()
+    public static function postBar(): Created
     {
-        return new Response\Created('sample location');
+        return new Created('sample location');
     }
 }

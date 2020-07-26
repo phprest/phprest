@@ -20,74 +20,22 @@ use Phprest\Service\Logger\Service as LoggerService;
 
 class Config
 {
-    /**
-     * @var string
-     */
-    protected $vendor;
+    protected string $vendor;
+    protected string $apiVersion;
+    protected bool $debug = false;
+    protected ContainerInterface $container;
+    protected RouteCollection $router;
+    protected EventEmitterInterface $eventEmitter;
+    protected BooBoo $errorHandler;
+    protected HateoasConfig $hateoasConfig;
+    protected HateoasService $hateoasService;
+    protected LoggerConfig $loggerConfig;
+    protected LoggerService $loggerService;
+    protected LogHandler $logHandler;
 
-    /**
-     * @var string
-     */
-    protected $apiVersion;
-
-    /**
-     * @var bool
-     */
-    protected $debug = false;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var RouteCollection
-     */
-    protected $router;
-
-    /**
-     * @var EventEmitterInterface
-     */
-    protected $eventEmitter;
-
-    /**
-     * @var BooBoo
-     */
-    protected $errorHandler;
-
-    /**
-     * @var HateoasConfig
-     */
-    protected $hateoasConfig;
-
-    /**
-     * @var HateoasService
-     */
-    protected $hateoasService;
-
-    /**
-     * @var LoggerConfig
-     */
-    protected $loggerConfig;
-
-    /**
-     * @var LoggerService
-     */
-    protected $loggerService;
-
-    /**
-     * @var LogHandler
-     */
-    protected $logHandler;
-
-    /**
-     * @param string $vendor
-     * @param string $apiVersion
-     * @param bool $debug
-     */
-    public function __construct($vendor, $apiVersion, $debug = false)
+    public function __construct(string $vendor, string $apiVersion, bool $debug = false)
     {
-        if (! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', (string) $apiVersion)) {
+        if (! preg_match('#^' . Application::API_VERSION_REG_EXP . '$#', $apiVersion)) {
             throw new InvalidArgumentException('Api version is not valid');
         }
 
@@ -134,7 +82,10 @@ class Config
         return $this;
     }
 
-    public function getContainer(): ContainerInterface
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
     {
         return $this->container;
     }

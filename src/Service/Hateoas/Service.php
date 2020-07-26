@@ -4,6 +4,7 @@ namespace Phprest\Service\Hateoas;
 
 use Hateoas\HateoasBuilder;
 use Hateoas\UrlGenerator\CallableUrlGenerator;
+use InvalidArgumentException;
 use League\Container\ContainerInterface;
 use Phprest\Service\Configurable;
 use Phprest\Service\Serviceable;
@@ -19,7 +20,7 @@ class Service implements Serviceable
     public function register(ContainerInterface $container, Configurable $config): void
     {
         if (! $config instanceof Config) {
-            throw new \InvalidArgumentException('Wrong Config object');
+            throw new InvalidArgumentException('Wrong Config object');
         }
 
         $hateoas = HateoasBuilder::create();

@@ -1,6 +1,8 @@
 <?php
-namespace Phprest\Response;
 
+namespace Phprest\Test\Response;
+
+use Phprest\Response\NotModified;
 use PHPUnit\Framework\TestCase;
 
 class NotModifiedTest extends TestCase

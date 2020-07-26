@@ -2,32 +2,27 @@
 
 namespace Phprest\Entity;
 
+use Exception;
 use JMS\Serializer\Annotation as Serializer;
 
 class DebugError extends Error
 {
     /**
-     * @var string
      * @Serializer\Type("string")
      */
-    protected $fileName;
+    protected string $fileName;
 
     /**
-     * @var int
      * @Serializer\Type("integer")
      */
-    protected $line;
+    protected int $line;
 
     /**
-     * @var string
      * @Serializer\Type("string")
      */
-    protected $trace;
+    protected string $trace;
 
-    /**
-     * @param \Exception $exception
-     */
-    public function __construct(\Exception $exception)
+    public function __construct(Exception $exception)
     {
         parent::__construct($exception);
 
@@ -36,26 +31,17 @@ class DebugError extends Error
         $this->trace    = $exception->getTraceAsString();
     }
 
-    /**
-     * @return string
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
 
-    /**
-     * @return int
-     */
-    public function getLine()
+    public function getLine(): int
     {
         return $this->line;
     }
 
-    /**
-     * @return string
-     */
-    public function getTrace()
+    public function getTrace(): string
     {
         return $this->trace;
     }

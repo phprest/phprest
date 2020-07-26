@@ -11,16 +11,14 @@ use Phprest\Exception\Exception;
 class Error
 {
     /**
-     * @var int
      * @Serializer\Type("integer")
      */
-    protected $code;
+    protected int $code;
 
     /**
-     * @var string
      * @Serializer\Type("string")
      */
-    protected $message;
+    protected string $message;
 
     /**
      * @var array
@@ -33,7 +31,7 @@ class Error
      */
     public function __construct(\Exception $exception)
     {
-        $this->code     = $exception->getCode();
+        $this->code     = (int) $exception->getCode();
         $this->message  = $exception->getMessage();
 
         if ($exception instanceof Exception) {
@@ -41,26 +39,17 @@ class Error
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getCode()
+    public function getCode(): int
     {
         return $this->code;
     }
 
-    /**
-     * @return string
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
-    /**
-     * @return array
-     */
-    public function getDetails()
+    public function getDetails(): array
     {
         return $this->details;
     }

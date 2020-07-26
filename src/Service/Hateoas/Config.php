@@ -7,72 +7,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Config implements Configurable
 {
-    /**
-     * @var bool
-     */
-    public $debug = false;
+    public bool $debug = false;
+    public ?string $cacheDir;
+    public ?string $metadataDir;
 
-    /**
-     * @var string
-     */
-    public $cacheDir;
-
-    /**
-     * @var string
-     */
-    public $metadataDir;
-
-    /**
-     * @var callable
-     */
-    public $urlGenerator;
-
-    /**
-     * @param bool $debug
-     * @param string|null $cacheDir
-     * @param string|null $metadataDir
-     * @param callable|null $urlGenerator
-     */
-    public function __construct(
-        $debug = false,
-        $cacheDir = null,
-        $metadataDir = null,
-        $urlGenerator = null
-    ) {
-        $this->debug        = $debug;
-        $this->cacheDir     = $cacheDir;
-        $this->metadataDir  = $metadataDir;
-        $this->urlGenerator = $urlGenerator;
-
-        if (null === $cacheDir) {
-            $this->cacheDir = sys_get_temp_dir() . '/hateoas';
-        }
-
-        if (null === $metadataDir) {
-            $this->metadataDir = sys_get_temp_dir() . '/hateoas';
-        }
-
-        if (null === $urlGenerator) {
-            $this->urlGenerator = function ($route, array $parameters, $absolute) {
-                return $this->generateUrl($route, $parameters, $absolute);
-            };
-        }
-    }
-
-    /**
-     * @param string $route
-     * @param array $parameters
-     * @param bool $absolute
-     *
-     * @return string
-     */
-    protected function generateUrl($route, array $parameters, $absolute)
+    protected function generateUrl(string $route, array $parameters, bool $absolute): string
     {
         $queryParams    = '';
         $resourceParams = [];
 
         foreach ($parameters as $paramName => $paramValue) {
-            if (strpos(strtolower($paramName), 'id') !== false) {
+            if (stripos($paramName, 'id') !== false) {
                 $resourceParams[$paramName] = $paramValue;
                 continue;
             }
@@ -98,6 +43,37 @@ class Config implements Configurable
         }
 
         return $route . $resourceParams . $queryParams;
+    }
+
+    /**
+     * @var callable
+     */
+    public $urlGenerator;
+
+    public function __construct(
+        bool $debug = false,
+        ?string $cacheDir = null,
+        ?string $metadataDir = null,
+        ?callable $urlGenerator = null
+    ) {
+        $this->debug        = $debug;
+        $this->cacheDir     = $cacheDir;
+        $this->metadataDir  = $metadataDir;
+        $this->urlGenerator = $urlGenerator;
+
+        if (null === $cacheDir) {
+            $this->cacheDir = sys_get_temp_dir() . '/hateoas';
+        }
+
+        if (null === $metadataDir) {
+            $this->metadataDir = sys_get_temp_dir() . '/hateoas';
+        }
+
+        if (null === $urlGenerator) {
+            $this->urlGenerator = function ($route, array $parameters, $absolute) {
+                return $this->generateUrl($route, $parameters, $absolute);
+            };
+        }
     }
 
     public static function getServiceName(): string

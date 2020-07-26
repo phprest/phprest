@@ -2,14 +2,14 @@
 
 namespace Phprest\HttpFoundation;
 
-class Response extends \Symfony\Component\HttpFoundation\Response
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+
+class Response extends SymfonyResponse
 {
     /**
      * @param mixed $content
-     *
-     * @return $this
      */
-    public function setContent($content)
+    public function setContent($content): self
     {
         $this->content = $content;
 

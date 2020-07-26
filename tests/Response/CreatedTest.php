@@ -1,6 +1,8 @@
 <?php
-namespace Phprest\Response;
 
+namespace Phprest\Test\Response;
+
+use Phprest\Response\Created;
 use PHPUnit\Framework\TestCase;
 
 class CreatedTest extends TestCase

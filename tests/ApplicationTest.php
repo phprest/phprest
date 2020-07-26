@@ -1,7 +1,12 @@
 <?php
 
-namespace Phprest;
+namespace Phprest\Test;
 
+use League\Event\EmitterInterface;
+use League\Route\Http\Exception\NotFoundException;
+use Phprest\Application;
+use Phprest\Config;
+use Phprest\Service;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,15 +16,8 @@ use Phprest\Stub\Controller\Simple;
 
 class ApplicationTest extends TestCase
 {
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var Application
-     */
-    protected $app;
+    protected Config $config;
+    protected Application $app;
 
     public function setUp(): void
     {
@@ -61,7 +59,7 @@ class ApplicationTest extends TestCase
 
     public function testRunNotFound(): void
     {
-        $this->expectException(\League\Route\Http\Exception\NotFoundException::class);
+        $this->expectException(NotFoundException::class);
         $this->app->run();
     }
 
@@ -100,5 +98,6 @@ class ApplicationTest extends TestCase
         $this->assertInstanceOf(Config::class, $this->app->getConfiguration());
         $this->assertInstanceOf(ContainerInterface::class, $this->app->getContainer());
         $this->assertInstanceOf(RouteCollection::class, $this->app->getRouter());
+        $this->assertInstanceOf(EmitterInterface::class, $this->app->getEventEmitter());
     }
 }
