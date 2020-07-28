@@ -1,5 +1,8 @@
-<?php namespace Phprest\HttpFoundation;
+<?php
 
+namespace Phprest\Test\HttpFoundation;
+
+use Phprest\HttpFoundation\Request;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 

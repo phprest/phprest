@@ -1,18 +1,18 @@
-<?php namespace Phprest\Util;
+<?php
+
+namespace Phprest\Test\Util;
 
 use Phprest\Application;
 use League\Container\Container;
 use Phprest\Util\DataStructure\MimeProcessResult;
+use Phprest\Util\Mime;
 use PHPUnit\Framework\TestCase;
 
 class MimeTest extends TestCase
 {
     use Mime;
 
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
     public function setUp(): void
     {
@@ -25,8 +25,6 @@ class MimeTest extends TestCase
         $this->setApiVersionInContainer('1.5');
 
         $result = $this->processMime('application/json');
-
-        $this->assertInstanceOf(MimeProcessResult::class, $result);
 
         $this->assertEquals('application/vnd.phprest-test-v1.5+json', $result->mime);
         $this->assertEquals('phprest-test', $result->vendor);
@@ -41,8 +39,6 @@ class MimeTest extends TestCase
 
         $result = $this->processMime('application/xml');
 
-        $this->assertInstanceOf(MimeProcessResult::class, $result);
-
         $this->assertEquals('application/vnd.phprest-test-v1.5+xml', $result->mime);
         $this->assertEquals('xml', $result->format);
     }
@@ -53,8 +49,6 @@ class MimeTest extends TestCase
         $this->setApiVersionInContainer('2.7');
 
         $result = $this->processMime('application/vnd.phprest-test-v2.7+json');
-
-        $this->assertInstanceOf(MimeProcessResult::class, $result);
 
         $this->assertEquals('application/vnd.phprest-test-v2.7+json', $result->mime);
         $this->assertEquals('2.7', $result->apiVersion);
@@ -67,8 +61,6 @@ class MimeTest extends TestCase
         $this->setApiVersionInContainer(3);
 
         $result = $this->processMime('application/vnd.phprest-test+xml; version=3');
-
-        $this->assertInstanceOf(MimeProcessResult::class, $result);
 
         $this->assertEquals('application/vnd.phprest-test+xml; version=3', $result->mime);
         $this->assertEquals(3, $result->apiVersion);
@@ -91,12 +83,7 @@ class MimeTest extends TestCase
         $this->container->add(Application::CONTAINER_ID_API_VERSION, $apiVersion);
     }
 
-    /**
-     * Returns the DI container
-     *
-     * @return Container
-     */
-    protected function getContainer(): Container
+    public function getContainer(): Container
     {
         return $this->container;
     }

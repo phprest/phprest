@@ -1,5 +1,8 @@
-<?php namespace Phprest\Router;
+<?php
 
+namespace Phprest\Test\Router;
+
+use Phprest\Router\RouteCollection;
 use PHPUnit\Framework\TestCase;
 
 class RouteCollectionTest extends TestCase

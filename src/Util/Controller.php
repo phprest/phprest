@@ -7,13 +7,12 @@ use League\Container\ContainerInterface;
 use League\Route\RouteCollection;
 use Phprest\Annotation\Route;
 use Phprest\Application;
+use ReflectionClass;
+use ReflectionMethod;
 
 abstract class Controller
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected ContainerInterface $container;
 
     /**
      * @param ContainerInterface $container
@@ -28,39 +27,32 @@ abstract class Controller
         }
     }
 
-    /**
-     * @return void
-     */
-    protected function registerRoutes()
+    protected function registerRoutes(): void
     {
         $reader = new AnnotationReader();
-        $class  = new \ReflectionClass($this);
+        $class  = new ReflectionClass($this);
         /** @var RouteCollection $router */
         $router = $this->getContainer()->get(Application::CONTAINER_ID_ROUTER);
 
-        /** @var \ReflectionMethod $method */
-        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             $this->registerRoute(
                 $router,
                 $class,
                 $method,
-                $reader->getMethodAnnotation($method, '\Phprest\Annotation\Route')
+                $reader->getMethodAnnotation($method, Route::class)
             );
         }
     }
 
     /**
-     * @param RouteCollection $router
-     * @param \ReflectionClass $class
-     * @param \ReflectionMethod $method
      * @param mixed $docblock
      */
     protected function registerRoute(
         RouteCollection $router,
-        \ReflectionClass $class,
-        \ReflectionMethod $method,
+        ReflectionClass $class,
+        ReflectionMethod $method,
         $docblock
-    ) {
+    ): void {
         if ($docblock instanceof Route) {
             $this->addVersionToRoute($docblock);
 
@@ -72,10 +64,7 @@ abstract class Controller
         }
     }
 
-    /**
-     * @param Route $docblock
-     */
-    protected function addVersionToRoute(Route $docblock)
+    protected function addVersionToRoute(Route $docblock): void
     {
         if (! is_null($docblock->version) && $docblock->path[0] === '/') {
             $docblock->path = '/' . $docblock->version . $docblock->path;

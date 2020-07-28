@@ -2,7 +2,9 @@
 
 namespace Phprest\ErrorHandler\Formatter;
 
+use Exception;
 use League\BooBoo\Formatter\AbstractFormatter;
+use League\Container\ContainerInterface;
 use Phprest\Application;
 use Phprest\Config;
 use Phprest\Entity;
@@ -12,17 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class JsonXml extends AbstractFormatter
 {
-    use Service\Hateoas\Getter, Service\Hateoas\Util;
+    use Service\Hateoas\Getter;
+    use Service\Hateoas\Util;
 
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var null|Request
-     */
-    protected $request;
+    protected Config $config;
+    protected ?Request $request;
 
     /**
      * @param Config $config
@@ -35,7 +31,7 @@ class JsonXml extends AbstractFormatter
     }
 
     /**
-     * @param \Exception $exception
+     * @param Exception $exception
      *
      * @return string
      */
@@ -49,7 +45,7 @@ class JsonXml extends AbstractFormatter
                 is_null($this->request) ? Request::createFromGlobals() : $this->request,
                 $response
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response->setContent(
                 $this->serviceHateoas()->getSerializer()->serialize(
                     $this->config->isDebug() ? new Entity\DebugError($e) : new Entity\Error($e),
@@ -71,9 +67,9 @@ class JsonXml extends AbstractFormatter
     }
 
     /**
-     * @return \League\Container\ContainerInterface
+     * @return ContainerInterface
      */
-    protected function getContainer()
+    public function getContainer()
     {
         return $this->config->getContainer();
     }

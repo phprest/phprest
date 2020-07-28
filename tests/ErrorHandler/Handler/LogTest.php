@@ -1,7 +1,10 @@
-<?php namespace Phprest\ErrorHandler\Handler;
+<?php
+
+namespace Phprest\Test\ErrorHandler\Handler;
 
 use ErrorException;
 use Exception;
+use Phprest\ErrorHandler\Handler\Log;
 use Phprest\Exception\BadRequest;
 use PHPUnit\Framework\TestCase;
 use Monolog\Handler\TestHandler;
@@ -9,27 +12,14 @@ use Monolog\Logger;
 
 class LogTest extends TestCase
 {
-    /**
-     * @var TestHandler
-     */
-    protected $monologHandler;
-
-    /**
-     * @var Logger
-     */
-    protected $monolog;
-
-    /**
-     * @var Log
-     */
-    protected $logHandler;
+    protected TestHandler $monologHandler;
+    protected Logger $monolog;
+    protected Log $logHandler;
 
     public function setUp(): void
     {
         $this->monologHandler = new TestHandler();
-
         $this->monolog = new Logger('test', [$this->monologHandler]);
-
         $this->logHandler = new Log($this->monolog);
     }
 

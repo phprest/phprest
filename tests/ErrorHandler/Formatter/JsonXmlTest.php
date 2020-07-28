@@ -1,20 +1,20 @@
-<?php namespace Phprest\ErrorHandler\Formatter;
+<?php
+
+namespace Phprest\Test\ErrorHandler\Formatter;
 
 use Exception;
 use LogicException;
 use Phprest\Application;
 use Phprest\Config;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Phprest\ErrorHandler\Formatter\JsonXml;
 use Phprest\Exception\BadRequest;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class JsonXmlTest extends TestCase
 {
-    /**
-     * @var Config
-     */
-    protected $config;
+    protected Config $config;
 
     public function setUp(): void
     {
@@ -38,7 +38,7 @@ class JsonXmlTest extends TestCase
 
         $this->assertStringContainsString(
             '"code":11,"message":"Bad Request","details":[1,2,3,["a","b"]]',
-            $jsonXmlFormatter->format(new BadRequest(11, [1,2,3,['a','b']]))
+            $jsonXmlFormatter->format(new BadRequest(11, [1, 2, 3, ['a', 'b']]))
         );
     }
 

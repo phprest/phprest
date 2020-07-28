@@ -7,21 +7,18 @@ use Phprest\Service\Configurable;
 
 class Config implements Configurable
 {
-    /**
-     * @var string
-     */
-    public $name;
+
+    public string $name;
 
     /**
      * @var HandlerInterface[]
      */
-    public $handlers;
+    public array $handlers;
 
     /**
-     * @param string $name
      * @param HandlerInterface[] $handlers
      */
-    public function __construct($name, array $handlers = [])
+    public function __construct(string $name, array $handlers = [])
     {
         $this->name     = $name;
         $this->handlers = $handlers;

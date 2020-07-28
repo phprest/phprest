@@ -1,0 +1,24 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        tools: composer, phpunit
+    - name: Install dependencies
+      run: composer install
+    - name: Run unit tests
+      run: vendor/bin/phpunit
+    - name: Run PHPCS check
+      run: vendor/bin/phpcs --report-full --standard=PSR12 src
+    - name: Run phpstan check
+      run: vendor/bin/phpstan analyse src tests --level 1
